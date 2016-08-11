@@ -1,0 +1,39 @@
+{
+  "name": "splytlight",
+  "version": "0.1.0",
+  "description": "Visualization experiments for Splyt Light",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --hot --history-api-fallback --inline --open --content-base build/ --port 3000"
+  },
+  "author": "Peter Szerzo",
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "dependencies": {
+    "domready": "^1.0.8",
+    "virtual-dom": "^2.1.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.4.0",
+    "babel-core": "^6.13.2",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.13.2",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.2.2",
+    "eslint-plugin-babel": "^3.3.0",
+    "json-loader": "^0.5.4",
+    "postcss": "^5.1.2",
+    "postcss-cssnext": "^2.7.0",
+    "postcss-import": "^8.1.2",
+    "postcss-loader": "^0.9.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-validator": "^2.2.7"
+  }
+}
