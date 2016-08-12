@@ -2,7 +2,7 @@ import h from 'virtual-dom/h';
 
 import UnitsContainer from './units-container';
 
-export default function App({data}) {
+export default function App({data}, {setState}) {
   return (
     h('div', {className: 'app'}, UnitsContainer({
       data: data,

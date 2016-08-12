@@ -7,7 +7,7 @@ import Unit from './unit';
 export default function Units(data, {x, y, angle}) {
   const {baseHeight, armLength, armAngle} = splytUnit;
   if (!data) {
-    return;
+    return Unit();
   }
   return (
     h('g', {
