@@ -9,12 +9,14 @@ export default function UnitsContainer({data, x, y}, {setState}) {
     y: y / 10
   };
   return (
-    h('svg', {namespace: svgNameSpace, attributes: {viewBox: `0 0 ${x} ${y}`}}, [
-      Units(data, {
-        x: baseTranslation.x,
-        y: baseTranslation.y,
-        angle: 0
-      }, {setState})
+    h('div', {className: 'units-container'}, [
+      h('svg', {namespace: svgNameSpace, attributes: {viewBox: `0 0 ${x} ${y}`}}, [
+        Units(data, {
+          x: baseTranslation.x,
+          y: baseTranslation.y,
+          angle: 0
+        }, {setState})
+      ])
     ])
   );
 }
