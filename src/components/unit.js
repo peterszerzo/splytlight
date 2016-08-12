@@ -4,7 +4,7 @@ import {svgNameSpace} from '../constants/strings';
 
 import {splytUnit} from '../constants/geometries';
 
-const offset = 10;
+const offset = 12;
 
 function Controls() {
   const {baseHeight, armLength, armAngle} = splytUnit;
@@ -14,13 +14,13 @@ function Controls() {
       fill: 'rgba(32, 26, 22)',
     }}, [
       h('circle', {namespace: svgNameSpace, attributes: {
-        x2: - (armLength - offset / 2) * Math.cos(armAngle),
-        y2: baseHeight + (armLength - offset / 2) * Math.sin(armAngle),
+        cx: - armLength * Math.cos(armAngle),
+        cy: baseHeight + armLength * Math.sin(armAngle),
         r: baseHeight / 4
       }}),
       h('circle', {namespace: svgNameSpace, attributes: {
-        x2: + (armLength - offset / 2) * Math.cos(armAngle),
-        y2: baseHeight + (armLength - offset / 2) * Math.sin(armAngle),
+        cx: + armLength * Math.cos(armAngle),
+        cy: baseHeight + armLength * Math.sin(armAngle),
         r: baseHeight / 4
       }})
     ])
