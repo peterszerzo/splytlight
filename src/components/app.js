@@ -1,9 +1,9 @@
 import h from 'virtual-dom/h';
 
-import Units from './units';
+import UnitsContainer from './units-container';
 
 export default function App() {
   return (
-    h('div', {className: 'app'}, Units({x: 300, y: 300}))
+    h('div', {className: 'app'}, UnitsContainer({x: 500, y: 500}))
   );
 }

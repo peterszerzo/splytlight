@@ -1,13 +1,15 @@
 import h from 'virtual-dom/h';
 
-import {svgNameSpace} from '../constants';
+import {svgNameSpace} from '../constants/strings';
 
-export default function Unit({baseHeight, armLength, armAngle}, {x, y}) {
+import {splytUnit} from '../constants/geometries';
+
+export default function Unit() {
+  const {baseHeight, armLength, armAngle} = splytUnit;
   return (
     h('g', {
       namespace: svgNameSpace,
       attributes: {
-        transform: `translate(${x} ${y})`,
         stroke: '#000',
         'stroke-width': '6',
         'stroke-linecap': 'round',
