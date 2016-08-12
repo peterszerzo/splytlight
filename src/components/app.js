@@ -8,6 +8,6 @@ export default function App({data}, {setState}) {
       data: data,
       x: 500,
       y: 500
-    }))
+    }, {setState}))
   );
 }

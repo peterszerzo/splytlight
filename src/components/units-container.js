@@ -3,7 +3,7 @@ import h from 'virtual-dom/h';
 import {svgNameSpace} from '../constants/strings';
 import Units from './units';
 
-export default function UnitsContainer({data, x, y}) {
+export default function UnitsContainer({data, x, y}, {setState}) {
   const baseTranslation = {
     x: x / 2,
     y: y / 10
@@ -14,7 +14,7 @@ export default function UnitsContainer({data, x, y}) {
         x: baseTranslation.x,
         y: baseTranslation.y,
         angle: 0
-      })
+      }, {setState})
     ])
   );
 }

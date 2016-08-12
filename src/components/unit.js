@@ -6,7 +6,7 @@ import {splytUnit} from '../constants/geometries';
 
 const offset = 12;
 
-function Controls() {
+function Controls({addLeft, addRight}) {
   const {baseHeight, armLength, armAngle} = splytUnit;
   return (
     h('g', {namespace: svgNameSpace, attributes: {
@@ -17,12 +17,12 @@ function Controls() {
         cx: - armLength * Math.cos(armAngle),
         cy: baseHeight + armLength * Math.sin(armAngle),
         r: baseHeight / 4
-      }}),
+      }, onclick: addRight}),
       h('circle', {namespace: svgNameSpace, attributes: {
         cx: + armLength * Math.cos(armAngle),
         cy: baseHeight + armLength * Math.sin(armAngle),
         r: baseHeight / 4
-      }})
+      }, onclick: addLeft})
     ])
   );
 }
@@ -58,11 +58,11 @@ function Lines() {
   );
 }
 
-export default function Unit() {
+export default function Unit({addLeft, addRight}) {
   return (
     h('g', {namespace: svgNameSpace}, [
       Lines(),
-      Controls()
+      Controls({addLeft, addRight})
     ])
   );
 }
