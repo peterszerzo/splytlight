@@ -4,6 +4,8 @@ import {svgNameSpace} from '../constants/strings';
 
 import {splytUnit} from '../constants/geometries';
 
+const offset = 10;
+
 export default function Unit() {
   const {baseHeight, armLength, armAngle} = splytUnit;
   return (
@@ -18,7 +20,7 @@ export default function Unit() {
     }, [
       h('line', {namespace: svgNameSpace, attributes: {
         x1: 0,
-        y1: 0,
+        y1: offset,
         x2: 0,
         y2: baseHeight
       }}),

@@ -11,7 +11,11 @@ export default function UnitsContainer({x, y}) {
   };
   return (
     h('svg', {namespace: svgNameSpace, attributes: {viewBox: `0 0 ${x} ${y}`}}, [
-      Units(data, {x: baseTranslation.x, y: baseTranslation.y})
+      Units(data, {
+        x: baseTranslation.x,
+        y: baseTranslation.y,
+        angle: 0
+      })
     ])
   );
 }
