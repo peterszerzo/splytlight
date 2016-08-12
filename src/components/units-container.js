@@ -1,10 +1,9 @@
 import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
-import data from '../fixtures/simple.json';
 import Units from './units';
 
-export default function UnitsContainer({x, y}) {
+export default function UnitsContainer({data, x, y}) {
   const baseTranslation = {
     x: x / 2,
     y: y / 10
