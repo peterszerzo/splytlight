@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path');
+const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
 const postCssImport = require('postcss-import');
 const validate = require('webpack-validator');
@@ -39,6 +40,13 @@ const config = {
     extensions: ['', '.js', '.elm', '.css', '.json']
   },
   devtool: 'source-map',
+  plugins: process.env.NODE_ENV === 'development' ? [] : [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
+  ],
   postcss() {
     return [
       postCssImport(),
