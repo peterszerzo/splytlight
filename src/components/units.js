@@ -18,22 +18,38 @@ export default function Units(data, {x, y, angle}, {setState}) {
     }, [
       Unit({
         addLeft: () => {
-          setState({left: {}});
+          setState({
+            left: data.left ? null : {}
+          });
         },
         addRight: () => {
-          setState({right: {}});
+          setState({
+            right: data.right ? null : {}
+          });
         }
       }),
       Units(data.left, {
         x: - armLength * Math.cos(armAngle),
         y: + baseHeight + armLength * Math.sin(armAngle),
         angle: Math.PI / 2 - armAngle
-      }, {setState}),
+      }, {
+        setState: (stateChange) => {
+          setState({
+            left: Object.assign({}, data.left, stateChange)
+          });
+        }
+      }),
       Units(data.right, {
         x: + armLength * Math.cos(armAngle),
         y: + baseHeight + armLength * Math.sin(armAngle),
         angle: - (Math.PI / 2 - armAngle)
-      }, {setState})
+      }, {
+        setState: (stateChange) => {
+          setState({
+            right: Object.assign({}, data.right, stateChange)
+          });
+        }
+      })
     ])
   );
 }
