@@ -14,13 +14,27 @@ import {
 
 domReady(() => {
   const container = document.getElementById('app');
-  let tree = App({data: getState()}, {setState});
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight - 80;
+  let tree = App({state: getState(), x, y}, {setState});
   let node = createElement(tree);
   container.appendChild(node);
-  subscribe((state) => {
-    let newTree = App({data: state}, {setState});
+
+  function reRender(state) {
+    let newTree = App({state, x, y}, {setState});
     const patches = diff(tree, newTree);
     node = patch(node, patches);
     tree = newTree;
+  }
+
+  function setDimensions() {
+    x = window.innerWidth / 2;
+    y = window.innerHeight - 80;
+  }
+
+  subscribe(reRender);
+  window.addEventListener('resize', () => {
+    setDimensions();
+    reRender(getState());
   });
 });

@@ -4,9 +4,9 @@ import {svgNameSpace} from '../constants/strings';
 import {splytUnit} from '../constants/geometries';
 import Unit from './unit';
 
-export default function Units(data, {x, y, angle}, {setState}) {
+export default function Units({state, x, y, angle}, {setState}) {
   const {baseHeight, armLength, armAngle} = splytUnit;
-  if (!data) {
+  if (!state) {
     return;
   }
   return (
@@ -19,34 +19,36 @@ export default function Units(data, {x, y, angle}, {setState}) {
       Unit({
         addLeft: () => {
           setState({
-            left: data.left ? null : {}
+            left: state.left ? null : {}
           });
         },
         addRight: () => {
           setState({
-            right: data.right ? null : {}
+            right: state.right ? null : {}
           });
         }
       }),
-      Units(data.left, {
+      Units({
+        state: state.left,
         x: - armLength * Math.cos(armAngle),
         y: + baseHeight + armLength * Math.sin(armAngle),
         angle: Math.PI / 2 - armAngle
       }, {
         setState: (stateChange) => {
           setState({
-            left: Object.assign({}, data.left, stateChange)
+            left: Object.assign({}, state.left, stateChange)
           });
         }
       }),
-      Units(data.right, {
+      Units({
+        state: state.right,
         x: + armLength * Math.cos(armAngle),
         y: + baseHeight + armLength * Math.sin(armAngle),
         angle: - (Math.PI / 2 - armAngle)
       }, {
         setState: (stateChange) => {
           setState({
-            right: Object.assign({}, data.right, stateChange)
+            right: Object.assign({}, state.right, stateChange)
           });
         }
       })
