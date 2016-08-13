@@ -17,12 +17,12 @@ function Controls({addLeft, addRight}) {
         cx: - armLength * Math.cos(armAngle),
         cy: baseHeight + armLength * Math.sin(armAngle),
         r: baseHeight / 4
-      }, onclick: addRight}),
+      }, onclick: addLeft}),
       h('circle', {namespace: svgNameSpace, attributes: {
         cx: + armLength * Math.cos(armAngle),
         cy: baseHeight + armLength * Math.sin(armAngle),
         r: baseHeight / 4
-      }, onclick: addLeft})
+      }, onclick: addRight})
     ])
   );
 }

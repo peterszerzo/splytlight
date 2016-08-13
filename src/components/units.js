@@ -7,18 +7,7 @@ import Unit from './unit';
 export default function Units(data, {x, y, angle}, {setState}) {
   const {baseHeight, armLength, armAngle} = splytUnit;
   if (!data) {
-    return Unit({
-      addLeft: () => {
-        setState({
-          left: {}
-        });
-      },
-      addRight: () => {
-        setState({
-          right: {}
-        });
-      }
-    });
+    return;
   }
   return (
     h('g', {
@@ -27,7 +16,14 @@ export default function Units(data, {x, y, angle}, {setState}) {
         transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
       }
     }, [
-      Unit({}),
+      Unit({
+        addLeft: () => {
+          setState({left: {}});
+        },
+        addRight: () => {
+          setState({right: {}});
+        }
+      }),
       Units(data.left, {
         x: - armLength * Math.cos(armAngle),
         y: + baseHeight + armLength * Math.sin(armAngle),

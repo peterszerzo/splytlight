@@ -3,5 +3,7 @@
   "left": {
     "right": {}
   },
-  "right": null
+  "right": {
+    "right": null
+  }
 }
