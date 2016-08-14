@@ -1,5 +1,11 @@
-export const splytUnit = {
-  baseHeight: 50,
-  armLength: 30,
-  armAngle: 5 * Math.PI / 2 / 8
+export const smallSplytUnit = {
+  baseHeight: 30,
+  armLength: 40,
+  armAngle: Math.PI / 3
+};
+
+export const largeSplytUnit = {
+  baseHeight: 70,
+  armLength: 80,
+  armAngle: Math.PI / 3
 };

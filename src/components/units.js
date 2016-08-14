@@ -1,11 +1,11 @@
 import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
-import {splytUnit} from '../constants/geometries';
+import {smallSplytUnit} from '../constants/geometries';
 import Unit from './unit';
 
 export default function Units({state, x, y, angle}, {setState}) {
-  const {baseHeight, armLength, armAngle} = splytUnit;
+  const {baseHeight, armLength, armAngle} = smallSplytUnit;
   if (!state) {
     return;
   }

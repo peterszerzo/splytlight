@@ -2,12 +2,12 @@ import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
 
-import {splytUnit} from '../constants/geometries';
+import {smallSplytUnit} from '../constants/geometries';
 
 const offset = 12;
 
 function Controls({addLeft, addRight}) {
-  const {baseHeight, armLength, armAngle} = splytUnit;
+  const {baseHeight, armLength, armAngle} = smallSplytUnit;
   return (
     h('g', {namespace: svgNameSpace, attributes: {
       stroke: 'none',
@@ -16,19 +16,19 @@ function Controls({addLeft, addRight}) {
       h('circle', {namespace: svgNameSpace, attributes: {
         cx: - armLength * Math.cos(armAngle),
         cy: baseHeight + armLength * Math.sin(armAngle),
-        r: baseHeight / 4
+        r: baseHeight * 0.4
       }, onclick: addLeft}),
       h('circle', {namespace: svgNameSpace, attributes: {
         cx: + armLength * Math.cos(armAngle),
         cy: baseHeight + armLength * Math.sin(armAngle),
-        r: baseHeight / 4
+        r: baseHeight * 0.4
       }, onclick: addRight})
     ])
   );
 }
 
 function Lines() {
-  const {baseHeight, armLength, armAngle} = splytUnit;
+  const {baseHeight, armLength, armAngle} = smallSplytUnit;
   return (
     h('g', {namespace: svgNameSpace, attributes: {
       stroke: '#638FBE',
