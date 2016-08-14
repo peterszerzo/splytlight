@@ -2,10 +2,12 @@ import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
 import {smallSplytUnit} from '../constants/geometries';
+import {getEndPoints} from '../utilities/splyt.js';
 import Unit from './unit';
 
 export default function Units({state, x, y, angle}, {setState}) {
-  const {baseHeight, armLength, armAngle} = smallSplytUnit;
+  const {armAngle} = smallSplytUnit;
+  const [{x: x1, y: y1}, {x: x2, y: y2}] = getEndPoints(smallSplytUnit);
   if (!state) {
     return;
   }
@@ -30,8 +32,8 @@ export default function Units({state, x, y, angle}, {setState}) {
       }),
       Units({
         state: state.left,
-        x: - armLength * Math.cos(armAngle),
-        y: + baseHeight + armLength * Math.sin(armAngle),
+        x: x1,
+        y: y1,
         angle: Math.PI / 2 - armAngle
       }, {
         setState: (stateChange) => {
@@ -42,8 +44,8 @@ export default function Units({state, x, y, angle}, {setState}) {
       }),
       Units({
         state: state.right,
-        x: + armLength * Math.cos(armAngle),
-        y: + baseHeight + armLength * Math.sin(armAngle),
+        x: x2,
+        y: y2,
         angle: - (Math.PI / 2 - armAngle)
       }, {
         setState: (stateChange) => {
