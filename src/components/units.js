@@ -21,12 +21,18 @@ export default function Units({state, x, y, angle}, {setState}) {
       Unit({
         addLeft: () => {
           setState({
-            left: state.left ? null : {}
+            left: state.left ? null : {
+              status: 'added',
+              size: 'small'
+            }
           });
         },
         addRight: () => {
           setState({
-            right: state.right ? null : {}
+            right: state.right ? null : {
+              status: 'added',
+              size: 'small'
+            }
           });
         }
       }),

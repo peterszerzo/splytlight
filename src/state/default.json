@@ -1,7 +1,19 @@
 {
   "name": "My Splyt",
-  "left": {
-    "right": {}
-  },
-  "right": {}
+  "tree": {
+    "status": "added",
+    "size": "small",
+    "left": {
+      "status": "added",
+      "size": "small",
+      "right": {
+        "status": "added",
+        "size": "small"
+      }
+    },
+    "right": {
+      "status": "added",
+      "size": "small"
+    }
+  }
 }
