@@ -14,6 +14,18 @@
   "babel": {
     "presets": [
       "es2015"
+    ],
+    "plugins": [
+      [
+        "typecheck",
+        {
+          "disable": {
+            "production": true
+          }
+        }
+      ],
+      "syntax-flow",
+      "transform-flow-strip-types"
     ]
   },
   "dependencies": {
@@ -25,6 +37,9 @@
     "babel-core": "^6.13.2",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
+    "babel-plugin-syntax-flow": "^6.13.0",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "babel-plugin-typecheck": "^3.9.0",
     "babel-preset-es2015": "^6.13.2",
     "css-loader": "^0.23.1",
     "eslint": "^3.2.2",

@@ -14,8 +14,9 @@ import {
 
 domReady(() => {
   const container = document.getElementById('app');
-  let x = window.innerWidth / 2;
-  let y = window.innerHeight - 80;
+  let x : number = 0;
+  let y : number = 0;
+  setDimensions();
   let tree = App({state: getState(), x, y}, {setState});
   let node = createElement(tree);
   container.appendChild(node);
