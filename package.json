@@ -4,7 +4,7 @@
   "description": "Visualization experiments for Splyt Light",
   "main": "src/index.js",
   "scripts": {
-    "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --hot --history-api-fallback --inline --open --content-base build/ --port 3000",
+    "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack",
     "deploy": "surge ./build splytlight.surge.sh",
     "all": "npm build && npm run deploy"
@@ -13,7 +13,7 @@
   "license": "ISC",
   "babel": {
     "presets": [
-      "es2015"
+      "es2015-native-modules"
     ],
     "plugins": [
       [
@@ -29,6 +29,7 @@
     ]
   },
   "dependencies": {
+    "babel-polyfill": "^6.13.0",
     "domready": "^1.0.8",
     "virtual-dom": "^2.1.1"
   },
@@ -41,6 +42,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-plugin-typecheck": "^3.9.0",
     "babel-preset-es2015": "^6.13.2",
+    "babel-preset-es2015-native-modules": "^6.9.3",
     "css-loader": "^0.23.1",
     "eslint": "^3.2.2",
     "eslint-plugin-babel": "^3.3.0",
@@ -50,11 +52,12 @@
     "json-loader": "^0.5.4",
     "postcss": "^5.1.2",
     "postcss-cssnext": "^2.7.0",
-    "postcss-import": "^8.1.2",
+    "postcss-import": "^8.0.2",
     "postcss-loader": "^0.9.1",
     "style-loader": "^0.13.1",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
+    "webpack": "^2.1.0-beta",
+    "webpack-dashboard": "0.0.1",
+    "webpack-dev-server": "2.1.0-beta.0",
     "webpack-validator": "^2.2.7"
   }
 }

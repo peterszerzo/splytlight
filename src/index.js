@@ -2,6 +2,7 @@ import domReady from 'domready';
 import createElement from 'virtual-dom/create-element';
 import patch from 'virtual-dom/patch';
 import diff from 'virtual-dom/diff';
+import 'babel-polyfill';
 
 import './index.html';
 import './app.css';

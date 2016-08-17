@@ -1,10 +1,14 @@
 'use strict';
 
+const Dashboard = require('webpack-dashboard');
+const DashboardPlugin = require('webpack-dashboard/plugin');
 const path = require('path');
 const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
 const postCssImport = require('postcss-import');
 const validate = require('webpack-validator');
+
+const dashboard = new Dashboard();
 
 const config = {
   entry: [
@@ -12,7 +16,7 @@ const config = {
   ],
   output: {
     path: path.resolve('./build/'),
-    publicPath: '',
+    publicPath: 'http://localhost:3000/',
     filename: 'index.js',
     sourceMapFilename: 'index.js.map'
   },
@@ -40,12 +44,13 @@ const config = {
     extensions: ['', '.js', '.elm', '.css', '.json']
   },
   devtool: 'source-map',
-  plugins: process.env.NODE_ENV === 'development' ? [] : [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
+  plugins: process.env.NODE_ENV === 'development' ? [
+    new DashboardPlugin(dashboard.setData)
+  ]
+  :
+  [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin()
   ],
   postcss() {
     return [
@@ -54,6 +59,15 @@ const config = {
         browsers: ['ie >= 10', 'last 3 versions']
       })
     ];
+  },
+  devServer: {
+    contentBase: 'build/',
+    hot: true,
+    inline: true,
+    quiet: true,
+    open: true,
+    port: 3000,
+    historyApiFallback: true
   }
 };
 
