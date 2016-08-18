@@ -8,7 +8,11 @@ import {
   getMidPoint
 } from '../utilities/splyt.js';
 
-function Controls({addLeft, addRight}) {
+function Controls({
+  toggle,
+  addDraft,
+  removeDraft
+}) {
   const [{x: xl, y: yl}, {x: xr, y: yr}] = getEndPoints(
     smallSplytUnit,
     {
@@ -20,16 +24,40 @@ function Controls({addLeft, addRight}) {
       stroke: 'none',
       fill: 'rgba(32, 26, 22)',
     }}, [
-      h('circle', {namespace: svgNameSpace, attributes: {
-        cx: xl,
-        cy: yl,
-        r: 10
-      }, onclick: addLeft}),
-      h('circle', {namespace: svgNameSpace, attributes: {
-        cx: xr,
-        cy: yr,
-        r: 10
-      }, onclick: addRight})
+      h('circle', {
+        namespace: svgNameSpace,
+        attributes: {
+          cx: xl,
+          cy: yl,
+          r: 10
+        },
+        onclick: () => {
+          toggle('left');
+        },
+        onmouseenter: () => {
+          addDraft('left');
+        },
+        onmouseleave: () => {
+          removeDraft('left');
+        }
+      }),
+      h('circle', {
+        namespace: svgNameSpace,
+        attributes: {
+          cx: xr,
+          cy: yr,
+          r: 10
+        },
+        onclick: () => {
+          toggle('right');
+        },
+        onmouseenter: () => {
+          addDraft('right');
+        },
+        onmouseleave: () => {
+          removeDraft('right');
+        }
+      })
     ])
   );
 }
@@ -77,11 +105,11 @@ function Lines() {
   );
 }
 
-export default function Unit({addLeft, addRight}) {
+export default function Unit(callbacks) {
   return (
     h('g', {namespace: svgNameSpace}, [
       Lines(),
-      Controls({addLeft, addRight})
+      Controls(callbacks)
     ])
   );
 }

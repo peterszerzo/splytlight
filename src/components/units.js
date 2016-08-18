@@ -20,21 +20,30 @@ export default function Units({state, x, y, angle}, {setState}) {
       }
     }, [
       Unit({
-        addLeft: () => {
+        toggle: (dir) => {
           setState({
-            left: state.left ? null : {
+            [dir]: state[dir] ? null : {
               status: 'added',
               size: 'small'
             }
           });
         },
-        addRight: () => {
-          setState({
-            right: state.right ? null : {
-              status: 'added',
-              size: 'small'
-            }
-          });
+        addDraft: (dir) => {
+          if (!state[dir]) {
+            setState({
+              [dir]: {
+                status: 'adding',
+                size: 'small'
+              }
+            });
+          }
+        },
+        removeDraft: (dir) => {
+          if (state[dir] && state[dir].status === 'adding') {
+            setState({
+              [dir]: null
+            });
+          }
         }
       }),
       Units({
