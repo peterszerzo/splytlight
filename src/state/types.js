@@ -8,7 +8,7 @@ export type SplytTree = {
   right: ?SplytTree
 };
 
-export type Root = {
+export type State = {
   name: string,
   tree: SplytTree
 };

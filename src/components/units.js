@@ -3,6 +3,7 @@ import h from 'virtual-dom/h';
 import {svgNameSpace} from '../constants/strings';
 import {smallSplytUnit} from '../constants/geometries';
 import {getEndPoints} from '../utilities/splyt.js';
+import {setChildState} from '../state';
 import Unit from './unit';
 
 export default function Units({state, x, y, angle}, {setState}) {
@@ -42,11 +43,7 @@ export default function Units({state, x, y, angle}, {setState}) {
         y: y1,
         angle: Math.PI / 2 - armAngle
       }, {
-        setState: (stateChange) => {
-          setState({
-            left: Object.assign({}, state.left, stateChange)
-          });
-        }
+        setState: setChildState({state, setState}, 'left')
       }),
       Units({
         state: state.right,
@@ -54,11 +51,7 @@ export default function Units({state, x, y, angle}, {setState}) {
         y: y2,
         angle: - (Math.PI / 2 - armAngle)
       }, {
-        setState: (stateChange) => {
-          setState({
-            right: Object.assign({}, state.right, stateChange)
-          });
-        }
+        setState: setChildState({state, setState}, 'right')
       })
     ])
   );
