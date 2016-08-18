@@ -19,16 +19,16 @@ export default function Units({state, x, y, angle}, {setState}) {
         transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
       }
     }, [
-      Unit({
-        toggle: (dir) => {
+      Unit(state, {
+        toggle(dir) {
           setState({
-            [dir]: state[dir] ? null : {
+            [dir]: (state[dir] && state[dir].status === 'added') ? null : {
               status: 'added',
               size: 'small'
             }
           });
         },
-        addDraft: (dir) => {
+        addDraft(dir) {
           if (!state[dir]) {
             setState({
               [dir]: {
@@ -38,7 +38,7 @@ export default function Units({state, x, y, angle}, {setState}) {
             });
           }
         },
-        removeDraft: (dir) => {
+        removeDraft(dir) {
           if (state[dir] && state[dir].status === 'adding') {
             setState({
               [dir]: null

@@ -2,6 +2,7 @@ import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
 import {smallSplytUnit} from '../constants/geometries';
+import {blue, brown, strokeWeight} from '../constants/styling';
 import {
   getEndPoints,
   getStartPoint,
@@ -22,7 +23,7 @@ function Controls({
   return (
     h('g', {namespace: svgNameSpace, attributes: {
       stroke: 'none',
-      fill: 'rgba(32, 26, 22)',
+      fill: brown,
     }}, [
       h('circle', {
         namespace: svgNameSpace,
@@ -78,8 +79,8 @@ function Lines() {
   );
   return (
     h('g', {namespace: svgNameSpace, attributes: {
-      stroke: '#638FBE',
-      'stroke-width': '6',
+      stroke: blue,
+      'stroke-width': strokeWeight,
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
     }}, [
@@ -105,11 +106,16 @@ function Lines() {
   );
 }
 
-export default function Unit(callbacks) {
+export default function Unit(state, callbacks) {
   return (
-    h('g', {namespace: svgNameSpace}, [
+    h('g', {
+      namespace: svgNameSpace,
+      attributes: {
+        opacity: state.status === 'added' ? 1 : .5
+      }
+    }, [
       Lines(),
-      Controls(callbacks)
+      state.status === 'added' ? Controls(callbacks) : null
     ])
   );
 }
