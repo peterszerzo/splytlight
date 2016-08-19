@@ -19,6 +19,22 @@ export default function Units({state, x, y, angle}, {setState}) {
         transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
       }
     }, [
+      Units({
+        state: state.left,
+        x: x1,
+        y: y1,
+        angle: Math.PI / 2 - armAngle
+      }, {
+        setState: setChildState({state, setState}, 'left')
+      }),
+      Units({
+        state: state.right,
+        x: x2,
+        y: y2,
+        angle: - (Math.PI / 2 - armAngle)
+      }, {
+        setState: setChildState({state, setState}, 'right')
+      }),
       Unit(state, {
         toggle(dir) {
           setState({
@@ -45,22 +61,6 @@ export default function Units({state, x, y, angle}, {setState}) {
             });
           }
         }
-      }),
-      Units({
-        state: state.left,
-        x: x1,
-        y: y1,
-        angle: Math.PI / 2 - armAngle
-      }, {
-        setState: setChildState({state, setState}, 'left')
-      }),
-      Units({
-        state: state.right,
-        x: x2,
-        y: y2,
-        angle: - (Math.PI / 2 - armAngle)
-      }, {
-        setState: setChildState({state, setState}, 'right')
       })
     ])
   );
