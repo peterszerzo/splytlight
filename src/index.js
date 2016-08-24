@@ -4,6 +4,8 @@ import patch from 'virtual-dom/patch';
 import diff from 'virtual-dom/diff';
 import 'babel-polyfill';
 
+import startThreeApp from './three-app';
+
 import './index.html';
 import './app.css';
 import App from './components/app';
@@ -21,6 +23,8 @@ domReady(() => {
   let tree = App({state: getState(), x, y}, {setState});
   let node = createElement(tree);
   container.appendChild(node);
+
+  startThreeApp();
 
   function reRender(state) {
     let newTree = App({state, x, y}, {setState});

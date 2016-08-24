@@ -15,7 +15,10 @@ export default function App({state, x, y}, {setState}) {
             }
           })
         ]),
-        h('div', {className: 'app__viz'}, [])
+        h('div', {
+          id: '3d',
+          className: 'app__viz'
+        }, [])
       ]),
       h('div', {className: 'app__nav'}, [
         h('h1', {}, 'Splyt Light Interactive')
