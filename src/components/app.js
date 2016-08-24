@@ -2,12 +2,12 @@ import h from 'virtual-dom/h';
 
 import UnitsContainer from './units-container';
 
-export default function App({state, x, y}, {setState}) {
+export default function App(state, {setState}) {
   return (
     h('div', {className: 'app'}, [
       h('div', {className: 'app__main'}, [
         h('div', {className: 'app__viz'}, [
-          UnitsContainer({state: state.tree, x, y}, {
+          UnitsContainer(state, {
             setState: (treeStateChange) => {
               return setState({
                 tree: Object.assign({}, state.tree, treeStateChange)

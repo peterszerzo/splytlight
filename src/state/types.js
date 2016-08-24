@@ -1,5 +1,9 @@
 type SplytUnitStatus = 'adding' | 'added' | 'removing';
 type SplytUnitSize = 'small' | 'large';
+type Ui = {
+  windowWidth: number,
+  windowHeight: number
+};
 
 export type SplytTree = {
   status: SplytUnitStatus,
@@ -9,6 +13,6 @@ export type SplytTree = {
 };
 
 export type State = {
-  name: string,
+  ui: Ui,
   tree: SplytTree
 };

@@ -1,4 +1,8 @@
 {
+  "ui": {
+    "windowWidth": 0,
+    "windowHeight": 0
+  },
   "tree": {
     "status": "added",
     "size": "small",
