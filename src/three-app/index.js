@@ -1,13 +1,15 @@
 import render from './render';
 import renderer from './renderer';
 import controls from './controls';
-import {onResize} from './update';
+import update from './update';
 
-export default function start() {
+import {subscribe} from '../state';
+
+export default function startThreeApp(state) {
   const container = document.getElementById('3d');
   container.appendChild(renderer.domElement);
-  onResize();
+  update(state);
   render();
   controls.addEventListener('change', render);
-  window.addEventListener('resize', onResize);
+  subscribe(update);
 }

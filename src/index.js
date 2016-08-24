@@ -25,12 +25,14 @@ function setWindowDimensions() {
 
 domReady(() => {
   setWindowDimensions();
+  window.addEventListener('resize', setWindowDimensions);
+  const state = getState();
   const container = document.getElementById('app');
-  let tree = App(getState(), {setState});
+  let tree = App(state, {setState});
   let node = createElement(tree);
   container.appendChild(node);
 
-  startThreeApp();
+  startThreeApp(state);
 
   function reRender(state) {
     let newTree = App(state, {setState});
@@ -40,5 +42,4 @@ domReady(() => {
   }
 
   subscribe(reRender);
-  window.addEventListener('resize', setWindowDimensions);
 });
