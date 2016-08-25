@@ -2,7 +2,7 @@ import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
 import {smallSplytUnit} from '../constants/geometries';
-import {getEndPoints} from '../utilities/splyt.js';
+import {getEndPoints} from '../utilities/splyt';
 import {setChildState} from '../state';
 import Unit from './unit';
 

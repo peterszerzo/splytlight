@@ -1,13 +1,17 @@
 import renderer from './renderer';
 import camera from './camera';
+import getVizContainerDimensions from '../utilities/layout';
 
 export function resize(containerWidth, containerHeight) {
-  const container = document.getElementById('3d');
-  renderer.setSize(container.offsetWidth, container.offsetHeight);
-  camera.aspect = container.offsetWidth / container.offsetHeight;
+  renderer.setSize(containerWidth, containerHeight);
+  camera.aspect = containerWidth / containerHeight;
   camera.updateProjectionMatrix();
 }
 
-export default function update({ui: {windowWidth, windowHeight}}) {
-  resize(windowWidth / 2, windowHeight - 80);
+export default function update(state) {
+  if (state.ui.windowWidth === 0 || state.ui.windowHeight === 0) {
+    return;
+  }
+  const {width, height} = getVizContainerDimensions(state.ui);
+  resize(width, height);
 }

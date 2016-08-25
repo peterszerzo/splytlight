@@ -18,8 +18,10 @@ import {
 function setWindowDimensions() {
   const {innerWidth, innerHeight} = global.window;
   setState({
-    windowWidth: innerWidth,
-    windowHeight: innerHeight
+    ui: {
+      windowWidth: innerWidth,
+      windowHeight: innerHeight
+    }
   });
 }
 

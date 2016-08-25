@@ -1,22 +1,18 @@
 import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
+import getVizContainerDimensions from '../utilities/layout';
 import Units from './units';
 
-export default function UnitsContainer({tree, windowWidth, windowHeight}, {setState}) {
-  const x = windowWidth / 2;
-  const y = windowHeight - 80;
-  const baseTranslation = {
-    x: x / 2,
-    y: y / 10
-  };
+export default function UnitsContainer({tree, ui}, {setState}) {
+  const {width, height} = getVizContainerDimensions(ui);
   return (
     h('div', {className: 'units-container'}, [
-      h('svg', {namespace: svgNameSpace, attributes: {viewBox: `0 0 ${x} ${y}`}}, [
+      h('svg', {namespace: svgNameSpace, attributes: {viewBox: `0 0 ${width} ${height}`}}, [
         Units({
           state: tree,
-          x: baseTranslation.x,
-          y: baseTranslation.y,
+          x: width / 2,
+          y: height / 10,
           angle: 0
         }, {setState})
       ])
