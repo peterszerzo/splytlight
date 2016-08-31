@@ -6,7 +6,40 @@ import {
   getEndPoints
 } from '../utilities/splyt.js';
 import {svgNameSpace} from '../constants/strings';
-import {brown, controlCircleRadius} from '../constants/styling';
+import {
+  brown,
+  white,
+  controlCircleRadius,
+  controlCircleIconSize,
+  controlCircleIconStrokeWidth
+} from '../constants/styling';
+
+function UnitControlCircleIcon() {
+  return [
+    h('line', {
+      namespace: svgNameSpace,
+      attributes: {
+        'stroke-width': controlCircleIconStrokeWidth,
+        stroke: white,
+        x1: - controlCircleIconSize / 2,
+        y1: 0,
+        x2: controlCircleIconSize / 2,
+        y2: 0
+      }
+    }),
+    h('line', {
+      namespace: svgNameSpace,
+      attributes: {
+        'stroke-width': controlCircleIconStrokeWidth,
+        stroke: white,
+        x1: 0,
+        y1: - controlCircleIconSize / 2,
+        x2: 0,
+        y2: controlCircleIconSize / 2
+      }
+    })
+  ];
+}
 
 function UnitControlCircle(point, dir, state, {
   toggle,
@@ -18,33 +51,28 @@ function UnitControlCircle(point, dir, state, {
       namespace: svgNameSpace,
       attributes: {
         transform: `translate(${point.x} ${point.y})`,
+        'stroke-linecap': 'round',
+        'stroke-linejoin': 'round'
+      },
+      onclick: () => {
+        toggle(dir);
+      },
+      onmouseenter: (e) => {
+        addDraft(dir);
+      },
+      onmouseleave: () => {
+        removeDraft(dir);
       }
     }, [
       h('circle', {
         namespace: svgNameSpace,
         attributes: {
-          className: classNames(
-            'splyt-control',
-            state[dir]
-              ?
-              `splyt-control--${state[dir].status}`
-              :
-              null
-          ),
           cx: 0,
           cy: 0,
           r: controlCircleRadius
-        },
-        onclick: () => {
-          toggle(dir);
-        },
-        onmouseenter: () => {
-          addDraft(dir);
-        },
-        onmouseleave: () => {
-          removeDraft(dir);
         }
-      })
+      }),
+      UnitControlCircleIcon()
     ])
   );
 }

@@ -13,7 +13,11 @@ export default function Unit(state, callbacks) {
       }
     }, [
       UnitLines(),
-      state.status === 'added' ? UnitControls(state, callbacks) : null
+      (state.status === 'added')
+        ?
+        UnitControls(state, callbacks)
+        :
+        null
     ])
   );
 }
