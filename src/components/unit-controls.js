@@ -19,12 +19,11 @@ const fillByControlStatus = {
   added: brown
 };
 
-function UnitControlCircle(point, dir, state, {
-  onControlClick,
-  onControlMouseEnter,
-  onControlMouseLeave
+function UnitControlCircle(point, controlStatus, {
+  onClick,
+  onMouseEnter,
+  onMouseLeave
 }) {
-  const controlStatus = state[dir] ? state[dir].status : 'neutral';
   return (
     h('g', {
       namespace: svgNameSpace,
@@ -34,15 +33,9 @@ function UnitControlCircle(point, dir, state, {
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round'
       },
-      onclick: () => {
-        onControlClick(dir);
-      },
-      onmouseenter: (e) => {
-        onControlMouseEnter(dir);
-      },
-      onmouseleave: () => {
-        onControlMouseLeave(dir);
-      }
+      onclick: onClick,
+      onmouseenter: onMouseEnter,
+      onmouseleave: onMouseLeave
     }, [
       h('circle', {
         namespace: svgNameSpace,
@@ -56,7 +49,11 @@ function UnitControlCircle(point, dir, state, {
   );
 }
 
-export default function UnitControls(state, actions) {
+export default function UnitControls(state, {
+  onControlClick,
+  onControlMouseEnter,
+  onControlMouseLeave
+}) {
   const [leftPoint, rightPoint] = getEndPoints(
     smallSplytUnit,
     {
@@ -67,8 +64,16 @@ export default function UnitControls(state, actions) {
     h('g', {namespace: svgNameSpace, attributes: {
       stroke: 'none'
     }}, [
-      UnitControlCircle(leftPoint, 'left', state, actions),
-      UnitControlCircle(rightPoint, 'right', state, actions)
+      UnitControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
+        onClick: onControlClick.bind(this, 'left'),
+        onMouseEnter: onControlMouseEnter.bind(this, 'left'),
+        onMouseLeave: onControlMouseLeave.bind(this, 'left')
+      }),
+      UnitControlCircle(rightPoint, state.right ? state.right.status : 'neutral', {
+        onClick: onControlClick.bind(this, 'right'),
+        onMouseEnter: onControlMouseEnter.bind(this, 'right'),
+        onMouseLeave: onControlMouseLeave.bind(this, 'right')
+      })
     ])
   );
 }

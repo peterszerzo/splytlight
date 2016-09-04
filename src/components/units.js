@@ -39,10 +39,17 @@ export default function Units({state, x, y, angle}, {setState}) {
       Unit(state, {
         onControlClick(dir) {
           setState({
-            [dir]: (state[dir] && state[dir].status === 'added') ? null : {
-              status: 'added',
-              size: 'small'
-            }
+            [dir]: (state[dir] && ('added', 'removing').indexOf(state[dir].status) > -1)
+              ?
+              {
+                status: 'adding',
+                size: 'small'
+              }
+              :
+              {
+                status: 'added',
+                size: 'small'
+              }
           });
         },
         onControlMouseEnter(dir) {
@@ -54,7 +61,7 @@ export default function Units({state, x, y, angle}, {setState}) {
               }
             });
           }
-          if (state[dir].status !== 'adding') {
+          if (['adding', 'removing'].indexOf(state[dir].status) === -1) {
             setState({
               [dir]: Object.assign({}, state[dir], {status: 'removing'})
             });
