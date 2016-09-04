@@ -1,4 +1,5 @@
 import renderer from './renderer';
+import render from './render';
 import camera from './camera';
 import getVizContainerDimensions from '../utilities/layout';
 
@@ -14,4 +15,5 @@ export default function update(state) {
   }
   const {width, height} = getVizContainerDimensions(state.ui);
   resize(width, height);
+  render();
 }
