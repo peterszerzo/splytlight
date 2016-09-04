@@ -6,7 +6,6 @@ import diff from 'virtual-dom/diff';
 
 import startThreeApp from './three-app';
 
-import './index.html';
 import './app.css';
 import App from './components/app';
 import {
@@ -33,15 +32,12 @@ domReady(() => {
   let tree = App(state, {setState});
   let node = createElement(tree);
   container.appendChild(node);
-
   startThreeApp(state);
-
   function reRender(state) {
     let newTree = App(state, {setState});
     const patches = diff(tree, newTree);
     node = patch(node, patches);
     tree = newTree;
   }
-
   subscribe(reRender);
 });

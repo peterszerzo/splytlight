@@ -1,9 +1,25 @@
-'use strict';
-
 const path = require('path');
 const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
 const validate = require('webpack-validator');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const commonPlugins = [
+  new HtmlWebpackPlugin({
+    template: './src/index.pug',
+    inject: false
+  }),
+  new HtmlWebpackPlugin({
+    filename: '200.html',
+    template: './src/index.pug',
+    inject: false
+  })
+];
+
+const productionPlugins = [
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.optimize.UglifyJsPlugin()
+];
 
 const config = {
   entry: [
@@ -29,23 +45,20 @@ const config = {
         loaders: ['json']
       },
       {
-        test: /\.html$/,
-        loader: 'file?name=[name].[ext]'
+        test: /\.pug/,
+        loader: 'pug'
       }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.elm', '.css', '.json']
+    extensions: ['', '.js', '.css', '.json']
   },
   devtool: 'source-map',
   plugins: (process.env.NODE_ENV === 'development')
   ?
-  []
+  commonPlugins
   :
-  [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin()
-  ],
+  commonPlugins.concat(productionPlugins),
   postcss() {
     return [
       postCssCssNext({

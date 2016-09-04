@@ -1,12 +1,13 @@
 import h from 'virtual-dom/h';
+const {div, h1} = require('hyperscript-helpers')(h);
 
 import UnitsContainer from './units-container';
 
 export default function App(state, {setState}) {
   return (
-    h('div', {className: 'app'}, [
-      h('div', {className: 'app__main'}, [
-        h('div', {className: 'app__viz'}, [
+    div('.app', [
+      div('.app__main', [
+        div('.app__viz', [
           UnitsContainer(state, {
             setState: (treeStateChange) => {
               return setState({
@@ -15,13 +16,10 @@ export default function App(state, {setState}) {
             }
           })
         ]),
-        h('div', {
-          id: '3d',
-          className: 'app__viz'
-        }, [])
+        div('.app__viz#3d')
       ]),
-      h('div', {className: 'app__nav'}, [
-        h('h1', {}, 'Splyt Light Interactive')
+      div('.app__nav', [
+        h1('Splyt Light Interactive')
       ])
     ])
   );
