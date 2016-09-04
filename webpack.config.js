@@ -2,21 +2,19 @@ const path = require('path');
 const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
 const validate = require('webpack-validator');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-//
-// const commonPlugins = [
-//   new HtmlWebpackPlugin({
-//     template: './src/index.pug',
-//     inject: false
-//   }),
-//   new HtmlWebpackPlugin({
-//     filename: '200.html',
-//     template: './src/index.pug',
-//     inject: false
-//   })
-// ];
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const commonPlugins = [];
+const commonPlugins = [
+  new HtmlWebpackPlugin({
+    template: './src/index.pug',
+    inject: false
+  }),
+  new HtmlWebpackPlugin({
+    filename: '200.html',
+    template: './src/index.pug',
+    inject: false
+  })
+];
 
 const productionPlugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
@@ -49,10 +47,6 @@ const config = {
       {
         test: /\.pug/,
         loader: 'pug'
-      },
-      {
-        test: /\.html/,
-        loader: 'file?name=[name].[ext]'
       }
     ]
   },
