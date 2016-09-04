@@ -6,6 +6,7 @@ import diff from 'virtual-dom/diff';
 
 import startThreeApp from './three-app';
 
+import './index.html';
 import './app.css';
 import App from './components/app';
 import {
