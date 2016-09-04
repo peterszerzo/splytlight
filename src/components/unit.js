@@ -9,7 +9,7 @@ export default function Unit(state, callbacks) {
     h('g', {
       namespace: svgNameSpace
     }, [
-      UnitLines(),
+      UnitLines(state),
       UnitControls(state, callbacks)
     ])
   );

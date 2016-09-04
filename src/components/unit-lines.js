@@ -1,6 +1,6 @@
 import h from 'virtual-dom/h';
 
-import {smallSplytUnit} from '../constants/geometries';
+import {splyt} from '../constants/geometries';
 import {
   getEndPoints,
   getStartPoint,
@@ -9,19 +9,19 @@ import {
 import {svgNameSpace} from '../constants/strings';
 import {blue, strokeWeight} from '../constants/styling';
 
-export default function UnitLines() {
+export default function UnitLines(state) {
   const [{x: xl, y: yl}, {x: xr, y: yr}] = getEndPoints(
-    smallSplytUnit, {
+    splyt[state.size], {
       useOffset: true
     }
   );
   const {x: x0, y: y0} = getStartPoint(
-    smallSplytUnit, {
+    splyt[state.size], {
       useOffset: true
     }
   );
   const {x: xm, y: ym} = getMidPoint(
-    smallSplytUnit
+    splyt[state.size]
   );
   return (
     h('g', {namespace: svgNameSpace, attributes: {

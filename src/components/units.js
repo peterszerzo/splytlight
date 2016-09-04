@@ -1,14 +1,14 @@
 import h from 'virtual-dom/h';
 
 import {svgNameSpace} from '../constants/strings';
-import {smallSplytUnit} from '../constants/geometries';
+import {splyt} from '../constants/geometries';
 import {getEndPoints} from '../utilities/splyt';
 import {setChildState} from '../state';
 import Unit from './unit';
 
 export default function Units({state, x, y, angle}, {setState}) {
-  const {armAngle} = smallSplytUnit;
-  const [{x: x1, y: y1}, {x: x2, y: y2}] = getEndPoints(smallSplytUnit);
+  const {armAngle} = splyt.small;
+  const [{x: x1, y: y1}, {x: x2, y: y2}] = getEndPoints(splyt.small);
   if (!state) {
     return;
   }

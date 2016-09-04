@@ -1,6 +1,6 @@
 import h from 'virtual-dom/h';
 
-import {smallSplytUnit} from '../constants/geometries';
+import {splyt} from '../constants/geometries';
 import {
   getEndPoints
 } from '../utilities/splyt.js';
@@ -55,7 +55,7 @@ export default function UnitControls(state, {
   onControlMouseLeave
 }) {
   const [leftPoint, rightPoint] = getEndPoints(
-    smallSplytUnit,
+    splyt[state.size],
     {
       useOffset: false
     }
