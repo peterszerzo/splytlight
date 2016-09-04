@@ -7,31 +7,41 @@ import {
 import {svgNameSpace} from '../constants/strings';
 import {
   brown,
+  green,
+  red,
   controlCircleRadius
 } from '../constants/styling';
 
+const fillByControlStatus = {
+  neutral: brown,
+  adding: green,
+  removing: red,
+  added: brown
+};
+
 function UnitControlCircle(point, dir, state, {
-  toggle,
-  addDraft,
-  removeDraft
+  onControlClick,
+  onControlMouseEnter,
+  onControlMouseLeave
 }) {
+  const controlStatus = state[dir] ? state[dir].status : 'neutral';
   return (
     h('g', {
       namespace: svgNameSpace,
       attributes: {
         transform: `translate(${point.x} ${point.y})`,
-        fill: brown,
+        fill: fillByControlStatus[controlStatus],
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round'
       },
       onclick: () => {
-        toggle(dir);
+        onControlClick(dir);
       },
       onmouseenter: (e) => {
-        addDraft(dir);
+        onControlMouseEnter(dir);
       },
       onmouseleave: () => {
-        removeDraft(dir);
+        onControlMouseLeave(dir);
       }
     }, [
       h('circle', {
@@ -46,11 +56,7 @@ function UnitControlCircle(point, dir, state, {
   );
 }
 
-export default function UnitControls(state, {
-  toggle,
-  addDraft,
-  removeDraft
-}) {
+export default function UnitControls(state, actions) {
   const [leftPoint, rightPoint] = getEndPoints(
     smallSplytUnit,
     {
@@ -61,8 +67,8 @@ export default function UnitControls(state, {
     h('g', {namespace: svgNameSpace, attributes: {
       stroke: 'none'
     }}, [
-      UnitControlCircle(leftPoint, 'left', state, {toggle, addDraft, removeDraft}),
-      UnitControlCircle(rightPoint, 'right', state, {toggle, addDraft, removeDraft})
+      UnitControlCircle(leftPoint, 'left', state, actions),
+      UnitControlCircle(rightPoint, 'right', state, actions)
     ])
   );
 }

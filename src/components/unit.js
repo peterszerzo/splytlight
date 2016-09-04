@@ -7,17 +7,10 @@ import UnitControls from './unit-controls';
 export default function Unit(state, callbacks) {
   return (
     h('g', {
-      namespace: svgNameSpace,
-      attributes: {
-        opacity: state.status === 'added' ? 1 : .5
-      }
+      namespace: svgNameSpace
     }, [
       UnitLines(),
-      (state.status === 'added')
-        ?
-        UnitControls(state, callbacks)
-        :
-        null
+      UnitControls(state, callbacks)
     ])
   );
 }

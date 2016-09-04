@@ -16,6 +16,7 @@ export default function Units({state, x, y, angle}, {setState}) {
     h('g', {
       namespace: svgNameSpace,
       attributes: {
+        opacity: state.status === 'added' ? 1 : .5,
         transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
       }
     }, [
@@ -36,7 +37,7 @@ export default function Units({state, x, y, angle}, {setState}) {
         setState: setChildState({state, setState}, 'right')
       }),
       Unit(state, {
-        toggle(dir) {
+        onControlClick(dir) {
           setState({
             [dir]: (state[dir] && state[dir].status === 'added') ? null : {
               status: 'added',
@@ -44,20 +45,33 @@ export default function Units({state, x, y, angle}, {setState}) {
             }
           });
         },
-        addDraft(dir) {
+        onControlMouseEnter(dir) {
           if (!state[dir]) {
-            setState({
+            return setState({
               [dir]: {
                 status: 'adding',
                 size: 'small'
               }
             });
           }
+          if (state[dir].status !== 'adding') {
+            setState({
+              [dir]: Object.assign({}, state[dir], {status: 'removing'})
+            });
+          }
         },
-        removeDraft(dir) {
-          if (state[dir] && state[dir].status === 'adding') {
+        onControlMouseLeave(dir) {
+          if (!state[dir]) {
+            return;
+          }
+          if (state[dir].status === 'adding') {
             setState({
               [dir]: null
+            });
+          }
+          if (state[dir].status === 'removing') {
+            setState({
+              [dir]: Object.assign({}, state[dir], {status: 'added'})
             });
           }
         }
