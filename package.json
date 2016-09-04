@@ -1,6 +1,6 @@
 {
   "name": "splytlight",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Visualization experiments for Splyt Light",
   "main": "src/index.js",
   "scripts": {
