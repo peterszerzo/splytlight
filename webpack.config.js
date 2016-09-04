@@ -1,14 +1,8 @@
-'use strict';
-
-const Dashboard = require('webpack-dashboard');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 const path = require('path');
 const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
 const postCssImport = require('postcss-import');
 const validate = require('webpack-validator');
-
-const dashboard = new Dashboard();
 
 const config = {
   entry: [
@@ -44,9 +38,9 @@ const config = {
     extensions: ['', '.js', '.elm', '.css', '.json']
   },
   devtool: 'source-map',
-  plugins: process.env.NODE_ENV === 'development' ? [
-    new DashboardPlugin(dashboard.setData)
-  ]
+  plugins: (process.env.NODE_ENV === 'development')
+  ?
+  []
   :
   [
     new webpack.optimize.OccurrenceOrderPlugin(),
