@@ -1,5 +1,4 @@
 import h from 'virtual-dom/h';
-import classNames from 'classnames';
 
 import {smallSplytUnit} from '../constants/geometries';
 import {
@@ -8,38 +7,8 @@ import {
 import {svgNameSpace} from '../constants/strings';
 import {
   brown,
-  white,
-  controlCircleRadius,
-  controlCircleIconSize,
-  controlCircleIconStrokeWidth
+  controlCircleRadius
 } from '../constants/styling';
-
-function UnitControlCircleIcon() {
-  return [
-    h('line', {
-      namespace: svgNameSpace,
-      attributes: {
-        'stroke-width': controlCircleIconStrokeWidth,
-        stroke: white,
-        x1: - controlCircleIconSize / 2,
-        y1: 0,
-        x2: controlCircleIconSize / 2,
-        y2: 0
-      }
-    }),
-    h('line', {
-      namespace: svgNameSpace,
-      attributes: {
-        'stroke-width': controlCircleIconStrokeWidth,
-        stroke: white,
-        x1: 0,
-        y1: - controlCircleIconSize / 2,
-        x2: 0,
-        y2: controlCircleIconSize / 2
-      }
-    })
-  ];
-}
 
 function UnitControlCircle(point, dir, state, {
   toggle,
@@ -51,6 +20,7 @@ function UnitControlCircle(point, dir, state, {
       namespace: svgNameSpace,
       attributes: {
         transform: `translate(${point.x} ${point.y})`,
+        fill: brown,
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round'
       },
@@ -71,8 +41,7 @@ function UnitControlCircle(point, dir, state, {
           cy: 0,
           r: controlCircleRadius
         }
-      }),
-      UnitControlCircleIcon()
+      })
     ])
   );
 }
@@ -90,8 +59,7 @@ export default function UnitControls(state, {
   );
   return (
     h('g', {namespace: svgNameSpace, attributes: {
-      stroke: 'none',
-      fill: brown,
+      stroke: 'none'
     }}, [
       UnitControlCircle(leftPoint, 'left', state, {toggle, addDraft, removeDraft}),
       UnitControlCircle(rightPoint, 'right', state, {toggle, addDraft, removeDraft})

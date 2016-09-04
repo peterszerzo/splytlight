@@ -1,8 +1,8 @@
+import 'babel-polyfill';
 import domReady from 'domready';
 import createElement from 'virtual-dom/create-element';
 import patch from 'virtual-dom/patch';
 import diff from 'virtual-dom/diff';
-import 'babel-polyfill';
 
 import startThreeApp from './three-app';
 

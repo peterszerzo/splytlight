@@ -1,7 +1,8 @@
+'use strict';
+
 const path = require('path');
 const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
-const postCssImport = require('postcss-import');
 const validate = require('webpack-validator');
 
 const config = {
@@ -9,10 +10,9 @@ const config = {
     './src/index.js'
   ],
   output: {
-    path: path.resolve('./build/'),
-    publicPath: 'http://localhost:3000/',
-    filename: 'index.js',
-    sourceMapFilename: 'index.js.map'
+    path: path.resolve('./build'),
+    publicPath: '',
+    filename: 'index.js'
   },
   module: {
     loaders: [
@@ -30,7 +30,7 @@ const config = {
       },
       {
         test: /\.html$/,
-        loader: 'file?name=[name].[ext]!html-minify'
+        loader: 'file?name=[name].[ext]'
       }
     ]
   },
@@ -48,20 +48,10 @@ const config = {
   ],
   postcss() {
     return [
-      postCssImport(),
       postCssCssNext({
         browsers: ['ie >= 10', 'last 3 versions']
       })
     ];
-  },
-  devServer: {
-    contentBase: 'build/',
-    hot: true,
-    inline: true,
-    quiet: true,
-    open: true,
-    port: 3000,
-    historyApiFallback: true
   }
 };
 

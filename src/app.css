@@ -1,5 +1,9 @@
 @import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro';
 
+* {
+  -webkit-font-smoothing: antialiased;
+}
+
 html,
 body {
   width: 100%;
