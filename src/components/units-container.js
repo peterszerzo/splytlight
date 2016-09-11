@@ -9,7 +9,12 @@ export default function UnitsContainer({tree, ui}, {setState}) {
   const {width, height} = getVizContainerDimensions(ui);
   return (
     div('.units-container', [
-      h('svg', {namespace: svgNameSpace, attributes: {viewBox: `0 0 ${width} ${height}`}}, [
+      h('svg', {
+        namespace: svgNameSpace,
+        attributes: {
+          viewBox: `0 0 ${width} ${height}`
+        }
+      }, [
         Units({
           state: tree,
           x: width / 2,

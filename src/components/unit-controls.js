@@ -61,9 +61,13 @@ export default function UnitControls(state, {
     }
   );
   return (
-    h('g', {namespace: svgNameSpace, attributes: {
-      stroke: 'none'
-    }}, [
+    h('g', {
+      namespace: svgNameSpace,
+      id: 'apples',
+      attributes: {
+        stroke: 'none'
+      }
+    }, [
       UnitControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
         onClick: onControlClick.bind(this, 'left'),
         onMouseEnter: onControlMouseEnter.bind(this, 'left'),

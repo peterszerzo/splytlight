@@ -16,7 +16,7 @@ export default function Units({state, x, y, angle}, {setState}) {
     h('g', {
       namespace: svgNameSpace,
       attributes: {
-        opacity: state.status === 'added' ? 1 : .5,
+        opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5,
         transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
       }
     }, [
@@ -47,7 +47,7 @@ export default function Units({state, x, y, angle}, {setState}) {
               }
               :
               {
-                status: 'added',
+                status: 'removing',
                 size: 'small'
               }
           });
@@ -72,7 +72,7 @@ export default function Units({state, x, y, angle}, {setState}) {
             return;
           }
           if (state[dir].status === 'adding') {
-            setState({
+            return setState({
               [dir]: null
             });
           }
