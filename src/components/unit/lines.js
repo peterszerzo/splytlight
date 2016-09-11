@@ -1,15 +1,15 @@
 import h from 'virtual-dom/h';
 
-import {splyt} from '../constants/geometries';
+import {splyt} from '../../constants/geometries';
 import {
   getEndPoints,
   getStartPoint,
   getMidPoint
-} from '../utilities/splyt.js';
-import {svgNameSpace} from '../constants/strings';
-import {blue, strokeWeight} from '../constants/styling';
+} from '../../utilities/splyt.js';
+import {svgNameSpace} from '../../constants/strings';
+import {blue, strokeWeight} from '../../constants/styling';
 
-export default function UnitLines(state) {
+export default function Lines(state) {
   const [{x: xl, y: yl}, {x: xr, y: yr}] = getEndPoints(
     splyt[state.size], {
       useOffset: true

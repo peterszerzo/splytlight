@@ -14,7 +14,8 @@ body {
 
 .app {}
 
-.app__nav {
+.app__header {
+  box-sizing: border-box;
   width: 100%;
   height: 80px;
   position: fixed;
@@ -22,6 +23,17 @@ body {
   top: 0;
   left: 0;
   border-bottom: 1px solid #DDD;
+
+  & h1 {
+    text-align: center;
+    padding: 0 25px;
+    width: 100%;
+    margin: auto;
+    color: #666;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 200;
+    font-size: 1.25rem;
+  }
 }
 
 .app__main {
@@ -43,28 +55,15 @@ body {
   border-right: 1px solid #DDD;
 }
 
-h1 {
-  text-align: center;
-  padding: 0 25px;
-  width: 100%;
-  margin: auto;
-  color: #666;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-weight: 200;
-  font-size: 1.25rem;
-}
-
 .units-container {
   margin: auto;
 }
 
 circle {
   opacity: .1;
-  transition: opacity .3s;
   cursor: pointer;
 }
 
 circle:hover {
   opacity: .6;
-  transition: opacity .3s;
 }

@@ -2,11 +2,11 @@ import h from 'virtual-dom/h';
 const {div} = require('hyperscript-helpers')(h);
 
 import {svgNameSpace} from '../constants/strings';
-import getVizContainerDimensions from '../utilities/layout';
+import getContainerDimensions from '../utilities/layout';
 import Units from './units';
 
-export default function UnitsContainer({tree, ui}, {setState}) {
-  const {width, height} = getVizContainerDimensions(ui);
+export default function Editor({tree, ui}, {setState}) {
+  const {width, height} = getContainerDimensions(ui);
   return (
     div('.units-container', [
       h('svg', {

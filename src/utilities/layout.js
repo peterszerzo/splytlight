@@ -1,4 +1,4 @@
-export default function getVizContainerDimensions({windowWidth, windowHeight}) {
+export default function getContainerDimensions({windowWidth, windowHeight}) {
   return {
     width: windowWidth / 2,
     height: windowHeight - 80

@@ -1,16 +1,16 @@
 import h from 'virtual-dom/h';
 
-import {splyt} from '../constants/geometries';
+import {splyt} from '../../constants/geometries';
 import {
   getEndPoints
-} from '../utilities/splyt.js';
-import {svgNameSpace} from '../constants/strings';
+} from '../../utilities/splyt.js';
+import {svgNameSpace} from '../../constants/strings';
 import {
   brown,
   green,
   red,
   controlCircleRadius
-} from '../constants/styling';
+} from '../../constants/styling';
 
 const fillByControlStatus = {
   neutral: brown,
@@ -19,7 +19,7 @@ const fillByControlStatus = {
   added: brown
 };
 
-function UnitControlCircle(point, controlStatus, {
+function ControlCircle(point, controlStatus, {
   onClick,
   onMouseEnter,
   onMouseLeave
@@ -49,7 +49,7 @@ function UnitControlCircle(point, controlStatus, {
   );
 }
 
-export default function UnitControls(state, {
+export default function Controls(state, {
   onControlClick,
   onControlMouseEnter,
   onControlMouseLeave
@@ -68,12 +68,12 @@ export default function UnitControls(state, {
         stroke: 'none'
       }
     }, [
-      UnitControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
+      ControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
         onClick: onControlClick.bind(this, 'left'),
         onMouseEnter: onControlMouseEnter.bind(this, 'left'),
         onMouseLeave: onControlMouseLeave.bind(this, 'left')
       }),
-      UnitControlCircle(rightPoint, state.right ? state.right.status : 'neutral', {
+      ControlCircle(rightPoint, state.right ? state.right.status : 'neutral', {
         onClick: onControlClick.bind(this, 'right'),
         onMouseEnter: onControlMouseEnter.bind(this, 'right'),
         onMouseLeave: onControlMouseLeave.bind(this, 'right')
