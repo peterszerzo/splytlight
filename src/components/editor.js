@@ -11,6 +11,7 @@ export default function Editor({tree, ui}, {setState}) {
     div('.units-container', [
       h('svg', {
         namespace: svgNameSpace,
+        id: 'splyt-editor',
         attributes: {
           viewBox: `0 0 ${width} ${height}`
         }
