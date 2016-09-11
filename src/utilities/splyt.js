@@ -28,3 +28,16 @@ export function getMidPoint({baseHeight, armLength, armAngle}) {
     y: baseHeight
   };
 }
+
+/*
+ * This method reads DOM state to save the work of calculating the 2d bounding box.
+ */
+export function read2DSize() {
+  const svg = document.getElementById('splyt-editor');
+  const mainGroup = svg.children[0];
+  const bBox = mainGroup.getBBox();
+  return {
+    x: bBox.width,
+    y: bBox.height
+  };
+}
