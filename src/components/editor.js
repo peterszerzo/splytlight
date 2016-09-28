@@ -19,8 +19,8 @@ export default function Editor({tree, ui}, {setState}) {
         Units({
           state: tree,
           x: width / 2,
-          y: height / 10,
-          angle: 0
+          y: height * 9 / 10,
+          angle: Math.PI
         }, {setState})
       ])
     ])

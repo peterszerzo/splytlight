@@ -29,6 +29,20 @@ export function getMidPoint({baseHeight, armLength, armAngle}) {
   };
 }
 
+export function countUnits(tree) {
+  if (!tree || ['added', 'removing'].indexOf(tree.status) === -1) {
+    return 0;
+  }
+  return 1 + countUnits(tree.left) + countUnits(tree.right);
+}
+
+export function countLooseEnds(tree) {
+  if (!tree || ['added', 'removing'].indexOf(tree.status) === -1) {
+    return 1;
+  }
+  return countLooseEnds(tree.left) + countLooseEnds(tree.right);
+}
+
 /*
  * This method reads DOM state to save the work of calculating the 2d bounding box.
  */
