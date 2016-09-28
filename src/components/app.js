@@ -2,6 +2,7 @@ import h from 'virtual-dom/h';
 const {div, h1, header} = require('hyperscript-helpers')(h);
 
 import Editor from './editor';
+import Dashboard from './dashboard';
 
 export default function App(state, {setState}) {
   return (
@@ -19,7 +20,8 @@ export default function App(state, {setState}) {
             }
           })
         ]),
-        div('.app__viz#3d')
+        div('.app__viz#3d'),
+        Dashboard(state, {setState})
       ])
     ])
   );

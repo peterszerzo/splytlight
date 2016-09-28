@@ -14,5 +14,6 @@ export type SplytTree = {
 
 export type State = {
   ui: Ui,
-  tree: SplytTree
+  tree: SplytTree,
+  isDashboardExpanded: boolean
 };
