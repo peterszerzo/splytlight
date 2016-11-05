@@ -24,6 +24,12 @@ function setWindowDimensions() {
   });
 }
 
+const events = {
+  'click': 'onClick',
+  'mouseover': 'onMouseOver',
+  'mouseout': 'onMouseOut'
+};
+
 domReady(() => {
   setWindowDimensions();
   window.addEventListener('resize', setWindowDimensions);
@@ -32,6 +38,15 @@ domReady(() => {
   let tree = App(state, {setState});
   let node = createElement(tree);
   container.appendChild(node);
+  Object.keys(events).forEach(eventName => {
+    const handlerName = events[eventName];
+    container.addEventListener(eventName, e => {
+      const handler = e.target[handlerName] || e.target.parentElement[handlerName];
+      if (handler) {
+        handler();
+      }
+    });
+  });
   startThreeApp(state);
   function reRender(state) {
     let newTree = App(state, {setState});

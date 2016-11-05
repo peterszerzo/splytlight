@@ -21,8 +21,8 @@ const fillByControlStatus = {
 
 function ControlCircle(point, controlStatus, {
   onClick,
-  onMouseEnter,
-  onMouseLeave
+  onMouseOver,
+  onMouseOut
 }) {
   return (
     h('g', {
@@ -33,9 +33,9 @@ function ControlCircle(point, controlStatus, {
         'stroke-linecap': 'round',
         'stroke-linejoin': 'round'
       },
-      onclick: onClick,
-      onmouseenter: onMouseEnter,
-      onmouseleave: onMouseLeave
+      onClick,
+      onMouseOver,
+      onMouseOut
     }, [
       h('circle', {
         namespace: svgNameSpace,
@@ -70,13 +70,13 @@ export default function Controls(state, {
     }, [
       ControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
         onClick: onControlClick.bind(this, 'left'),
-        onMouseEnter: onControlMouseEnter.bind(this, 'left'),
-        onMouseLeave: onControlMouseLeave.bind(this, 'left')
+        onMouseOver: onControlMouseEnter.bind(this, 'left'),
+        onMouseOut: onControlMouseLeave.bind(this, 'left')
       }),
       ControlCircle(rightPoint, state.right ? state.right.status : 'neutral', {
         onClick: onControlClick.bind(this, 'right'),
-        onMouseEnter: onControlMouseEnter.bind(this, 'right'),
-        onMouseLeave: onControlMouseLeave.bind(this, 'right')
+        onMouseOver: onControlMouseEnter.bind(this, 'right'),
+        onMouseOut: onControlMouseLeave.bind(this, 'right')
       })
     ])
   );
