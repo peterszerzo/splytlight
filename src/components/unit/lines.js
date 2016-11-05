@@ -1,4 +1,4 @@
-import h from 'virtual-dom/h';
+import h from 'react-hyperscript';
 
 import {splyt} from '../../constants/geometries';
 import {
@@ -24,12 +24,12 @@ export default function Lines(state) {
     splyt[state.size]
   );
   return (
-    h('g', {namespace: svgNameSpace, attributes: {
+    h('g', {
       stroke: blue,
       'stroke-width': strokeWeight,
       'stroke-linecap': 'round',
       'stroke-linejoin': 'round'
-    }}, [
+    }, [
       h('line', {namespace: svgNameSpace, attributes: {
         x1: x0,
         y1: y0,

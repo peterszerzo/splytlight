@@ -1,28 +1,25 @@
-import h from 'virtual-dom/h';
-const {div, h1, header} = require('hyperscript-helpers')(h);
+import h from 'react-hyperscript';
 
 import Editor from './editor';
 import Dashboard from './dashboard';
 
-export default function App(state, {setState}) {
-  return (
-    div('.app', [
-      header('.app__header', [
-        h1('Splyt Light Interactive')
+export default (state, {setState}) => (
+  h('div.app', [
+    h('header.app__header', [
+      h('h1', 'Splyt Light Interactive')
+    ]),
+    h('div.app__main', [
+      h('div.app__viz', [
+        Editor(state, {
+          setState: (treeStateChange) => {
+            return setState({
+              tree: Object.assign({}, state.tree, treeStateChange)
+            });
+          }
+        })
       ]),
-      div('.app__main', [
-        div('.app__viz', [
-          Editor(state, {
-            setState: (treeStateChange) => {
-              return setState({
-                tree: Object.assign({}, state.tree, treeStateChange)
-              });
-            }
-          })
-        ]),
-        div('.app__viz#3d'),
-        Dashboard(state, {setState})
-      ])
+      h('div.app__viz#3d'),
+      Dashboard(state, {setState})
     ])
-  );
-}
+  ])
+);
