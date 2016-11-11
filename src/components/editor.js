@@ -1,20 +1,15 @@
-import h from 'virtual-dom/h';
-const {div} = require('hyperscript-helpers')(h);
+import h from 'react-hyperscript';
 
-import {svgNameSpace} from '../constants/strings';
 import getContainerDimensions from '../utilities/layout';
 import Units from './units';
 
-export default function Editor({tree, ui}, {setState}) {
+export default ({tree, ui}, {setState}) => {
   const {width, height} = getContainerDimensions(ui);
   return (
-    div('.units-container', [
+    h('div.units-container', [
       h('svg', {
-        namespace: svgNameSpace,
         id: 'splyt-editor',
-        attributes: {
-          viewBox: `0 0 ${width} ${height}`
-        }
+        viewBox: `0 0 ${width} ${height}`
       }, [
         Units({
           state: tree,
@@ -25,4 +20,4 @@ export default function Editor({tree, ui}, {setState}) {
       ])
     ])
   );
-}
+};

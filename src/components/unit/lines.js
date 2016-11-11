@@ -1,4 +1,4 @@
-import h from 'virtual-dom/h';
+import h from 'react-hyperscript';
 
 import {splyt} from '../../constants/geometries';
 import {
@@ -6,7 +6,6 @@ import {
   getStartPoint,
   getMidPoint
 } from '../../utilities/splyt.js';
-import {svgNameSpace} from '../../constants/strings';
 import {blue, strokeWeight} from '../../constants/styling';
 
 export default function Lines(state) {
@@ -24,30 +23,30 @@ export default function Lines(state) {
     splyt[state.size]
   );
   return (
-    h('g', {namespace: svgNameSpace, attributes: {
+    h('g', {
       stroke: blue,
-      'stroke-width': strokeWeight,
-      'stroke-linecap': 'round',
-      'stroke-linejoin': 'round'
-    }}, [
-      h('line', {namespace: svgNameSpace, attributes: {
+      strokeWidth: strokeWeight,
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round'
+    }, [
+      h('line', {
         x1: x0,
         y1: y0,
         x2: xm,
         y2: ym
-      }}),
-      h('line', {namespace: svgNameSpace, attributes: {
+      }),
+      h('line', {
         x1: xm,
         y1: ym,
         x2: xl,
         y2: yl
-      }}),
-      h('line', {namespace: svgNameSpace, attributes: {
+      }),
+      h('line', {
         x1: xm,
         y1: ym,
         x2: xr,
         y2: yr
-      }})
+      })
     ])
   );
 }

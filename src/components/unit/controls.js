@@ -1,10 +1,9 @@
-import h from 'virtual-dom/h';
+import h from 'react-hyperscript';
 
 import {splyt} from '../../constants/geometries';
 import {
   getEndPoints
 } from '../../utilities/splyt.js';
-import {svgNameSpace} from '../../constants/strings';
 import {
   brown,
   green,
@@ -26,24 +25,18 @@ function ControlCircle(point, controlStatus, {
 }) {
   return (
     h('g', {
-      namespace: svgNameSpace,
-      attributes: {
-        transform: `translate(${point.x} ${point.y})`,
-        fill: fillByControlStatus[controlStatus],
-        'stroke-linecap': 'round',
-        'stroke-linejoin': 'round'
-      },
+      transform: `translate(${point.x} ${point.y})`,
+      fill: fillByControlStatus[controlStatus],
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
       onClick,
       onMouseOver,
       onMouseOut
     }, [
       h('circle', {
-        namespace: svgNameSpace,
-        attributes: {
-          cx: 0,
-          cy: 0,
-          r: controlCircleRadius
-        }
+        cx: 0,
+        cy: 0,
+        r: controlCircleRadius
       })
     ])
   );
@@ -62,11 +55,8 @@ export default function Controls(state, {
   );
   return (
     h('g', {
-      namespace: svgNameSpace,
       id: 'apples',
-      attributes: {
-        stroke: 'none'
-      }
+      stroke: 'none'
     }, [
       ControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
         onClick: onControlClick.bind(this, 'left'),

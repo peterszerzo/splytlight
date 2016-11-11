@@ -1,8 +1,6 @@
 import 'babel-polyfill';
 import domReady from 'domready';
-import createElement from 'virtual-dom/create-element';
-import patch from 'virtual-dom/patch';
-import diff from 'virtual-dom/diff';
+import {render} from 'react-dom';
 
 import startThreeApp from './three-app';
 
@@ -24,35 +22,14 @@ function setWindowDimensions() {
   });
 }
 
-const events = {
-  'click': 'onClick',
-  'mouseover': 'onMouseOver',
-  'mouseout': 'onMouseOut'
-};
-
 domReady(() => {
   setWindowDimensions();
   window.addEventListener('resize', setWindowDimensions);
   const state = getState();
   const container = document.getElementById('app');
-  let tree = App(state, {setState});
-  let node = createElement(tree);
-  container.appendChild(node);
-  Object.keys(events).forEach(eventName => {
-    const handlerName = events[eventName];
-    container.addEventListener(eventName, e => {
-      const handler = e.target[handlerName] || e.target.parentElement[handlerName];
-      if (handler) {
-        handler();
-      }
-    });
-  });
+  render(App(state, {setState}), container);
   startThreeApp(state);
-  function reRender(state) {
-    let newTree = App(state, {setState});
-    const patches = diff(tree, newTree);
-    node = patch(node, patches);
-    tree = newTree;
-  }
-  subscribe(reRender);
+  subscribe(state => {
+    render(App(state, {setState}), container);
+  });
 });

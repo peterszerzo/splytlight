@@ -1,6 +1,5 @@
-import h from 'virtual-dom/h';
+import h from 'react-hyperscript';
 
-import {svgNameSpace} from '../constants/strings';
 import {splyt} from '../constants/geometries';
 import {getEndPoints} from '../utilities/splyt';
 import {setChildState} from '../state';
@@ -14,11 +13,8 @@ export default function Units({state, x, y, angle}, {setState}) {
   }
   return (
     h('g', {
-      namespace: svgNameSpace,
-      attributes: {
-        opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5,
-        transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
-      }
+      opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5,
+      transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
     }, [
       Units({
         state: state.left,

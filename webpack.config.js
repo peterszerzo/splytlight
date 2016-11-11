@@ -5,14 +5,19 @@ const validate = require('webpack-validator');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const commonPlugins = [
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  }),
   new HtmlWebpackPlugin({
     template: './src/index.pug',
-    inject: false
+    inject: true,
+    hash: true
   }),
   new HtmlWebpackPlugin({
     filename: '200.html',
     template: './src/index.pug',
-    inject: false
+    inject: true,
+    hash: true
   })
 ];
 
@@ -27,22 +32,22 @@ const config = {
   ],
   output: {
     path: path.resolve('./build'),
-    publicPath: '',
+    publicPath: '/',
     filename: 'index.js'
   },
   module: {
     loaders: [
       {
         test: /\.css$/,
-        loaders: ['style', 'css', 'postcss']
+        loader: 'style!css!postcss'
       },
       {
         test: /\.js$/,
-        loaders: ['babel']
+        loader: 'babel'
       },
       {
         test: /\.json/,
-        loaders: ['json']
+        loader: 'json'
       },
       {
         test: /\.pug/,
