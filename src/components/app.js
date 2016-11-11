@@ -6,7 +6,7 @@ import Dashboard from './dashboard';
 export default (state, {setState}) => (
   h('div.app', [
     h('header.app__header', [
-      h('h1', 'Splyt Light Interactive')
+      h('h1', {}, 'Splyt Light Interactive')
     ]),
     h('div.app__main', [
       h('div.app__viz', [

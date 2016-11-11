@@ -27,8 +27,8 @@ function ControlCircle(point, controlStatus, {
     h('g', {
       transform: `translate(${point.x} ${point.y})`,
       fill: fillByControlStatus[controlStatus],
-      'stroke-linecap': 'round',
-      'stroke-linejoin': 'round',
+      strokeLinecap: 'round',
+      strokeLinejoin: 'round',
       onClick,
       onMouseOver,
       onMouseOut

@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-import React from 'react';
 import domReady from 'domready';
 import {render} from 'react-dom';
 
@@ -12,8 +11,6 @@ import {
   setState,
   subscribe
 } from './state';
-
-global.React = React;
 
 function setWindowDimensions() {
   const {innerWidth, innerHeight} = global.window;

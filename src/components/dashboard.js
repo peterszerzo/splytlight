@@ -13,8 +13,8 @@ export default ({isDashboardExpanded, tree}, {setState}) => (
       ?
       (
         h('div', [
-          h('p', `Units: ${countUnits(tree)}`),
-          h('p', `Bulbs: ${countLooseEnds(tree)}`)
+          h('p', {}, `Units: ${countUnits(tree)}`),
+          h('p', {}, `Bulbs: ${countLooseEnds(tree)}`)
         ])
       )
       :
