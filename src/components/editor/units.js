@@ -1,8 +1,8 @@
 import h from 'react-hyperscript';
 
-import {splyt} from '../constants/geometries';
-import {getEndPoints} from '../utilities/splyt';
-import {setChildState} from '../state';
+import {splyt} from '../../constants/geometries';
+import {getEndPoints} from '../../utilities/splyt';
+import {setChildState} from '../../state';
 import Unit from './unit';
 
 export default function Units({state, x, y, angle}, {setState}) {

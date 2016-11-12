@@ -16,18 +16,6 @@
     "presets": [
       "es2015",
       "react"
-    ],
-    "plugins": [
-      [
-        "typecheck",
-        {
-          "disable": {
-            "production": true
-          }
-        }
-      ],
-      "syntax-flow",
-      "transform-flow-strip-types"
     ]
   },
   "dependencies": {

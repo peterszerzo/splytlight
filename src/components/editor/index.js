@@ -1,6 +1,7 @@
 import h from 'react-hyperscript';
 
-import getContainerDimensions from '../utilities/layout';
+import './style.css';
+import getContainerDimensions from '../../utilities/layout';
 import Units from './units';
 
 export default ({tree, ui}, {setState}) => {

@@ -1,0 +1,12 @@
+.units-container {
+  margin: auto;
+}
+
+circle {
+  opacity: .1;
+  cursor: pointer;
+}
+
+circle:hover {
+  opacity: .6;
+}

@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 
 import startThreeApp from './three-app';
 
-import './app.css';
+import './style.css';
 import App from './components/app';
 import {
   getState,

@@ -1,23 +1,24 @@
 import defaultState from './default.json';
 
-import type {State} from './types';
-
 const subscribers = [];
 
-let state : State = defaultState;
+let state = defaultState;
 
-export function setState(stateChange : Object) {
+export function setState(stateChange) {
   state = Object.assign({}, state, stateChange);
   subscribers.forEach((subscriber) => {
     subscriber(state);
   });
 }
 
-export function getState() : State {
+export function getState() {
   return state;
 }
 
-export function setChildState({state: parentState, setState: setParentState}, childKey) {
+export function setChildState({
+  state: parentState,
+  setState: setParentState
+}, childKey) {
   return function(stateChange) {
     setParentState({
       [childKey]: Object.assign({}, parentState[childKey], stateChange)
@@ -25,6 +26,6 @@ export function setChildState({state: parentState, setState: setParentState}, ch
   };
 }
 
-export function subscribe(subscriber : Function) {
+export function subscribe(subscriber) {
   subscribers.push(subscriber);
 }

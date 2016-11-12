@@ -1,7 +1,8 @@
 import h from 'react-hyperscript';
 
-import Editor from './editor';
-import Dashboard from './dashboard';
+import './style.css';
+import Editor from '../editor';
+import Dashboard from '../dashboard';
 
 export default (state, {setState}) => (
   h('div.app', [
