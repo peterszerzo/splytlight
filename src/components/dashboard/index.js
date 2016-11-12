@@ -1,22 +1,23 @@
-import h from 'react-hyperscript';
+import {createElement} from 'react';
 import classNames from 'classnames';
+const {div, p, button} = require('hyperscript-helpers')(createElement);
 
-import './style.css';
+import cls from './style.css';
 import {countUnits, countLooseEnds} from '../../utilities/splyt';
 
 function Summary(tree) {
   return (
-    h('div', [
-      h('p', {}, `Units: ${countUnits(tree)}`),
-      h('p', {}, `Bulbs: ${countLooseEnds(tree)}`)
+    div({}, [
+      p({}, `Units: ${countUnits(tree)}`),
+      p({}, `Bulbs: ${countLooseEnds(tree)}`)
     ])
   );
 }
 
 export default ({isDashboardExpanded, tree}, {setState}) => (
-  h('div', {
-    className: classNames('dashboard', {
-      'dashboard--expanded': isDashboardExpanded
+  div({
+    className: classNames(cls.root, {
+      [cls.expanded]: isDashboardExpanded
     })
   }, [
     isDashboardExpanded
@@ -24,7 +25,7 @@ export default ({isDashboardExpanded, tree}, {setState}) => (
       Summary(tree)
       :
       (
-        h('button.dashboard__open', {
+        button({
           onClick: () => {
             setState({
               isDashboardExpanded: true

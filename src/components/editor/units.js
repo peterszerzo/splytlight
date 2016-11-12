@@ -1,4 +1,4 @@
-import h from 'react-hyperscript';
+import {createElement as h} from 'react';
 
 import {splyt} from '../../constants/geometries';
 import {getEndPoints} from '../../utilities/splyt';

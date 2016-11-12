@@ -1,16 +1,25 @@
-import h from 'react-hyperscript';
+import {createElement} from 'react';
+const {div, header, h1} = require('hyperscript-helpers')(createElement);
 
-import './style.css';
+import cls from './style.css';
 import Editor from '../editor';
 import Dashboard from '../dashboard';
 
 export default (state, {setState}) => (
-  h('div.app', [
-    h('header.app__header', [
-      h('h1', {}, 'Splyt Light Interactive')
+  div({
+    className: cls.root
+  }, [
+    header({
+      className: cls.header
+    }, [
+      h1({}, 'Splyt Light Interactive')
     ]),
-    h('div.app__main', [
-      h('div.app__viz', [
+    div({
+      className: cls.main
+    }, [
+      div({
+        className: cls.viz
+      }, [
         Editor(state, {
           setState: (treeStateChange) => {
             return setState({
@@ -19,7 +28,10 @@ export default (state, {setState}) => (
           }
         })
       ]),
-      h('div.app__viz#3d'),
+      div({
+        className: cls.viz,
+        id: '3d'
+      }),
       Dashboard(state, {setState})
     ])
   ])

@@ -22,9 +22,10 @@
     "babel-polyfill": "^6.13.0",
     "classnames": "^2.2.5",
     "domready": "^1.0.8",
+    "hyperscript-helpers": "^3.0.2",
+    "lodash": "^4.16.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-hyperscript": "^2.4.1",
     "three": "^0.79.0",
     "three-orbit-controls": "^72.0.0"
   },

@@ -1,6 +1,8 @@
-.app {}
+:local(.root) {
+  display: block;
+}
 
-.app__header {
+:local(.header) {
   box-sizing: border-box;
   width: 100%;
   height: 80px;
@@ -21,7 +23,7 @@
   }
 }
 
-.app__main {
+:local(.main) {
   position: fixed;
   width: 100%;
   display: flex;
@@ -30,12 +32,12 @@
   left: 0;
 }
 
-.app__viz {
+:local(.viz) {
   width: 50%;
   height: 100%;
   flex: 1;
-}
 
-.app__viz:first-of-type {
-  border-right: 1px solid #DDD;
+  &:first-of-type {
+    border-right: 1px solid #DDD;
+  }
 }

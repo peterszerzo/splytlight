@@ -1,4 +1,4 @@
-.dashboard {
+:local(.root) {
   opacity: .6;
   background-color: #FFF;
   box-shadow: 0 0 12px rgba(0, 0, 0, .1), 0 0 6px rgba(0, 0, 0, .2);
@@ -12,28 +12,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    opacity: 1;
+    transition: opacity .3s;
+  }
+
+  & button {
+    border: 0;
+    outline: 0;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  & p {
+    margin: 0;
+    line-height: 1.65;
+    text-align: center;
+  }
 }
 
-.dashboard:hover {
-  opacity: 1;
-  transition: opacity .3s;
-}
-
-.dashboard button {
-  border: 0;
-  outline: 0;
-  background: none;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.dashboard p {
-  margin: 0;
-  line-height: 1.65;
-  text-align: center;
-}
-
-.dashboard--expanded {
+:local(.expanded) {
   opacity: 1;
   width: 200px;
   height: 80px;
