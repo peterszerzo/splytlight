@@ -5,12 +5,12 @@ import createSplytUnit from './unit';
 
 const {PI, sin, cos} = Math;
 
-function transformSplyt(object, size, direction) {
-  const {baseHeight} = size;
-  const {angle, length} = size[direction + 'Arm'];
-  object.rotateZ(- angle);
+function transformSplyt(object, dimensions, direction) {
+  const {baseHeight} = dimensions;
+  const {angle, length} = dimensions[direction + 'Arm'];
+  object.rotateZ(angle);
   object.position.set(
-    length * sin(angle),
+    - length * sin(angle),
     baseHeight + length * cos(angle),
     0
   );

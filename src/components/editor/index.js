@@ -5,6 +5,8 @@ import cls from './style.css';
 import getContainerDimensions from '../../utilities/layout';
 import Units from './units';
 
+const {PI} = Math;
+
 export default ({tree, ui}, {setState}) => {
   const {width, height} = getContainerDimensions(ui);
   return (
@@ -19,7 +21,7 @@ export default ({tree, ui}, {setState}) => {
           state: tree,
           x: width / 2,
           y: height * 9 / 10,
-          angle: Math.PI
+          angle: PI
         }, {setState})
       ])
     ])

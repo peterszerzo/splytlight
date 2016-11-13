@@ -3,7 +3,7 @@ export const splyt = {
     baseHeight: 30,
     radius: 9.25,
     leftArm: {
-      length: 40,
+      length: 30,
       angle: Math.PI / 6
     },
     rightArm: {
