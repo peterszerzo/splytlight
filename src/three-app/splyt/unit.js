@@ -17,7 +17,7 @@ function createArm({length, angle}, baseHeight, radius) {
   obj.rotateZ(angle);
   obj.translate(
     - length * sin(angle) / 2,
-    baseHeight + baseHeight * cos(angle) / 2,
+    baseHeight + length * cos(angle) / 2,
     0
   );
   return obj;
