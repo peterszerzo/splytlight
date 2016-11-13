@@ -42,5 +42,6 @@ function createSplytTree(group, state) {
 }
 
 export default function create(tree) {
-  return createSplytTree(new Group(), tree);
+  const obj = createSplytTree(new Group(), tree);
+  return obj;
 }

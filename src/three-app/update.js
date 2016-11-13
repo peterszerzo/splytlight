@@ -1,10 +1,9 @@
-import {Vector3} from 'three';
+import {Vector3, BoundingBoxHelper} from 'three';
 import renderer from './renderer';
 import render from './render';
 import camera from './camera';
-import getVizContainerDimensions from '../utilities/layout';
-import {read2DSize} from '../utilities/splyt';
 import scene from './scene';
+import getVizContainerDimensions from '../utilities/layout';
 
 import create from './splyt';
 
@@ -25,13 +24,19 @@ function addSplyt(tree) {
   const group = create(tree);
   oldGroup = group;
   scene.add(group);
+  return group;
 }
 
 export default function update(state) {
   if (state.ui.windowWidth === 0 || state.ui.windowHeight === 0) {
     return;
   }
-  addSplyt(state.tree);
-  resize(getVizContainerDimensions(state.ui), read2DSize());
+  const obj = addSplyt(state.tree);
+  const helper = new BoundingBoxHelper(obj, 0xff0000);
+  helper.update();
+  resize(getVizContainerDimensions(state.ui), {
+    x: Math.abs(helper.box.min.x - helper.box.max.x),
+    y: Math.abs(helper.box.min.y - helper.box.max.y)
+  });
   render();
 }
