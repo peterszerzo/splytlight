@@ -16,14 +16,15 @@ function transformSplyt(object, size, direction) {
   );
 }
 
-function createSplytTree(group, state) {
+function createSplytTree(state) {
   if (!state || (state.status === 'adding')) {
-    return group;
+    return new Group();
   } else {
-    const leftGroup = createSplytTree(new Group(), state.left);
+    const leftGroup = createSplytTree(state.left);
     transformSplyt(leftGroup, splyt[state.size], 'left');
-    const rightGroup = createSplytTree(new Group(), state.right);
+    const rightGroup = createSplytTree(state.right);
     transformSplyt(rightGroup, splyt[state.size], 'right');
+    const group = new Group();
     group.add(leftGroup);
     group.add(rightGroup);
     group.add(createSplytUnit(splyt[state.size]));
@@ -32,6 +33,6 @@ function createSplytTree(group, state) {
 }
 
 export default function create(tree) {
-  const obj = createSplytTree(new Group(), tree);
+  const obj = createSplytTree(tree);
   return obj;
 }
