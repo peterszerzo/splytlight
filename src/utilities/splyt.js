@@ -1,15 +1,15 @@
 import {controlCircleOffset} from '../constants/styling';
 
-export function getEndPoints({baseHeight, armLength, armAngle}, options) {
+export function getEndPoints({baseHeight, leftArm, rightArm}, options) {
   const offset = (options && options.useOffset) ? controlCircleOffset : 0;
   return [
     {
-      x: - (armLength - offset / 2) * Math.cos(armAngle),
-      y: baseHeight + (armLength - offset / 2) * Math.sin(armAngle)
+      x: (leftArm.length - offset / 2) * Math.sin(leftArm.angle),
+      y: baseHeight + (leftArm.length - offset / 2) * Math.cos(leftArm.angle)
     },
     {
-      x: + (armLength - offset / 2) * Math.cos(armAngle),
-      y: baseHeight + (armLength - offset / 2) * Math.sin(armAngle)
+      x: (rightArm.length - offset / 2) * Math.sin(rightArm.angle),
+      y: baseHeight + (rightArm.length - offset / 2) * Math.cos(rightArm.angle)
     }
   ];
 }

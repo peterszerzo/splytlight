@@ -1,14 +1,26 @@
 export const splyt = {
   small: {
     baseHeight: 30,
-    armLength: 40,
-    armAngle: Math.PI / 3,
-    radius: 9.25
+    radius: 9.25,
+    leftArm: {
+      length: 40,
+      angle: Math.PI / 6
+    },
+    rightArm: {
+      length: 40,
+      angle: - Math.PI / 6
+    }
   },
   large: {
     baseHeight: 70,
-    armLength: 80,
-    armAngle: Math.PI / 3,
-    radius: 9.25
+    radius: 9.25,
+    leftArm: {
+      length: 80,
+      angle: Math.PI / 6
+    },
+    rightArm: {
+      length: 80,
+      angle: - Math.PI / 6
+    }
   }
 };

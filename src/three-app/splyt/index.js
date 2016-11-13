@@ -5,25 +5,15 @@ import createSplytUnit from './unit';
 
 const {PI, sin, cos} = Math;
 
-function transformSplyt(object, size, direction){
-  const armLength = size.armLength;
-  const bHeight = size.baseHeight;
-  const armAngle = size.armAngle;
-  if (direction === 'left') {
-    object.rotateZ(PI / 2 - armAngle);
-    object.position.set(
-      - armLength * cos(armAngle),
-      bHeight + armLength * sin(armAngle),
-      0
-    );
-  } else {
-    object.rotateZ(- (PI / 2 - armAngle));
-    object.position.set(
-      armLength * cos(armAngle),
-      bHeight + armLength * sin(armAngle),
-      0
-    );
-  }
+function transformSplyt(object, size, direction) {
+  const {baseHeight} = size;
+  const {angle, length} = size[direction + 'Arm'];
+  object.rotateZ(- angle);
+  object.position.set(
+    length * sin(angle),
+    baseHeight + length * cos(angle),
+    0
+  );
 }
 
 function createSplytTree(group, state) {

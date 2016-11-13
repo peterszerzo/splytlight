@@ -7,7 +7,7 @@ import {setChildState} from '../../state';
 import Unit from './unit';
 
 export default function Units({state, x, y, angle}, {setState}) {
-  const {armAngle} = splyt.small;
+  const {leftArm, rightArm} = splyt.small;
   const [{x: x1, y: y1}, {x: x2, y: y2}] = getEndPoints(splyt.small);
   if (!state) {
     return;
@@ -15,13 +15,13 @@ export default function Units({state, x, y, angle}, {setState}) {
   return (
     g({
       opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5,
-      transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
+      transform: `translate(${x} ${y}) rotate(${- angle * 180 / Math.PI})`,
     }, [
       Units({
         state: state.left,
         x: x1,
         y: y1,
-        angle: Math.PI / 2 - armAngle
+        angle: leftArm.angle
       }, {
         setState: setChildState({state, setState}, 'left')
       }),
@@ -29,7 +29,7 @@ export default function Units({state, x, y, angle}, {setState}) {
         state: state.right,
         x: x2,
         y: y2,
-        angle: - (Math.PI / 2 - armAngle)
+        angle: rightArm.angle
       }, {
         setState: setChildState({state, setState}, 'right')
       }),
