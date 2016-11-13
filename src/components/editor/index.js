@@ -1,5 +1,5 @@
 import {createElement} from 'react';
-const {div, p, button, svg} = require('hyperscript-helpers')(createElement);
+const {div, p, svg} = require('hyperscript-helpers')(createElement);
 
 import cls from './style.css';
 import getContainerDimensions from '../../utilities/layout';

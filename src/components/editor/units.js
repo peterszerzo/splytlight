@@ -1,4 +1,5 @@
-import {createElement as h} from 'react';
+import {createElement} from 'react';
+const {g} = require('hyperscript-helpers/dist/svg')(createElement);
 
 import {splyt} from '../../constants/geometries';
 import {getEndPoints} from '../../utilities/splyt';
@@ -12,7 +13,7 @@ export default function Units({state, x, y, angle}, {setState}) {
     return;
   }
   return (
-    h('g', {
+    g({
       opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5,
       transform: `translate(${x} ${y}) rotate(${angle * 180 / Math.PI})`,
     }, [
