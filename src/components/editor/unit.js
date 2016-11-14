@@ -112,7 +112,6 @@ function Controls(state, {
   );
   return (
     g({
-      id: 'apples',
       stroke: 'none'
     }, [
       ControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
