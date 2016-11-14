@@ -3,16 +3,16 @@ import {
   DoubleSide,
   Mesh,
   MeshLambertMaterial,
-  PlaneGeometry
+  CircleGeometry
 } from 'three';
 
 export const axisHelper = new AxisHelper(50);
 
-const planeGeometry = new PlaneGeometry(100, 100, 1, 1);
+const planeGeometry = new CircleGeometry(50, 40);
 const planeMaterial = new MeshLambertMaterial({
   color: 0xffffff,
   transparent: true,
-  opacity: 0.7,
+  opacity: 1,
   side: DoubleSide
 });
 

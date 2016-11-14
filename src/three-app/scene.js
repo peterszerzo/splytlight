@@ -5,7 +5,9 @@ import lights from './lights';
 
 const scene = new Scene();
 
-scene.add(axisHelper);
+if (process.env.NODE_ENV === 'development') {
+  scene.add(axisHelper);
+}
 scene.add(plane);
 
 lights.forEach((light) => {
