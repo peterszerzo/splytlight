@@ -7,13 +7,14 @@
 }
 
 :local(.button) {
+  text-decoration: none;
   width: 40px;
   height: 40px;
   cursor: pointer;
   border-radius: 50px;
   text-align: center;
   margin: 10px 0;
-  font-size: 16px;
+  font-size: 20px;
   background: var(--blue);
   color: var(--white);
   box-shadow: 0 0 12px rgba(0, 0, 0, .1), 0 0 6px rgba(0, 0, 0, .2);

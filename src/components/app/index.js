@@ -33,7 +33,7 @@ export default (state, {setState}) => (
         className: cls.viz,
         id: '3d'
       }),
-      EditorNav()
+      EditorNav({state})
     ])
   ])
 );

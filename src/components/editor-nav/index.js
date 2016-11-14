@@ -1,22 +1,23 @@
 import {createElement} from 'react';
-const {div, header, h1, span} = require('hyperscript-helpers')(createElement);
+const {div, header, h1, span, a} = require('hyperscript-helpers')(createElement);
 
 import cls from './style.css';
 import Editor from '../editor';
 import Dashboard from '../dashboard';
 
-export default () => (
+export default ({state}) => (
   div({
     className: cls.container
   }, [
     div({
       className: cls.button
-    }, span({}, '➜')),
+    }, span({}, '→')),
     div({
       className: cls.button
-    }, span({}, '✉')),
-    div({
-      className: cls.button
-    }, span({}, 'k'))
+    }, span({}, '⤒')),
+    a({
+      className: cls.button,
+      href: `data:application/octet-stream;type=,${JSON.stringify(state.tree)}`
+    }, span({}, '⤓'))
   ])
 );
