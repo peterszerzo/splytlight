@@ -6,6 +6,7 @@ type Ui = {
 };
 
 export type SplytTree = {
+  id: string,
   status: SplytUnitStatus,
   size: SplytUnitSize,
   left: ?SplytTree,

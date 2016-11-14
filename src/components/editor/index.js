@@ -1,5 +1,6 @@
 import {createElement} from 'react';
 const {div, p, svg} = require('hyperscript-helpers')(createElement);
+const {g} = require('hyperscript-helpers/dist/svg')(createElement);
 
 import cls from './style.css';
 import getContainerDimensions from '../../utilities/layout';
@@ -17,12 +18,13 @@ export default ({tree, ui}, {setState}) => {
         id: 'splyt-editor',
         viewBox: `0 0 ${width} ${height}`
       }, [
-        Units({
-          state: tree,
-          x: width / 2,
-          y: height * 9 / 10,
-          angle: PI
-        }, {setState})
+        g({
+          transform: `translate(${width / 2} ${height * 9 / 10}) rotate(${180})`
+        }, [
+          Units({
+            state: tree
+          }, {setState})
+        ])
       ])
     ])
   );

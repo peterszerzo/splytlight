@@ -5,17 +5,21 @@
     "windowHeight": 0
   },
   "tree": {
+    "id": "b",
     "status": "added",
     "size": "small",
     "left": {
+      "id": "bl",
       "status": "added",
       "size": "small",
       "right": {
+        "id": "blr",
         "status": "added",
         "size": "small"
       }
     },
     "right": {
+      "id": "br",
       "status": "added",
       "size": "small"
     }

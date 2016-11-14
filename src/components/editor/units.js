@@ -6,33 +6,38 @@ import {getEndPoints} from '../../utilities/splyt';
 import {setChildState} from '../../state';
 import Unit from './unit';
 
-export default function Units({state, x, y, angle}, {setState}) {
-  const {leftArm, rightArm} = splyt.small;
-  const [{x: x1, y: y1}, {x: x2, y: y2}] = getEndPoints(splyt.small);
+const {PI} = Math;
+
+export default function Units({
+  state
+}, {setState}) {
   if (!state) {
     return;
   }
+  const {leftArm, rightArm} = splyt[state.size];
+  const [{x: xl, y: yl}, {x: xr, y: yr}] = getEndPoints(splyt[state.size]);
   return (
     g({
-      opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5,
-      transform: `translate(${x} ${y}) rotate(${- angle * 180 / Math.PI})`,
+      opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5
     }, [
-      Units({
-        state: state.left,
-        x: x1,
-        y: y1,
-        angle: leftArm.angle
-      }, {
-        setState: setChildState({state, setState}, 'left')
-      }),
-      Units({
-        state: state.right,
-        x: x2,
-        y: y2,
-        angle: rightArm.angle
-      }, {
-        setState: setChildState({state, setState}, 'right')
-      }),
+      g({
+        transform: `translate(${xl} ${yl}) rotate(${-leftArm.angle * 180 / PI})`
+      }, [
+        Units({
+          state: state.left
+        }, {
+          setState: setChildState({state, setState}, 'left')
+        })
+      ]),
+      g({
+        transform: `translate(${xr} ${yr}) rotate(${-rightArm.angle * 180 / PI})`
+      }, [
+        Units({
+          state: state.right,
+        }, {
+          setState: setChildState({state, setState}, 'right')
+        })
+      ]),
       Unit(state, {
         onControlClick(dir) {
           setState({
