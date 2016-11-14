@@ -5,6 +5,7 @@ import cls from './style.css';
 import Editor from '../editor';
 import EditorNav from '../editor-nav';
 import Dashboard from '../dashboard';
+import Nav from '../nav';
 
 export default (state, {setState}) => (
   div({
@@ -15,6 +16,7 @@ export default (state, {setState}) => (
     }, [
       h1({}, 'Splyt Light Interactive')
     ]),
+    Nav({state}),
     div({
       className: cls.main
     }, [
