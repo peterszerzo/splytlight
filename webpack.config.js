@@ -3,6 +3,9 @@ const webpack = require('webpack');
 const postCssCssNext = require('postcss-cssnext');
 const validate = require('webpack-validator');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+
+const isDev = process.env.NODE_ENV === 'development';
 
 const commonPlugins = [
   new webpack.DefinePlugin({
@@ -23,7 +26,8 @@ const commonPlugins = [
 
 const productionPlugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
-  new webpack.optimize.UglifyJsPlugin()
+  new webpack.optimize.UglifyJsPlugin(),
+  new ExtractTextWebpackPlugin('styles.css')
 ];
 
 const config = {
@@ -37,9 +41,12 @@ const config = {
   },
   module: {
     loaders: [
-      {
+      isDev ? {
         test: /\.css$/,
         loader: 'style!css!postcss'
+      } : {
+        test: /\.css$/,
+        loader: ExtractTextWebpackPlugin.extract('style', 'css!postcss')
       },
       {
         test: /\.js$/,
@@ -59,7 +66,7 @@ const config = {
     extensions: ['', '.js', '.css', '.json']
   },
   devtool: 'source-map',
-  plugins: (process.env.NODE_ENV === 'development')
+  plugins: isDev
   ?
   commonPlugins
   :
