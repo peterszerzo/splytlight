@@ -12,3 +12,13 @@ body {
   padding: 0;
   margin: 0;
 }
+
+body {
+  --blue: #638FBE;
+  --brown: #201A16;
+  --white: #FFFFFF;
+  --green: #32A621;
+  --red: #BF0015;
+
+  --header-height: 60px;
+}

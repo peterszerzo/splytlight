@@ -3,6 +3,7 @@ const {div, header, h1} = require('hyperscript-helpers')(createElement);
 
 import cls from './style.css';
 import Editor from '../editor';
+import EditorNav from '../editor-nav';
 import Dashboard from '../dashboard';
 
 export default (state, {setState}) => (
@@ -32,7 +33,7 @@ export default (state, {setState}) => (
         className: cls.viz,
         id: '3d'
       }),
-      Dashboard(state, {setState})
+      EditorNav()
     ])
   ])
 );

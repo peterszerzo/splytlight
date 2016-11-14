@@ -1,0 +1,23 @@
+:local(.container) {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 40px;
+}
+
+:local(.button) {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50px;
+  text-align: center;
+  margin: 10px 0;
+  font-size: 16px;
+  background: var(--blue);
+  color: var(--white);
+  box-shadow: 0 0 12px rgba(0, 0, 0, .1), 0 0 6px rgba(0, 0, 0, .2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
