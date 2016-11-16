@@ -1,0 +1,26 @@
+:local(.container) {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--header-height);
+  background: var(--blue);
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+
+  & h1 {
+    text-align: left;
+    padding: 0 25px;
+    width: 100%;
+    margin: auto;
+    color: var(--white);
+    font-weight: 200;
+    font-size: 1.25rem;
+  }
+}
+
+:local(.logoContainer) {
+  width: 30px;
+  height: 30px;
+  display: none;
+}

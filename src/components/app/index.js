@@ -1,5 +1,5 @@
 import {createElement} from 'react';
-const {div, header, h1} = require('hyperscript-helpers')(createElement);
+const {div} = require('hyperscript-helpers')(createElement);
 
 import cls from './style.css';
 import Editor from '../editor';
@@ -7,14 +7,13 @@ import EditorNav from '../editor-nav';
 import Overlay from '../overlay';
 import Nav from '../nav';
 import textContent from '../../../content/text';
+import Header from '../header';
 
 export default ({state, setState}) => (
   div({
     className: cls.root
   },
-    header({
-      className: cls.header
-    }, h1({}, 'Splyt Light Interactive')),
+    Header(),
     Overlay({
       isActive: state.route === 'about',
       content: textContent.about

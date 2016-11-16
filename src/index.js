@@ -5,6 +5,7 @@ import {render} from 'react-dom';
 import startThreeApp from './three-app';
 
 import './style.css';
+import './logo.svg';
 import App from './components/app';
 import {
   getState,

@@ -59,6 +59,10 @@ const config = {
       {
         test: /\.pug/,
         loader: 'pug'
+      },
+      {
+        test: /\.svg/,
+        loader: 'file?name=[name].[ext]'
       }
     ]
   },
