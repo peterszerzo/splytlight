@@ -1,20 +1,22 @@
 type SplytUnitStatus = 'adding' | 'added' | 'removing';
 type SplytUnitSize = 'small' | 'large';
+
 type Ui = {
-  windowWidth: number,
-  windowHeight: number
+  windowWidth : number,
+  windowHeight : number
 };
 
 export type SplytTree = {
-  id: string,
-  status: SplytUnitStatus,
-  size: SplytUnitSize,
-  left: ?SplytTree,
-  right: ?SplytTree
+  id : string,
+  status : SplytUnitStatus,
+  size : SplytUnitSize,
+  left : ?SplytTree,
+  right : ?SplytTree
 };
 
 export type State = {
-  ui: Ui,
-  tree: SplytTree,
-  isDashboardExpanded: boolean
+  ui : Ui,
+  route : string,
+  tree : SplytTree,
+  isDashboardExpanded : boolean
 };

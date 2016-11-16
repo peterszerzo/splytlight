@@ -7,7 +7,7 @@ import IconButton from '../icon-button';
 export default ({state}) => (
   div({
     className: cls.container
-  }, [
+  },
     IconButton({
       unicodeIcon: '→'
     }),
@@ -18,5 +18,5 @@ export default ({state}) => (
       unicodeIcon: '⤓',
       href: `data:application/octet-stream;type=,${JSON.stringify(state.tree)}`
     })
-  ])
+  )
 );

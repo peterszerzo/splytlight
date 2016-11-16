@@ -27,9 +27,9 @@ domReady(() => {
   window.addEventListener('resize', setWindowDimensions);
   const state = getState();
   const container = document.getElementById('app');
-  render(App(state, {setState}), container);
+  render(App({state, setState}), container);
   startThreeApp(state);
   subscribe(state => {
-    render(App(state, {setState}), container);
+    render(App({state, setState}), container);
   });
 });

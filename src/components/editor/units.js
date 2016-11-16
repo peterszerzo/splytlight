@@ -19,25 +19,25 @@ export default function Units({
   return (
     g({
       opacity: (['added', 'removing'].indexOf(state.status) > -1) ? 1 : .5
-    }, [
+    },
       g({
         transform: `translate(${xl} ${yl}) rotate(${-leftArm.angle * 180 / PI})`
-      }, [
+      },
         Units({
           state: state.left
         }, {
           setState: setChildState({state, setState}, 'left')
         })
-      ]),
+      ),
       g({
         transform: `translate(${xr} ${yr}) rotate(${-rightArm.angle * 180 / PI})`
-      }, [
+      },
         Units({
           state: state.right,
         }, {
           setState: setChildState({state, setState}, 'right')
         })
-      ]),
+      ),
       Unit(state, {
         onControlClick(dir) {
           setState({
@@ -85,6 +85,6 @@ export default function Units({
           }
         }
       })
-    ])
+    )
   );
 }

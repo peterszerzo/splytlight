@@ -15,23 +15,6 @@
 
   & > span {
     color: var(--white);
+    cursor: pointer;
   }
-}
-
-:local(.panel) {
-  border-top: 1px solid var(--white);
-  position: fixed;
-  opacity: 0;
-  background: var(--blue);
-  pointer-events: none;
-  top: var(--header-height);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: var(--standard-padding);
-}
-
-:local(.activePanel) {
-  opacity: 1;
-  z-index: 100;
 }

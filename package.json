@@ -24,6 +24,7 @@
     "domready": "^1.0.8",
     "hyperscript-helpers": "^3.0.2",
     "lodash": "^4.16.6",
+    "marked": "^0.3.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "three": "^0.79.0",

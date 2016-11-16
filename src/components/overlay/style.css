@@ -1,0 +1,22 @@
+:local(.container) {
+  position: fixed;
+  width: 100vw;
+  height: calc(100vh - var(--header-height));
+  top: var(--header-height);
+  padding: var(--standard-padding);
+  left: 0;
+  background: var(--blue);
+  z-index: 1000;
+  color: var(--white);
+  border-top: 2px solid var(--white);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0, 10px);
+  transition: all .3s;
+}
+
+:local(.active) {
+  pointer-events: all;
+  transform: translate(0, 0);
+  opacity: 1;
+}

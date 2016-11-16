@@ -25,10 +25,10 @@ const fillByControlStatus = {
 
 export default function Unit(state, callbacks) {
   return (
-    g({}, [
+    g({},
       Lines(state),
       Controls(state, callbacks)
-    ])
+    )
   );
 }
 
@@ -52,7 +52,7 @@ function Lines(state) {
       strokeWidth: strokeWeight,
       strokeLinecap: 'round',
       strokeLinejoin: 'round'
-    }, [
+    },
       line({
         x1: x0,
         y1: y0,
@@ -71,7 +71,7 @@ function Lines(state) {
         x2: xr,
         y2: yr
       })
-    ])
+    )
   );
 }
 
@@ -89,13 +89,13 @@ function ControlCircle(point, controlStatus, {
       onClick,
       onMouseOver,
       onMouseOut
-    }, [
+    },
       circle({
         cx: 0,
         cy: 0,
         r: controlCircleRadius
       })
-    ])
+    )
   );
 }
 
@@ -113,7 +113,7 @@ function Controls(state, {
   return (
     g({
       stroke: 'none'
-    }, [
+    },
       ControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
         onClick: onControlClick.bind(this, 'left'),
         onMouseOver: onControlMouseEnter.bind(this, 'left'),
@@ -124,6 +124,6 @@ function Controls(state, {
         onMouseOver: onControlMouseEnter.bind(this, 'right'),
         onMouseOut: onControlMouseLeave.bind(this, 'right')
       })
-    ])
+    )
   );
 }
