@@ -4,6 +4,7 @@ const postCssCssNext = require('postcss-cssnext');
 const validate = require('webpack-validator');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -27,7 +28,11 @@ const commonPlugins = [
 const productionPlugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.optimize.UglifyJsPlugin(),
-  new ExtractTextWebpackPlugin('styles.css')
+  new ExtractTextWebpackPlugin('styles.css'),
+  new FaviconsWebpackPlugin({
+    logo: './src/favicon.png',
+    inject: true
+  })
 ];
 
 const config = {

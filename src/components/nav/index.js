@@ -1,6 +1,6 @@
 import {createElement} from 'react';
 import classNames from 'classnames';
-const {div, span, nav} = require('hyperscript-helpers')(createElement);
+const {div, span, nav, p} = require('hyperscript-helpers')(createElement);
 
 import cls from './style.css';
 
@@ -12,10 +12,9 @@ export default ({state, setState}) => (
       className: cls.toggle
     }, span({
       onClick: () => {
-        console.log(state);
         setState({route: state.route === 'about' ? '' : 'about'});
       }
-    }, 'About')),
+    }, p({}, 'About'))),
     div({
       className: classNames(cls.panel)
     })

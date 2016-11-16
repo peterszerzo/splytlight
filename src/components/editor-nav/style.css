@@ -14,7 +14,7 @@
   border-radius: 50px;
   text-align: center;
   margin: 10px 0;
-  font-size: 20px;
+  font-size: 1.5rem;
   background: var(--blue);
   color: var(--white);
   box-shadow: 0 0 12px rgba(0, 0, 0, .1), 0 0 6px rgba(0, 0, 0, .2);

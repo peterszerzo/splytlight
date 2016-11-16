@@ -8,16 +8,17 @@
   display: flex;
   top: 0;
   left: 0;
+}
 
-  & h1 {
-    padding-left: 5px;
-    text-align: left;
-    width: 100%;
-    margin: auto;
-    color: var(--white);
-    font-weight: 200;
-    font-size: 1.25rem;
-  }
+:local(.text) {
+  padding-left: 8px;
+  text-align: left;
+  width: 100%;
+  margin: auto;
+  color: var(--white);
+  font-weight: 300;
+  font-size: 1.25rem;
+  letter-spacing: .03rem;
 }
 
 :local(.logoContainer) {

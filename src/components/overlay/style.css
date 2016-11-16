@@ -13,6 +13,7 @@
   pointer-events: none;
   transform: translate(0, 10px);
   transition: all .3s;
+  text-align: right;
 }
 
 :local(.active) {

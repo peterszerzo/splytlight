@@ -13,6 +13,8 @@ export default () => (
     }, svg({}, use({
       xlinkHref: '#logo'
     }))),
-    h1({}, 'Splyt Light Interactive')
+    h1({
+      className: cls.text
+    }, 'Splyt Light Interactive')
   )
 );

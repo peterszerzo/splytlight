@@ -9,12 +9,6 @@ export default ({state}) => (
     className: cls.container
   },
     IconButton({
-      unicodeIcon: '→'
-    }),
-    IconButton({
-      unicodeIcon: '⤒'
-    }),
-    IconButton({
       unicodeIcon: '⤓',
       href: `data:application/octet-stream;type=,${JSON.stringify(state.tree)}`
     })
