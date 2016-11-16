@@ -1,6 +1,6 @@
 import {createElement} from 'react';
 import classNames from 'classnames';
-const {div, header, h1, span, a, nav} = require('hyperscript-helpers')(createElement);
+const {div, span, nav} = require('hyperscript-helpers')(createElement);
 
 import cls from './style.css';
 
