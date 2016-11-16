@@ -3,6 +3,7 @@
 * {
   -webkit-font-smoothing: antialiased;
   font-family: 'Source Sans Pro', sans-serif;
+  box-sizing: border-box;
 }
 
 html,
@@ -21,5 +22,5 @@ body {
   --red: #BF0015;
 
   --header-height: 60px;
-  --standard-padding: 25px;
+  --standard-padding: 20px;
 }
