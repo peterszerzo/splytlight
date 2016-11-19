@@ -15,15 +15,15 @@ export default ({tree, ui}, {setState}) => {
       svg({
         id: 'splyt-editor',
         viewBox: `0 0 ${width} ${height}`
-      }, [
+      },
         g({
           transform: `translate(${width / 2} ${height * 9 / 10}) rotate(${180})`
-        }, [
+        },
           Units({
             state: tree
           }, {setState})
-        ])
-      ])
+        )
+      )
     )
   );
 };

@@ -4,13 +4,12 @@ import render from './render';
 import camera from './camera';
 import scene from './scene';
 import getVizContainerDimensions from '../utilities/layout';
-
 import create from './splyt';
 
 function resize({width, height}, {x, y}) {
   renderer.setSize(width, height);
   camera.aspect = width / height;
-  camera.position.set(0, (x + y) *  1.2, (x + y) * 1.2);
+  camera.position.set(0, (x + y) * 1.2, (x + y) * 1.2);
   camera.lookAt(new Vector3(0, (x + y) * .8, (x + y) * .8));
   camera.updateProjectionMatrix();
 }

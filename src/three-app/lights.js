@@ -1,7 +1,4 @@
-import {
-  AmbientLight,
-  DirectionalLight
-} from 'three';
+import {AmbientLight, DirectionalLight} from 'three';
 
 const light1 = new DirectionalLight(0xffffff);
 light1.position.set(10, 10, 10);

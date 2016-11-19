@@ -1,6 +1,4 @@
-import {
-  PerspectiveCamera
-} from 'three';
+import {PerspectiveCamera} from 'three';
 
 const camera = new PerspectiveCamera(
   45,

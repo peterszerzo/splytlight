@@ -21,7 +21,7 @@ export default ({state, setState}) => (
     Nav({state, setState}),
     div({
       className: cls.main
-    }, [
+    },
       div({
         className: cls.viz
       },
@@ -38,6 +38,6 @@ export default ({state, setState}) => (
         id: '3d'
       }),
       EditorNav({state})
-    ])
+    )
   )
 );

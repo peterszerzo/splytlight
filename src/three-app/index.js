@@ -2,7 +2,6 @@ import render from './render';
 import renderer from './renderer';
 import createControls from './controls';
 import update from './update';
-
 import {subscribe} from '../state';
 
 export default function startThreeApp(state) {

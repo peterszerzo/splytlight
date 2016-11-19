@@ -3,7 +3,6 @@ const {g} = require('hyperscript-helpers/dist/svg')(createElement);
 
 import {splyt} from '../../constants/geometries';
 import {getEndPoints} from '../../utilities/splyt';
-import {setChildState} from '../../state';
 import Unit from './unit';
 
 const {PI} = Math;
@@ -26,7 +25,7 @@ export default function Units({
         Units({
           state: state.left
         }, {
-          setState: setChildState({state, setState}, 'left')
+          setState: ch => setState({left: Object.assign({}, state.left, ch)})
         })
       ),
       g({
@@ -35,29 +34,28 @@ export default function Units({
         Units({
           state: state.right,
         }, {
-          setState: setChildState({state, setState}, 'right')
+          setState: ch => setState({right: Object.assign({}, state.right, ch)})
         })
       ),
       Unit(state, {
         onControlClick(dir) {
           setState({
-            [dir]: (state[dir] && ('added', 'removing').indexOf(state[dir].status) > -1)
-              ?
-              {
-                status: 'adding',
-                size: 'small'
-              }
-              :
-              {
-                status: 'removing',
-                size: 'small'
-              }
+            [dir]: {
+              status:
+                (state[dir] && ('added', 'removing').indexOf(state[dir].status) > -1)
+                  ?
+                  'adding'
+                  :
+                  'removing',
+              size: 'small'
+            }
           });
         },
         onControlMouseEnter(dir) {
           if (!state[dir]) {
             return setState({
               [dir]: {
+                id: '1',
                 status: 'adding',
                 size: 'small'
               }
