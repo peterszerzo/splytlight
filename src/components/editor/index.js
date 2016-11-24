@@ -6,7 +6,7 @@ import cls from './style.css';
 import getContainerDimensions from '../../utilities/layout';
 import Units from './units';
 
-export default ({tree, ui}, {setState}) => {
+export default ({state: {tree, ui}, setState}) => {
   const {width, height} = getContainerDimensions(ui);
   return (
     div({
@@ -20,8 +20,9 @@ export default ({tree, ui}, {setState}) => {
           transform: `translate(${width / 2} ${height * 9 / 10}) rotate(${180})`
         },
           Units({
-            state: tree
-          }, {setState})
+            state: tree,
+            setState
+          })
         )
       )
     )

@@ -23,11 +23,11 @@ const fillByControlStatus = {
   added: brown
 };
 
-export default function Unit(state, callbacks) {
+export default function Unit(props) {
   return (
     g({},
-      Lines(state),
-      Controls(state, callbacks)
+      Lines(props.state),
+      Controls(props)
     )
   );
 }
@@ -75,7 +75,9 @@ function Lines(state) {
   );
 }
 
-function ControlCircle(point, controlStatus, {
+function ControlCircle({
+  point,
+  status,
   onClick,
   onMouseOver,
   onMouseOut
@@ -83,7 +85,7 @@ function ControlCircle(point, controlStatus, {
   return (
     g({
       transform: `translate(${point.x} ${point.y})`,
-      fill: fillByControlStatus[controlStatus],
+      fill: fillByControlStatus[status],
       strokeLinecap: 'round',
       strokeLinejoin: 'round',
       onClick,
@@ -99,7 +101,8 @@ function ControlCircle(point, controlStatus, {
   );
 }
 
-function Controls(state, {
+function Controls({
+  state,
   onControlClick,
   onControlMouseEnter,
   onControlMouseLeave
@@ -114,12 +117,16 @@ function Controls(state, {
     g({
       stroke: 'none'
     },
-      ControlCircle(leftPoint, state.left ? state.left.status : 'neutral', {
+      ControlCircle({
+        point: leftPoint,
+        status: state.left ? state.left.status : 'neutral',
         onClick: onControlClick.bind(this, 'left'),
         onMouseOver: onControlMouseEnter.bind(this, 'left'),
         onMouseOut: onControlMouseLeave.bind(this, 'left')
       }),
-      ControlCircle(rightPoint, state.right ? state.right.status : 'neutral', {
+      ControlCircle({
+        point: rightPoint,
+        status: state.right ? state.right.status : 'neutral',
         onClick: onControlClick.bind(this, 'right'),
         onMouseOver: onControlMouseEnter.bind(this, 'right'),
         onMouseOut: onControlMouseLeave.bind(this, 'right')

@@ -12,7 +12,7 @@ export default ({isActive, content}) => {
         [cls.active]: isActive
       })
     },
-      StaticContent({content: content})
+      StaticContent({content})
     )
   );
 };

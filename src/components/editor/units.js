@@ -7,9 +7,7 @@ import Unit from './unit';
 
 const {PI} = Math;
 
-export default function Units({
-  state
-}, {setState}) {
+export default function Units({state, setState}) {
   if (!state) {
     return;
   }
@@ -23,9 +21,10 @@ export default function Units({
         transform: `translate(${xl} ${yl}) rotate(${-leftArm.angle * 180 / PI})`
       },
         Units({
-          state: state.left
-        }, {
-          setState: ch => setState({left: Object.assign({}, state.left, ch)})
+          state: state.left,
+          setState(ch) {
+            setState({left: Object.assign({}, state.left, ch)});
+          }
         })
       ),
       g({
@@ -33,11 +32,13 @@ export default function Units({
       },
         Units({
           state: state.right,
-        }, {
-          setState: ch => setState({right: Object.assign({}, state.right, ch)})
+          setState(ch) {
+            setState({right: Object.assign({}, state.right, ch)});
+          }
         })
       ),
-      Unit(state, {
+      Unit({
+        state,
         onControlClick(dir) {
           setState({
             [dir]: {

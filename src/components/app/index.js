@@ -25,7 +25,8 @@ export default ({state, setState}) => (
       div({
         className: cls.viz
       },
-        Editor(state, {
+        Editor({
+          state,
           setState: (treeStateChange) => {
             return setState({
               tree: Object.assign({}, state.tree, treeStateChange)
