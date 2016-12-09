@@ -1,12 +1,12 @@
-import {createElement} from 'react';
-const {g, line, circle} = require('hyperscript-helpers/dist/svg')(createElement);
+import {createElement} from 'react'
+const {g, line, circle} = require('hyperscript-helpers/dist/svg')(createElement)
 
-import {splyt} from '../../constants/geometries';
+import {splyt} from '../../constants/geometries'
 import {
   getEndPoints,
   getStartPoint,
   getMidPoint
-} from '../../utilities/splyt.js';
+} from '../../utilities/splyt.js'
 import {
   brown,
   green,
@@ -14,38 +14,38 @@ import {
   blue,
   strokeWeight,
   controlCircleRadius
-} from '../../constants/styling';
+} from '../../constants/styling'
 
 const fillByControlStatus = {
   neutral: brown,
   adding: green,
   removing: red,
   added: brown
-};
+}
 
-export default function Unit(props) {
+export default function Unit (props) {
   return (
     g({},
       Lines(props.state),
       Controls(props)
     )
-  );
+  )
 }
 
-function Lines(state) {
+function Lines (state) {
   const [{x: xl, y: yl}, {x: xr, y: yr}] = getEndPoints(
     splyt[state.size], {
       useOffset: true
     }
-  );
+  )
   const {x: x0, y: y0} = getStartPoint(
     splyt[state.size], {
       useOffset: true
     }
-  );
+  )
   const {x: xm, y: ym} = getMidPoint(
     splyt[state.size]
-  );
+  )
   return (
     g({
       stroke: blue,
@@ -72,10 +72,10 @@ function Lines(state) {
         y2: yr
       })
     )
-  );
+  )
 }
 
-function ControlCircle({
+function ControlCircle ({
   point,
   status,
   onClick,
@@ -98,10 +98,10 @@ function ControlCircle({
         r: controlCircleRadius
       })
     )
-  );
+  )
 }
 
-function Controls({
+function Controls ({
   state,
   onControlClick,
   onControlMouseEnter,
@@ -112,7 +112,7 @@ function Controls({
     {
       useOffset: false
     }
-  );
+  )
   return (
     g({
       stroke: 'none'
@@ -132,5 +132,5 @@ function Controls({
         onMouseOut: onControlMouseLeave.bind(this, 'right')
       })
     )
-  );
+  )
 }

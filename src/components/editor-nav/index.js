@@ -1,8 +1,8 @@
-import {createElement} from 'react';
-const {div} = require('hyperscript-helpers')(createElement);
+import {createElement} from 'react'
+const {div} = require('hyperscript-helpers')(createElement)
 
-import cls from './style.css';
-import IconButton from '../icon-button';
+import cls from './style.css'
+import IconButton from '../icon-button'
 
 export default ({state}) => (
   div({
@@ -13,4 +13,4 @@ export default ({state}) => (
       href: `data:application/octet-stream;type=,${JSON.stringify(state.tree)}`
     })
   )
-);
+)

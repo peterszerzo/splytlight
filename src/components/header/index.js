@@ -1,8 +1,8 @@
-import {createElement} from 'react';
-const {header, h1, div, svg} = require('hyperscript-helpers')(createElement);
-const {use} = require('hyperscript-helpers/dist/svg')(createElement);
+import {createElement} from 'react'
+const {header, h1, div, svg} = require('hyperscript-helpers')(createElement)
+const {use} = require('hyperscript-helpers/dist/svg')(createElement)
 
-import cls from './style.css';
+import cls from './style.css'
 
 export default () => (
   header({
@@ -17,4 +17,4 @@ export default () => (
       className: cls.text
     }, 'Splyt Light Interactive')
   )
-);
+)

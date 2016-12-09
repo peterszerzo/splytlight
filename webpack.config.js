@@ -1,12 +1,12 @@
-const path = require('path');
-const webpack = require('webpack');
-const postCssCssNext = require('postcss-cssnext');
-const validate = require('webpack-validator');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const postCssCssNext = require('postcss-cssnext')
+const validate = require('webpack-validator')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === 'development'
 
 const commonPlugins = [
   new webpack.DefinePlugin({
@@ -23,7 +23,7 @@ const commonPlugins = [
     inject: true,
     hash: true
   })
-];
+]
 
 const productionPlugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
@@ -33,7 +33,7 @@ const productionPlugins = [
     logo: './src/favicon.png',
     inject: true
   })
-];
+]
 
 const config = {
   entry: [
@@ -75,18 +75,14 @@ const config = {
     extensions: ['', '.js', '.css', '.json']
   },
   devtool: 'source-map',
-  plugins: isDev
-  ?
-  commonPlugins
-  :
-  commonPlugins.concat(productionPlugins),
-  postcss() {
+  plugins: isDev ? commonPlugins : commonPlugins.concat(productionPlugins),
+  postcss () {
     return [
       postCssCssNext({
         browsers: ['ie >= 10', 'last 3 versions']
       })
-    ];
+    ]
   }
-};
+}
 
-module.exports = validate(config);
+module.exports = validate(config)

@@ -1,13 +1,13 @@
-import {createElement} from 'react';
-const {div} = require('hyperscript-helpers')(createElement);
+import {createElement} from 'react'
+const {div} = require('hyperscript-helpers')(createElement)
 
-import cls from './style.css';
-import Editor from '../editor';
-import EditorNav from '../editor-nav';
-import Overlay from '../overlay';
-import Nav from '../nav';
-import textContent from '../../../content/text';
-import Header from '../header';
+import cls from './style.css'
+import Editor from '../editor'
+import EditorNav from '../editor-nav'
+import Overlay from '../overlay'
+import Nav from '../nav'
+import textContent from '../../../content/text'
+import Header from '../header'
 
 export default ({state, setState}) => (
   div({
@@ -30,7 +30,7 @@ export default ({state, setState}) => (
           setState: (treeStateChange) => {
             return setState({
               tree: Object.assign({}, state.tree, treeStateChange)
-            });
+            })
           }
         })
       ),
@@ -41,4 +41,4 @@ export default ({state, setState}) => (
       EditorNav({state})
     )
   )
-);
+)

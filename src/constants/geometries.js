@@ -1,17 +1,4 @@
-// @flow
-
-type Arm = {
-  length : number,
-  angle : number
-};
-
-type Geometry = {
-  baseHeight : number,
-  radius : number,
-  leftArm : Arm
-};
-
-const small : Geometry = {
+const small = {
   baseHeight: 30,
   radius: 9.25,
   leftArm: {
@@ -20,11 +7,11 @@ const small : Geometry = {
   },
   rightArm: {
     length: 40,
-    angle: - Math.PI / 6
+    angle: -Math.PI / 6
   }
-};
+}
 
-const large : Geometry = {
+const large = {
   baseHeight: 70,
   radius: 9.25,
   leftArm: {
@@ -33,11 +20,11 @@ const large : Geometry = {
   },
   rightArm: {
     length: 80,
-    angle: - Math.PI / 6
+    angle: -Math.PI / 6
   }
-};
+}
 
 export const splyt = {
   small,
   large
-};
+}

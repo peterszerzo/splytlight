@@ -1,8 +1,8 @@
-import {createElement} from 'react';
-import marked from 'marked';
-const {div} = require('hyperscript-helpers')(createElement);
+import {createElement} from 'react'
+import marked from 'marked'
+const {div} = require('hyperscript-helpers')(createElement)
 
-import cls from './style.css';
+import cls from './style.css'
 
 export default ({content}) => {
   return (
@@ -10,5 +10,5 @@ export default ({content}) => {
       className: cls.container,
       dangerouslySetInnerHTML: {__html: marked(content)}
     })
-  );
-};
+  )
+}
