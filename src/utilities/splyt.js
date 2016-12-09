@@ -1,4 +1,4 @@
-import {controlCircleOffset} from '../constants/styling'
+import { controlCircleOffset } from '../constants/styling'
 
 export function getEndPoints ({baseHeight, leftArm, rightArm}, options) {
   const offset = (options && options.useOffset) ? controlCircleOffset : 0
