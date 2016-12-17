@@ -1,4 +1,4 @@
-import THREE from 'three'
+const THREE = require('three')
 import camera from './camera'
 import orbitControls from 'three-orbit-controls'
 

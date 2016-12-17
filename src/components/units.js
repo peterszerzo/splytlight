@@ -1,8 +1,8 @@
 import {createElement} from 'react'
 const {g} = require('hyperscript-helpers/dist/svg')(createElement)
 
-import {splyt} from '../../constants/geometries'
-import {getEndPoints} from '../../utilities/splyt'
+import {splyt} from '../constants/geometries'
+import {getEndPoints} from '../utilities/splyt'
 import Unit from './unit'
 
 const {PI} = Math

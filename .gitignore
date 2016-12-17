@@ -1,5 +1,6 @@
-.DS_Store
-build
 node_modules
-npm-debug.log
-some-pseudocode
+coverage
+build
+.DS_Store
+.env
+*.log

@@ -2,7 +2,6 @@ import 'babel-polyfill'
 import domReady from 'domready'
 import {render} from 'react-dom'
 
-import './style.css'
 import * as threeApp from './three-app'
 import App from './components/app'
 import {get, set, subscribe} from './state'

@@ -1,4 +1,4 @@
-import { Vector3, BoundingBoxHelper } from 'three'
+import { Vector3, BoxHelper } from 'three'
 import { renderer, render } from './render'
 import camera from './camera'
 import scene from './scene'
@@ -30,11 +30,13 @@ export default function update (state) {
     return
   }
   const obj = addSplyt(state.tree)
-  const helper = new BoundingBoxHelper(obj, 0xff0000)
-  helper.update()
-  resize(getVizContainerDimensions(state.ui), {
-    x: Math.abs(helper.box.min.x - helper.box.max.x),
-    y: Math.abs(helper.box.min.y - helper.box.max.y)
+  const helper = new BoxHelper(obj, 0xff0000)
+  helper.onAfterRender(() => {
+    helper.update()
+    resize(getVizContainerDimensions(state.ui), {
+      x: Math.abs(helper.box.min.x - helper.box.max.x),
+      y: Math.abs(helper.box.min.y - helper.box.max.y)
+    })
+    render()
   })
-  render()
 }

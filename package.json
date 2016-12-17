@@ -2,61 +2,26 @@
   "name": "splytlight",
   "version": "0.2.0",
   "description": "Visualization experiments for Splyt Light",
-  "main": "src/index.js",
-  "scripts": {
-    "dev": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --hot --history-api-fallback --inline --open --content-base build/ --port 3000",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack",
-    "lint": "./node_modules/.bin/standard --fix",
-    "deploy": "surge ./build draw.splytlight.com",
-    "all": "npm build && npm run deploy"
-  },
   "author": "Peter Szerzo, Scott Leinweber",
-  "license": "ISC",
-  "babel": {
-    "presets": [
-      "es2015",
-      "react"
-    ]
-  },
-  "standard": {
-    "parser": "babel-eslint"
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "0.8.4"
   },
   "dependencies": {
-    "babel-polyfill": "^6.13.0",
-    "classnames": "^2.2.5",
+    "aphrodite": "^1.1.0",
+    "babel-polyfill": "^6.20.0",
     "domready": "^1.0.8",
     "hyperscript-helpers": "^3.0.2",
-    "lodash": "^4.16.6",
     "marked": "^0.3.6",
-    "ramda": "^0.22.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
     "three": "^0.79.0",
     "three-orbit-controls": "^72.0.0"
   },
-  "devDependencies": {
-    "autoprefixer": "^6.4.0",
-    "babel-core": "^6.13.2",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.13.2",
-    "babel-preset-react": "^6.16.0",
-    "css-loader": "^0.23.1",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "favicons-webpack-plugin": "^0.0.7",
-    "file-loader": "^0.9.0",
-    "html-webpack-plugin": "^2.22.0",
-    "json-loader": "^0.5.4",
-    "postcss": "^5.1.2",
-    "postcss-cssnext": "^2.7.0",
-    "postcss-loader": "^0.9.1",
-    "pug": "^2.0.0-beta6",
-    "pug-loader": "^2.3.0",
-    "standard": "^8.6.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-validator": "^2.2.9",
-    "yarn": "^0.15.1"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   }
 }

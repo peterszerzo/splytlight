@@ -1,7 +1,0 @@
-:local(.container) {
-  & a {
-    text-decoration: none;
-    color: currentColor;
-    border-bottom: 1px solid currentColor;
-  }
-}

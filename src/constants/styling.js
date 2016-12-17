@@ -7,3 +7,6 @@ export const red = '#BF0015'
 export const strokeWeight = 6
 export const controlCircleRadius = 10
 export const controlCircleOffset = 12
+
+export const headerHeight = 60
+export const standardPadding = 20

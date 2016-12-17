@@ -1,12 +1,11 @@
 import {createElement} from 'react'
 const {g, line, circle} = require('hyperscript-helpers/dist/svg')(createElement)
-
-import {splyt} from '../../constants/geometries'
+import {splyt} from '../constants/geometries'
 import {
   getEndPoints,
   getStartPoint,
   getMidPoint
-} from '../../utilities/splyt.js'
+} from '../utilities/splyt.js'
 import {
   brown,
   green,
@@ -14,7 +13,7 @@ import {
   blue,
   strokeWeight,
   controlCircleRadius
-} from '../../constants/styling'
+} from '../constants/styling'
 
 const fillByControlStatus = {
   neutral: brown,
