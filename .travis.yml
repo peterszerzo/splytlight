@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "5.10.0"
+before_script:
+  - npm install -g create-react-app
+script:
+  - yarn run build
+deploy:
+  skip_cleanup: true
+  provider: surge
+  project: ./build/
+  domain: splytlight.surge.sh
