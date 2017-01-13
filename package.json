@@ -9,14 +9,11 @@
   },
   "dependencies": {
     "aphrodite": "^1.1.0",
-    "babel-polyfill": "^6.20.0",
-    "domready": "^1.0.8",
     "hyperscript-helpers": "^3.0.2",
     "marked": "^0.3.6",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "three": "^0.83.0",
-    "three-orbit-controls": "^82.1.0"
+    "three": "^0.83.0"
   },
   "scripts": {
     "start": "react-scripts start",
