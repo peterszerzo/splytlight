@@ -1,64 +1,38 @@
 import { Component, createElement } from 'react'
 import { findDOMNode } from 'react-dom'
 const { div } = require('hyperscript-helpers')(createElement)
-import { render, renderer, update } from './render'
+import createThreeApp from './three-app'
+import mouseDragContainer from './mouse-drag-container'
 
-export default class ThreeDee extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      mouseAtDragStart: null,
-      mouseCurrent: null
-    }
-    this.handleMouseDown = this.handleMouseDown.bind(this)
-    this.handleMouseUp = this.handleMouseUp.bind(this)
-    this.handleMouseMove = this.handleMouseMove.bind(this)
-  }
-
-  render() {
+class ThreeDee extends Component {
+  render () {
     return (
       div({
         className: this.props.className,
         ref: 'threedee',
-        onMouseDown: this.handleMouseDown,
-        onMouseUp: this.handleMouseUp,
-        onMouseMove: this.handleMouseMove
+        onMouseDown: this.props.onMouseDown,
+        onMouseUp: this.props.onMouseUp,
+        onMouseMove: this.props.onMouseMove
       })
     )
   }
 
-  componentDidMount() {
-    const node = findDOMNode(this.refs.threedee)
-    node.appendChild(renderer.domElement)
-    render()
-    update(this.props.state)
+  componentDidMount () {
+    this.threeApp = createThreeApp(
+      findDOMNode(this.refs.threedee),
+      {
+        global: this.props.state,
+        drag: this.props.drag
+      }
+    )
   }
 
-  componentDidUpdate() {
-    update(this.props.state)
-  }
-
-  handleMouseDown(e) {
-    this.setState({
-      mouseAtDragStart: [
-        e.nativeEvent.offsetX,
-        e.nativeEvent.offsetY
-      ]
-    })
-  }
-
-  handleMouseUp() {
-    this.setState({
-      mouseAtDragStart: null
-    })
-  }
-
-  handleMouseMove(e) {
-    this.setState({
-      mouse: [
-        e.nativeEvent.offsetX,
-        e.nativeEvent.offsetY
-      ]
+  componentDidUpdate () {
+    this.threeApp.update({
+      global: this.props.state,
+      drag: this.props.drag
     })
   }
 }
+
+export default mouseDragContainer(ThreeDee)

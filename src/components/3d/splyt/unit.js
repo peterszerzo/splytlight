@@ -6,7 +6,7 @@ import {
   MeshLambertMaterial
 } from 'three'
 
-const {PI, sin, cos} = Math
+const { PI, sin, cos } = Math
 
 function createCylinder (length, radius) {
   return new CylinderGeometry(radius, radius, length, 24, 8, false)
