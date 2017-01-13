@@ -1,4 +1,5 @@
 export const blue = '#638FBE'
+export const faintBlue = 'rgba(99, 143, 190, 0.2)'
 export const brown = '#201A16'
 export const white = '#FFFFFF'
 export const green = '#32A621'

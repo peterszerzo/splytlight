@@ -1,6 +1,4 @@
-const THREE = require('three')
 import { WebGLRenderer, Scene, Vector3, Box3, PerspectiveCamera } from 'three'
-import orbitControls from 'three-orbit-controls'
 import { axisHelper, plane } from './environment'
 import lights from './lights'
 import getVizContainerDimensions from '../../utilities/layout'
@@ -40,20 +38,6 @@ renderer.shadowMap.enabled = true
 
 export function render () {
   renderer.render(scene, camera)
-}
-
-
-/* Orbit controls */
-
-const { PI } = Math
-const OrbitControls = orbitControls(THREE)
-
-export function createControls (container) {
-  const controls = new OrbitControls(camera, container)
-  controls.enableZoom = false
-  controls.minPolarAngle = PI / 4
-  controls.maxPolarAngle = PI / 4
-  return controls
 }
 
 

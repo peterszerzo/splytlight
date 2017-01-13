@@ -1,15 +1,14 @@
 import { Component, createElement } from 'react'
 import { findDOMNode } from 'react-dom'
 const { div } = require('hyperscript-helpers')(createElement)
-import { render, renderer, update, createControls } from './render'
-import { css } from 'aphrodite'
-import styles from '../styles'
+import { render, renderer, update } from './render'
 
 export default class ThreeDee extends Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      mouseAtDragStart: null,
+      mouseCurrent: null
     }
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
@@ -19,7 +18,7 @@ export default class ThreeDee extends Component {
   render() {
     return (
       div({
-        className: css(styles.viz),
+        className: this.props.className,
         ref: 'threedee',
         onMouseDown: this.handleMouseDown,
         onMouseUp: this.handleMouseUp,
@@ -31,7 +30,6 @@ export default class ThreeDee extends Component {
   componentDidMount() {
     const node = findDOMNode(this.refs.threedee)
     node.appendChild(renderer.domElement)
-    createControls(node).addEventListener('change', render)
     render()
     update(this.props.state)
   }
@@ -40,15 +38,27 @@ export default class ThreeDee extends Component {
     update(this.props.state)
   }
 
-  handleMouseDown() {
-    console.log('mouse down')
+  handleMouseDown(e) {
+    this.setState({
+      mouseAtDragStart: [
+        e.nativeEvent.offsetX,
+        e.nativeEvent.offsetY
+      ]
+    })
   }
 
   handleMouseUp() {
-    console.log('mouse up')
+    this.setState({
+      mouseAtDragStart: null
+    })
   }
 
-  handleMouseMove() {
-    console.log('mouse moving')
+  handleMouseMove(e) {
+    this.setState({
+      mouse: [
+        e.nativeEvent.offsetX,
+        e.nativeEvent.offsetY
+      ]
+    })
   }
 }

@@ -2,7 +2,7 @@ import {createElement} from 'react'
 import {StyleSheet, css} from 'aphrodite'
 const {header, h1, div, svg} = require('hyperscript-helpers')(createElement)
 const {use} = require('hyperscript-helpers/dist/svg')(createElement)
-import * as vars from '../constants/styling'
+import * as vars from '../../constants/styling'
 
 const styles = StyleSheet.create({
   container: {

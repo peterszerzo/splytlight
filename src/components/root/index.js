@@ -1,13 +1,13 @@
 import { createElement } from 'react'
 const { div } = require('hyperscript-helpers')(createElement)
 import { css } from 'aphrodite'
-import DrawNav from './draw-nav'
-import Overlay from './overlay'
-import Nav from './nav'
-import { about } from '../content'
-import Header from './header'
-import TwoDee from './2d/index'
-import ThreeDee from './3d/index'
+import DrawNav from '../draw-nav'
+import Overlay from '../overlay'
+import Nav from '../nav'
+import { about } from '../../content'
+import Header from '../header'
+import TwoDee from '../2d'
+import ThreeDee from '../3d'
 import styles from './styles'
 
 export default ({state, setState}) => (
@@ -27,6 +27,7 @@ export default ({state, setState}) => (
         className: css(styles.viz)
       },
         TwoDee({
+          className: css(styles.viz),
           state,
           setState: (treeStateChange) => {
             return setState({
