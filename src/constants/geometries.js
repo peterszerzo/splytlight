@@ -1,4 +1,4 @@
-const small = {
+export const small = {
   baseHeight: 30,
   radius: 9.25,
   leftArm: {
@@ -11,7 +11,7 @@ const small = {
   }
 }
 
-const large = {
+export const large = {
   baseHeight: 70,
   radius: 9.25,
   leftArm: {
@@ -22,9 +22,4 @@ const large = {
     length: 80,
     angle: -Math.PI / 6
   }
-}
-
-export const splyt = {
-  small,
-  large
 }

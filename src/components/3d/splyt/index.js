@@ -1,6 +1,6 @@
 import {Group} from 'three'
 
-import {splyt} from '../../constants/geometries'
+import * as splyt from '../../../constants/geometries'
 import createSplytUnit from './unit'
 
 const {sin, cos} = Math

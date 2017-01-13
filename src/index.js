@@ -1,10 +1,8 @@
 import 'babel-polyfill'
 import domReady from 'domready'
-import {render} from 'react-dom'
-
-import * as threeApp from './three-app'
+import { render } from 'react-dom'
 import App from './components/app'
-import {get, set, subscribe} from './state'
+import { get, set, subscribe } from './state'
 
 function setWindowDimensions () {
   set({
@@ -21,9 +19,7 @@ domReady(() => {
   const state = get()
   const container = document.getElementById('app')
   render(App({state, setState: set}), container)
-  threeApp.start(state)
   subscribe(state => {
     render(App({state, setState: set}), container)
-    threeApp.update(state)
   })
 })
