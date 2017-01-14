@@ -1,10 +1,8 @@
-import {createElement} from 'react'
-const {g, line, circle} = require('hyperscript-helpers/dist/svg')(createElement)
+import { createElement } from 'react'
+const { g, line, circle } = require('hyperscript-helpers/dist/svg')(createElement)
 import * as splyt from '../../constants/geometries'
 import {
-  getEndPoints,
-  getStartPoint,
-  getMidPoint
+  getPoints
 } from '../../utilities/splyt.js'
 import {
   brown,
@@ -22,7 +20,7 @@ const fillByControlStatus = {
   added: brown
 }
 
-export default function Unit (props) {
+export default (props) => {
   return (
     g({},
       Lines(props.state),
@@ -32,19 +30,12 @@ export default function Unit (props) {
 }
 
 function Lines (state) {
-  const [{x: xl, y: yl}, {x: xr, y: yr}] = getEndPoints(
-    splyt[state.size], {
-      useOffset: true
-    }
-  )
-  const {x: x0, y: y0} = getStartPoint(
-    splyt[state.size], {
-      useOffset: true
-    }
-  )
-  const {x: xm, y: ym} = getMidPoint(
-    splyt[state.size]
-  )
+  const {
+    left: {x: xl, y: yl},
+    right: {x: xr, y: yr},
+    mid: {x: xm, y: ym},
+    start: {x: x0, y: y0}
+  } = getPoints(splyt[state.size], { useOffset: true })
   return (
     g({
       stroke: blue,
@@ -104,13 +95,12 @@ function Controls ({
   state,
   onControlClick,
   onControlMouseEnter,
-  onControlMouseLeave
+  onControlMouseLeave,
+  onEditControlClick
 }) {
-  const [leftPoint, rightPoint] = getEndPoints(
+  const { left: leftPoint, right: rightPoint, mid: midPoint } = getPoints(
     splyt[state.size],
-    {
-      useOffset: false
-    }
+    { useOffset: false }
   )
   return (
     g({
@@ -129,6 +119,11 @@ function Controls ({
         onClick: onControlClick.bind(this, 'right'),
         onMouseOver: onControlMouseEnter.bind(this, 'right'),
         onMouseOut: onControlMouseLeave.bind(this, 'right')
+      }),
+      ControlCircle({
+        point: midPoint,
+        status: 'neutral',
+        onClick: onEditControlClick
       })
     )
   )

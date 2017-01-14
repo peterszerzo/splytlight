@@ -15,7 +15,6 @@ export default Comp => {
     }
 
     render () {
-      console.log(JSON.stringify(this.state))
       return (
         createElement(Comp, Object.assign({}, this.props, {
           drag: {

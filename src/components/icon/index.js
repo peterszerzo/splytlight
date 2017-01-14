@@ -1,29 +1,24 @@
 import { createElement } from 'react'
 const { svg } = require('hyperscript-helpers/dist')(createElement)
-const { rect } = require('hyperscript-helpers/dist/svg')(createElement)
+const { g, rect, path } = require('hyperscript-helpers/dist/svg')(createElement)
 
-const stroke = 8
-const res = 100
-
-export default ({id}) => {
+function Download() {
   return (
-    svg({ width: '100%', height: '100%', viewBox: '0 0 100 100' },
-      rect({
-        x: (res / 2 - stroke / 2),
-        y: res * 0.15,
-        width: stroke,
-        height: res * 0.45,
-        rx: stroke / 2,
-        ry: stroke / 2
-      }),
-      rect({
-        x: res * 0.3,
-        y: res * 0.7,
-        width: res * (1 - 0.6),
-        height: stroke,
-        rx: stroke / 2,
-        ry: stroke / 2
-      })
+    svg({ width: '100%', height: '100%', viewBox: '0 0 800 800' },
+      g({ transform: 'translate(111.000000, 72.000000)' },
+        rect({
+          x: '0',
+          y: '577',
+          width: '559',
+          height: '60',
+          rx: '30'
+        }),
+        path({ d: 'M309.573073,399.362482 L309.573073,30.0020043 C309.573073,13.4328926 296.141616,-2.84217094e-14 279.573073,-2.84217094e-14 C263.000888,-2.84217094e-14 249.573073,13.4323549 249.573073,30.0020043 L249.573073,398.573593 L168.217758,317.218278 C156.489906,305.490426 137.502005,305.497475 125.786277,317.213203 C114.067972,328.931508 114.07282,347.926154 125.791351,359.644685 L258.717277,492.570611 C264.908072,498.761405 273.121865,501.682294 281.221108,501.337133 C288.488066,501.042201 295.668678,498.119691 301.217758,492.570611 L434.143684,359.644685 C445.871536,347.916833 445.864487,328.928932 434.148758,317.213203 C422.430454,305.494899 403.435808,305.499747 391.717277,317.218278 L309.573073,399.362482 Z' })
+      )
     )
   )
+}
+
+export default ({ id }) => {
+  return Download()
 }

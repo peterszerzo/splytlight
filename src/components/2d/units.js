@@ -39,6 +39,11 @@ export default function Units ({state, setState}) {
       ),
       Unit({
         state,
+        onEditControlClick () {
+          setState({
+            size: state.size === 'small' ? 'large' : 'small'
+          })
+        },
         onControlClick (dir) {
           setState({
             [dir]: {
@@ -52,7 +57,6 @@ export default function Units ({state, setState}) {
           if (!state[dir]) {
             return setState({
               [dir]: {
-                id: '1',
                 status: 'adding',
                 size: 'small'
               }

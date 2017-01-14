@@ -6,7 +6,7 @@ import {
   MeshLambertMaterial
 } from 'three'
 
-const { PI, sin, cos } = Math
+const { sin, cos } = Math
 
 function createCylinder (length, radius) {
   return new CylinderGeometry(radius, radius, length, 24, 8, false)
@@ -24,7 +24,7 @@ function createArm ({length, angle}, baseHeight, radius) {
 }
 
 export default function createSplytUnit (size) {
-  const {baseHeight, radius, leftArm, rightArm} = size
+  const { baseHeight, radius, leftArm, rightArm } = size
 
   const baseObj = createCylinder(baseHeight, radius)
   baseObj.translate(0, baseHeight / 2, 0)
@@ -40,8 +40,7 @@ export default function createSplytUnit (size) {
   ]
 
   const smallYGeo = new Geometry();
-  [baseObj, leftArmObj, rightArmObj].forEach(o => smallYGeo.merge(o, o.matrix))
-  smallYGeo.rotateY(0 * PI / 180)
+  [ baseObj, leftArmObj, rightArmObj ].forEach(o => smallYGeo.merge(o, o.matrix))
 
   const smallYMesh = SceneUtils.createMultiMaterialObject(smallYGeo, materials)
 

@@ -6,7 +6,7 @@ import IconButton from '../icon-button'
 const styles = StyleSheet.create({
   root: {
     position: 'absolute',
-    top: '20px',
+    top: '40px',
     left: '50%',
     transform: 'translate(-50%, 0)',
     width: '40px'
@@ -18,7 +18,6 @@ export default ({state}) => (
     className: css(styles.root)
   },
     IconButton({
-      // unicodeIcon: '⤓',
       icon: '1',
       href: `data:application/octet-stream;type=,${JSON.stringify(state.tree)}`
     })

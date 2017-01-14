@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     width: '40px',
     height: '40px',
     cursor: 'pointer',
-    borderRadius: '50px',
+    borderRadius: '20px',
     textAlign: 'center',
     margin: '10px 0',
     fontSize: '1.25rem',
@@ -21,9 +21,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fill: vars.white,
     justifyContent: 'center',
-    svg: {
-      width: '100%',
-      height: '100%'
+    padding: '8px',
+    opacity: '0.7',
+    transition: 'opacity .3s',
+    ':hover': {
+      opacity: '1'
     }
   }
 })
