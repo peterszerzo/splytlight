@@ -12,7 +12,8 @@ class ThreeDee extends Component {
         ref: 'threedee',
         onMouseDown: this.props.onMouseDown,
         onMouseUp: this.props.onMouseUp,
-        onMouseMove: this.props.onMouseMove
+        onMouseMove: this.props.onMouseMove,
+        onMouseOut: this.props.onMouseOut
       })
     )
   }

@@ -15,6 +15,7 @@ export default Comp => {
     }
 
     render () {
+      console.log(JSON.stringify(this.state))
       return (
         createElement(Comp, Object.assign({}, this.props, {
           drag: {
@@ -23,7 +24,8 @@ export default Comp => {
           },
           onMouseDown: this.onMouseDown,
           onMouseUp: this.onMouseUp,
-          onMouseMove: this.onMouseMove
+          onMouseMove: this.onMouseMove,
+          onMouseOut: this.onMouseUp
         }))
       )
     }
@@ -60,10 +62,6 @@ export default Comp => {
     }
 
     onMouseDown (e) {
-      const { atDragStart } = this.state
-      if (!atDragStart) {
-        return
-      }
       this.setState({
         atDragStart: [
           e.nativeEvent.offsetX,

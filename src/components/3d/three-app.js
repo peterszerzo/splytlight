@@ -113,11 +113,10 @@ export default (container, initialState) => {
   function update (newState) {
     let prevState = state
     state = newState
-    console.log(state.drag)
     if (state.global.ui.windowWidth === 0 || state.global.ui.windowHeight === 0) {
       return
     }
-    const cameraAngle = (state.drag.totalFinalized[0] + state.drag.current[0]) / 1000
+    const cameraAngle = - (state.drag.totalFinalized[0] + state.drag.current[0]) / 200
     if (prevState.global.tree !== state.global.tree || !model) {
       setModel (state.global.tree)
     }
