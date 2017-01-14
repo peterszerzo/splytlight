@@ -40,8 +40,8 @@ export default Comp => {
         atDragStart: null,
         current: [0, 0],
         totalFinalizedDrag: [
-          totalFinalizedDrag[0] + (current[0] - atDragStart[0]),
-          totalFinalizedDrag[1] + (current[1] - atDragStart[1])
+          totalFinalizedDrag[0] + current[0],
+          totalFinalizedDrag[1] + current[1]
         ]
       })
     }

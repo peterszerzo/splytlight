@@ -90,33 +90,38 @@ export default (container, initialState) => {
     camera.aspect = width / height
     camera.position.set(
       (x + y) * 1.2 * Math.sin(cameraAngle),
-      (x + y) * 1.2 * Math.cos(cameraAngle),
-      (x + y) * 1.2
+      (x + y) * 1.2,
+      (x + y) * 1.2 * Math.cos(cameraAngle)
     )
-    camera.lookAt(new Vector3(0, 0, (x + y) * 0.8))
+    camera.lookAt(new Vector3(0, (x + y) * 0.3), 0)
     camera.updateProjectionMatrix()
   }
 
-  let oldGroup
+  let model
+  let modelBounds
 
-  function addSplyt (tree) {
-    if (oldGroup) {
-      scene.remove(oldGroup)
+  function setModel (tree) {
+    if (model) {
+      scene.remove(model)
     }
-    const group = create(tree)
-    oldGroup = group
-    scene.add(group)
-    return group
+    model = create(tree)
+    scene.add(model)
+    modelBounds = new Box3().setFromObject(model)
+    return model
   }
 
   function update (newState) {
+    let prevState = state
     state = newState
-    const cameraAngle = (state.drag.totalFinalized[0] + state.drag.current[0]) / 1000
+    console.log(state.drag)
     if (state.global.ui.windowWidth === 0 || state.global.ui.windowHeight === 0) {
       return
     }
-    const obj = addSplyt(state.global.tree)
-    const { min, max } = new Box3().setFromObject(obj)
+    const cameraAngle = (state.drag.totalFinalized[0] + state.drag.current[0]) / 1000
+    if (prevState.global.tree !== state.global.tree || !model) {
+      setModel (state.global.tree)
+    }
+    const { min, max } = modelBounds
     resize(getVizContainerDimensions(state.global.ui), {
       x: Math.abs(min.x - max.x),
       y: Math.abs(min.y - max.y)
