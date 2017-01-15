@@ -1,11 +1,11 @@
-import {createElement} from 'react'
-const {g} = require('hyperscript-helpers/dist/svg')(createElement)
+import { createElement } from 'react'
+const { g } = require('hyperscript-helpers/dist/svg')(createElement)
 
 import Unit from './unit'
 import * as splyt from '../../constants/geometries'
-import {getEndPoints} from '../../utilities/splyt'
+import { getEndPoints } from '../../utilities/splyt'
 
-const {PI} = Math
+const { PI } = Math
 
 export default function Units ({state, setState}) {
   if (!state) {
@@ -39,6 +39,11 @@ export default function Units ({state, setState}) {
       ),
       Unit({
         state,
+        onEditControlClick () {
+          setState({
+            size: state.size === 'small' ? 'large' : 'small'
+          })
+        },
         onControlClick (dir) {
           setState({
             [dir]: {
@@ -52,7 +57,6 @@ export default function Units ({state, setState}) {
           if (!state[dir]) {
             return setState({
               [dir]: {
-                id: '1',
                 status: 'adding',
                 size: 'small'
               }

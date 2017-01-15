@@ -2,10 +2,10 @@ const subscribers = []
 
 let state = {
   tree: {
-    id: 'b',
     size: 'small',
     status: 'added'
   },
+  currentSize: 'small',
   route: '',
   ui: {
     windowHeight: 0,

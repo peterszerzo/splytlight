@@ -1,9 +1,9 @@
-import {Group} from 'three'
+import { Group } from 'three'
 
 import * as splyt from '../../../constants/geometries'
 import createSplytUnit from './unit'
 
-const {sin, cos} = Math
+const { sin, cos } = Math
 
 function transformSplyt (object, dimensions, direction) {
   const {baseHeight} = dimensions

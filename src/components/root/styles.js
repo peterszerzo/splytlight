@@ -1,9 +1,8 @@
 import { StyleSheet } from 'aphrodite'
-import * as vars from '../constants/styling'
+import * as vars from '../../constants/styling'
 
 export default StyleSheet.create({
   root: {
-    display: 'block',
     position: 'relative'
   },
   main: {
@@ -20,7 +19,7 @@ export default StyleSheet.create({
     height: '100%',
     flex: '1',
     ':first-of-type': {
-      borderRight: `1px solid ${vars.blue}`
+      borderRight: `1px solid ${vars.faintBlue}`
     }
   }
 })
