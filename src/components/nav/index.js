@@ -1,28 +1,7 @@
 import { createElement } from 'react'
 const { div, span, nav } = require('hyperscript-helpers')(createElement)
-import { css, StyleSheet } from 'aphrodite'
-import * as vars from '../../constants/styling'
-
-const styles = StyleSheet.create({
-  root: {
-    position: 'static'
-  },
-  toggle: {
-    position: 'fixed',
-    height: vars.headerHeight,
-    top: '0',
-    right: '0',
-    width: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingRight: vars.standardPadding
-  },
-  span: {
-    color: vars.white,
-    cursor: 'pointer'
-  }
-})
+import { css } from 'aphrodite'
+import styles from './styles'
 
 export default ({ state, setState }) => (
   nav({ className: css(styles.root) },

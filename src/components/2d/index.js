@@ -8,7 +8,7 @@ export default ({state: {tree, ui}, setState}) => {
   const {width, height} = getContainerDimensions(ui)
   return (
     div({
-      style: {margin: 'auto'}
+      style: { margin: 'auto' }
     },
       svg({
         id: 'splyt-editor',
