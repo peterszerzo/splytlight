@@ -40,7 +40,7 @@ export default ({state, setState}) => (
         state,
         setState
       }),
-      DrawNav({state})
+      DrawNav({state, setState})
     )
   )
 )

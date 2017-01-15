@@ -1,5 +1,5 @@
 import { createElement } from 'react'
-const { div, span, a } = require('hyperscript-helpers')(createElement)
+const { a } = require('hyperscript-helpers')(createElement)
 import { css, StyleSheet } from 'aphrodite'
 import * as vars from '../../constants/styling'
 import Icon from '../icon'
@@ -30,15 +30,14 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({icon, unicodeIcon, onClick, href}) => {
-  const el = href ? a : div
+export default ({ icon, onClick, href }) => {
   return (
-    el({
+    a({
       className: css(styles.root),
       onClick,
-      href
+      href: href || 'javascript:void(0)'
     },
-      unicodeIcon ? span({}, unicodeIcon) : Icon({id: icon})
+      Icon({ id: icon })
     )
   )
 }

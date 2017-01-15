@@ -13,12 +13,20 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({state}) => (
+export default ({state, setState}) => (
   div({
     className: css(styles.root)
   },
     IconButton({
-      icon: '1',
+      icon: state.currentSize + 'Splyt',
+      onClick: () => {
+        setState({
+          currentSize: state.currentSize === 'small' ? 'large' : 'small'
+        })
+      }
+    }),
+    IconButton({
+      icon: 'download',
       href: `data:application/octet-stream;type=,${JSON.stringify(state.tree)}`
     })
   )

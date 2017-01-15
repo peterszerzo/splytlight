@@ -116,9 +116,9 @@ export default (container, initialState) => {
     if (state.global.ui.windowWidth === 0 || state.global.ui.windowHeight === 0) {
       return
     }
-    const cameraAngle = - (state.drag.totalFinalized[0] + state.drag.current[0]) / 200
+    const cameraAngle = -(state.drag.totalFinalized[0] + state.drag.current[0]) / 200
     if (prevState.global.tree !== state.global.tree || !model) {
-      setModel (state.global.tree)
+      setModel(state.global.tree)
     }
     const { min, max } = modelBounds
     resize(getVizContainerDimensions(state.global.ui), {
