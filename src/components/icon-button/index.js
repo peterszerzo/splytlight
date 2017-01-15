@@ -35,7 +35,7 @@ export default ({ icon, onClick, onUpload, uploadId, href, title }) => {
           type: 'file',
           onChange: e => {
             const file = e.target.files[0]
-            const reader = new FileReader()
+            const reader = new global.FileReader()
             reader.onload = e => { onUpload(e.target.result) }
             reader.readAsText(file)
           }
