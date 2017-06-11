@@ -1,7 +1,11 @@
-import { StyleSheet } from 'aphrodite'
-import * as vars from '../../constants/styling'
+import { createElement } from 'react'
+import { StyleSheet, css } from 'aphrodite'
+const { header, h1, div } = require('hyperscript-helpers')(createElement)
+import { title } from '../content'
+import Icon from './icon'
+import * as vars from '../constants/styling'
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     boxSizing: 'border-box',
     width: '100%',
@@ -34,3 +38,21 @@ export default StyleSheet.create({
     fill: vars.white
   }
 })
+
+export default () => (
+  header({
+    className: css(styles.container)
+  },
+    div({
+      className: css(styles.logoContainer)
+    }, Icon({
+      id: 'logo',
+      style: {
+        fill: vars.white
+      }
+    })),
+    h1({
+      className: css(styles.text)
+    }, title)
+  )
+)

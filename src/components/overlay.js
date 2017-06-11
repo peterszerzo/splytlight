@@ -1,8 +1,8 @@
 import {createElement} from 'react'
 const {div} = require('hyperscript-helpers')(createElement)
 import {css, StyleSheet} from 'aphrodite'
-import * as vars from '../../constants/styling'
-import Static from '../static'
+import * as vars from '../constants/styling'
+import Static from './static'
 
 const styles = StyleSheet.create({
   root: {

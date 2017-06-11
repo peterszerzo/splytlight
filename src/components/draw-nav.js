@@ -1,7 +1,7 @@
 import {createElement} from 'react'
 const {div} = require('hyperscript-helpers')(createElement)
 import {StyleSheet, css} from 'aphrodite'
-import IconButton from '../icon-button'
+import IconButton from './icon-button'
 
 const styles = StyleSheet.create({
   root: {
