@@ -1,5 +1,4 @@
-import { createElement } from 'react'
-const { a, button, div, input, label } = require('hyperscript-helpers')(createElement)
+import React from 'react'
 import { css, StyleSheet } from 'aphrodite'
 import Icon from './icon'
 import * as vars from '../constants/styling'
@@ -44,47 +43,41 @@ const styles = StyleSheet.create({
 })
 
 export default ({ icon, onClick, onUpload, uploadId, href, title }) => {
-  const child = Icon({ id: icon })
+  const child = <Icon id={icon} />
   if (href) {
     return (
-      a({
-        className: css(styles.root),
-        title,
-        href
-      }, child)
+      <a
+        className={css(styles.root)}
+        title={title}
+        href={href}
+      >{child}</a>
     )
   }
   if (onClick) {
     return (
-      button({
-        className: css(styles.root),
-        title,
-        onClick
-      }, child)
+      <button
+        className={css(styles.root)}
+        title={title}
+        onClick={onClick}
+      >{child}</button>
     )
   }
   if (onUpload) {
     return (
-      div({
-        className: css(styles.root)
-      },
-        input({
-          id: uploadId,
-          className: css(styles.uploadInput),
-          type: 'file',
-          onChange: e => {
+      <div className={css(styles.root)}>
+        <input
+          id={uploadId}
+          className={css(styles.uploadInput)}
+          type={'file'}
+          onChange={e => {
             const file = e.target.files[0]
             const reader = new global.FileReader()
             reader.onload = e => { onUpload(e.target.result) }
             reader.readAsText(file)
-          }
-        }),
-        label({
-          htmlFor: uploadId,
-          className: css(styles.uploadLabel)
-        }, child
-        )
-      )
+          }}
+        />
+        <label htmlFor={uploadId} className={css(styles.uploadLabel)}>{child}</label>
+      </div>
     )
   }
   return null

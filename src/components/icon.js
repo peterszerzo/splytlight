@@ -1,6 +1,4 @@
-import { createElement } from 'react'
-const { svg } = require('hyperscript-helpers/dist')(createElement)
-const { use } = require('hyperscript-helpers/dist/svg')(createElement)
+import React from 'react'
 
 // See /public/index.html for icon declarations as <symbol> tags
 const icons = {
@@ -21,18 +19,14 @@ const icons = {
   }
 }
 
-export default ({ id, style }) => {
-  return (
-    svg({
-      style: Object.assign({}, {
-        width: '100%',
-        height: '100%'
-      }, style),
-      viewBox: icons[id].viewBox
-    },
-      use({
-        xlinkHref: `#${id}`
-      })
-    )
-  )
-}
+export default ({ id, style }) => (
+  <svg
+    style={Object.assign({}, {
+      width: '100%',
+      height: '100%'
+    }, style)}
+    viewBox={icons[id].viewBox}
+  >
+    <use xlinkHref={`#${id}`} />
+  </svg>
+)

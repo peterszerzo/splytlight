@@ -1,5 +1,4 @@
-import { createElement } from 'react'
-const { div, span, nav } = require('hyperscript-helpers')(createElement)
+import React from 'react'
 import { css, StyleSheet } from 'aphrodite'
 import * as vars from '../constants/styling'
 
@@ -25,14 +24,14 @@ const styles = StyleSheet.create({
 })
 
 export default ({ state, setState }) => (
-  nav({ className: css(styles.root) },
-    div({ className: css(styles.toggle) },
-      span({
-        className: css(styles.span),
-        onClick: () => {
+  <nav className={css(styles.root)}>
+    <div className={css(styles.toggle)}>
+      <span
+        className={css(styles.span)}
+        onClick={() => {
           setState({route: state.route === 'about' ? '' : 'about'})
-        }
-      }, 'About')
-    )
-  )
+        }}
+      >About</span>
+    </div>
+  </nav>
 )

@@ -1,5 +1,4 @@
-import {createElement} from 'react'
-const {div} = require('hyperscript-helpers')(createElement)
+import React from 'react'
 import {css, StyleSheet} from 'aphrodite'
 import * as vars from '../constants/styling'
 import Static from './static'
@@ -29,12 +28,8 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({isActive, content}) => {
-  return (
-    div({
-      className: css([styles.root, isActive && styles.active])
-    },
-      Static({content})
-    )
-  )
-}
+export default ({isActive, content}) => (
+  <div className={css([styles.root, isActive && styles.active])}>
+    <Static content={content} />
+  </div>
+)

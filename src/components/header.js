@@ -1,6 +1,5 @@
-import { createElement } from 'react'
+import React from 'react'
 import { StyleSheet, css } from 'aphrodite'
-const { header, h1, div } = require('hyperscript-helpers')(createElement)
 import { title } from '../content'
 import Icon from './icon'
 import * as vars from '../constants/styling'
@@ -40,19 +39,15 @@ const styles = StyleSheet.create({
 })
 
 export default () => (
-  header({
-    className: css(styles.container)
-  },
-    div({
-      className: css(styles.logoContainer)
-    }, Icon({
-      id: 'logo',
-      style: {
-        fill: vars.white
-      }
-    })),
-    h1({
-      className: css(styles.text)
-    }, title)
-  )
+  <header className={css(styles.container)}>
+    <div className={css(styles.logoContainer)}>
+      <Icon
+        id={'logo'}
+        style={{
+          fill: vars.white
+        }}
+      />
+    </div>
+    <h1 className={css(styles.text)}>{title}</h1>
+  </header>
 )

@@ -1,5 +1,4 @@
-import { createElement } from 'react'
-const { div } = require('hyperscript-helpers')(createElement)
+import React from 'react'
 import { css, StyleSheet } from 'aphrodite'
 import * as vars from '../constants/styling'
 import DrawNav from './draw-nav'
@@ -34,36 +33,27 @@ const styles = StyleSheet.create({
 })
 
 export default ({state, setState}) => (
-  div({
-    className: css(styles.root)
-  },
-    Header(),
-    Overlay({
-      isActive: state.route === 'about',
-      content: about
-    }),
-    Nav({state, setState}),
-    div({
-      className: css(styles.main)
-    },
-      div({
-        className: css(styles.viz)
-      },
-        TwoDee({
-          className: css(styles.viz),
-          state,
-          setState: (treeStateChange) => {
+  <div className={css(styles.root)}>
+    <Header />
+    <Overlay
+      isActive={state.route === 'about'}
+      content={about}
+    />
+    <Nav state={state} setState={setState} />
+    <div className={css(styles.main)}>
+      <div className={css(styles.viz)}>
+        <TwoDee
+          className={css(styles.viz)}
+          state={state}
+          setState={(treeStateChange) => {
             return setState({
               tree: Object.assign({}, state.tree, treeStateChange)
             })
-          }
-        })
-      ),
-      createElement(ThreeDee, {
-        state,
-        setState
-      }),
-      DrawNav({state, setState})
-    )
-  )
+          }}
+        />
+      </div>
+      <ThreeDee state={state} setState={setState} />
+      <DrawNav state={state} setState={setState} />
+    </div>
+  </div>
 )

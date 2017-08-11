@@ -1,26 +1,28 @@
-import { Component, createElement } from 'react'
-import { findDOMNode } from 'react-dom'
-const { div } = require('hyperscript-helpers')(createElement)
+import React, { Component } from 'react'
 import createThreeApp from './three-app'
 import mouseDragContainer from './mouse-drag-container'
 
 class ThreeDee extends Component {
   render () {
     return (
-      div({
-        className: this.props.className,
-        ref: 'threedee',
-        onMouseDown: this.props.onMouseDown,
-        onMouseUp: this.props.onMouseUp,
-        onMouseMove: this.props.onMouseMove,
-        onMouseOut: this.props.onMouseOut
-      })
+      <div
+        className={this.props.className}
+        ref={this.setContainerNode.bind(this)}
+        onMouseDown={this.props.onMouseDown}
+        onMouseUp={this.props.onMouseUp}
+        onMouseMove={this.props.onMouseMove}
+        onMouseOut={this.props.onMouseOut}
+      />
     )
+  }
+
+  setContainerNode (node) {
+    this.containerNode = node
   }
 
   componentDidMount () {
     this.threeApp = createThreeApp(
-      findDOMNode(this.refs.threedee),
+      this.containerNode,
       {
         global: this.props.state,
         drag: this.props.drag
