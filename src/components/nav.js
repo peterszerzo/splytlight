@@ -1,6 +1,7 @@
 import React from 'react'
 import { css, StyleSheet } from 'aphrodite'
 import * as vars from '../constants/styling'
+import { store, navigate } from '../state.js'
 
 const styles = StyleSheet.create({
   root: {
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
     paddingRight: vars.standardPadding
   },
   span: {
+    textDecoration: 'none',
     color: vars.white,
     cursor: 'pointer'
   }
@@ -26,12 +28,16 @@ const styles = StyleSheet.create({
 export default ({ state, setState }) => (
   <nav className={css(styles.root)}>
     <div className={css(styles.toggle)}>
-      <span
+      <a
         className={css(styles.span)}
-        onClick={() => {
-          setState({route: state.route === 'about' ? '' : 'about'})
+        href={'/about'}
+        onClick={e => {
+          e.preventDefault()
+          store.dispatch(navigate(
+            state.route === '/about' ? '/' : '/about'
+          ))
         }}
-      >About</span>
+      >About</a>
     </div>
   </nav>
 )

@@ -2,7 +2,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import Root from './components/root'
-import { store, rawStateChange, fetchTreeRequest, changeTree } from './state'
+import { store, rawStateChange, fetchTreeRequest, changeTree, navigate } from './state'
 import { Observable } from 'rxjs'
 
 const resizeStream = Observable.fromEvent(window, 'resize').map(e => ({
@@ -17,6 +17,10 @@ resizeStream.subscribe(dim => {
   store.dispatch(rawStateChange({
     ui: dim
   }))
+})
+
+Observable.fromEvent(window, 'popstate').subscribe(() => {
+  store.dispatch(navigate(location.pathname))
 })
 
 const container = document.getElementById('app')

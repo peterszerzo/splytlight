@@ -36,7 +36,7 @@ export default ({state, setState, changeTree}) => (
   <div className={css(styles.root)}>
     <Header />
     <Overlay
-      isActive={state.route === 'about'}
+      isActive={state.route === '/about'}
       content={about}
     />
     <Nav state={state} setState={setState} />

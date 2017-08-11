@@ -5,11 +5,10 @@ import { Observable } from 'rxjs'
 import 'rxjs/add/observable/of'
 import 'rxjs/add/operator/mapTo'
 import 'rxjs/add/operator/delay'
-import { log } from './utils'
 
 // State
 
-type Route = 'home' | 'about'
+type Route = string
 
 type Tree = {
   size: string,
@@ -38,7 +37,7 @@ const initialTree: Tree = {
 const initialState: State = {
   tree: initialTree,
   currentSize: 'small',
-  route: 'home',
+  route: '/',
   ui: {
     windowHeight: 0,
     windowWidth: 0
@@ -74,7 +73,12 @@ type ChangeTree = {
   payload: Tree
 }
 
-type Action = RawStateChange | Resize | FetchTreeRequest | FetchTreeResponse | ChangeTree
+type Navigate = {
+  type: 'navigate',
+  payload: Route
+}
+
+type Action = RawStateChange | Resize | FetchTreeRequest | FetchTreeResponse | ChangeTree | Navigate
 
 export function rawStateChange (stateChange: Object): Action {
   return {
@@ -93,6 +97,13 @@ export function changeTree (newTree: Tree): Action {
   return {
     type: 'changeTree',
     payload: newTree
+  }
+}
+
+export function navigate (newRoute: string): Action {
+  return {
+    type: 'navigate',
+    payload: newRoute
   }
 }
 
@@ -121,7 +132,13 @@ function reducer (state: State = initialState, action: Action): State {
       return Object.assign({}, state, {
         tree: newTree
       })
+    case 'navigate':
+      global.history.pushState(null, null, action.payload)
+      return Object.assign({}, state, {
+        route: action.payload
+      })
     default:
+      // eslint-disable-next-line
       (action: empty)
       return state
   }
