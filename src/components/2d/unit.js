@@ -3,7 +3,7 @@ const { g, line, circle } = require('hyperscript-helpers/dist/svg')(createElemen
 import * as splyt from '../../constants/geometries'
 import {
   getPoints
-} from '../../utilities/splyt.js'
+} from '../../splyt.js'
 import {
   brown,
   green,

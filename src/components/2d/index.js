@@ -1,7 +1,7 @@
 import { createElement } from 'react'
 const { div, svg } = require('hyperscript-helpers')(createElement)
 const { g } = require('hyperscript-helpers/dist/svg')(createElement)
-import getContainerDimensions from '../../utilities/layout'
+import getContainerDimensions from '../../layout'
 import Units from './units'
 
 export default ({state: {tree, ui}, setState}) => {

@@ -12,7 +12,7 @@ import {
   MeshLambertMaterial,
   CircleGeometry
 } from 'three'
-import getVizContainerDimensions from '../../utilities/layout'
+import getVizContainerDimensions from '../../layout'
 import create from './splyt'
 import { blue, white } from '../../constants/styling'
 

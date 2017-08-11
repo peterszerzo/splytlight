@@ -3,7 +3,7 @@ const { g } = require('hyperscript-helpers/dist/svg')(createElement)
 
 import Unit from './unit'
 import * as splyt from '../../constants/geometries'
-import { getEndPoints } from '../../utilities/splyt'
+import { getEndPoints } from '../../splyt'
 
 const { PI } = Math
 

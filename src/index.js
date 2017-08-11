@@ -1,21 +1,25 @@
+// @flow
 import { render } from 'react-dom'
 import Root from './components/root'
 import { get, set, subscribe } from './state'
+import { Observable } from 'rxjs'
 
-function setWindowDimensions () {
+const resizeStream = Observable.fromEvent(window, 'resize').map(e => ({
+  windowWidth: e.target.innerWidth,
+  windowHeight: e.target.innerHeight
+})).throttle(ev => Observable.interval(50)).startWith({
+  windowWidth: global.window.innerWidth,
+  windowHeight: global.window.innerHeight
+})
+
+resizeStream.subscribe(dim => {
   set({
-    ui: {
-      windowWidth: global.window.innerWidth,
-      windowHeight: global.window.innerHeight
-    }
+    ui: dim
   })
-}
+})
 
-setWindowDimensions()
-window.addEventListener('resize', setWindowDimensions)
-const state = get()
 const container = document.getElementById('app')
-render(Root({state, setState: set}), container)
+render(Root({state: get(), setState: set}), container)
 subscribe(state => {
   render(Root({state, setState: set}), container)
 })
