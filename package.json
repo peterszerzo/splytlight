@@ -15,8 +15,9 @@
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
+    "redux-observable": "^0.15.0",
     "rxjs": "^5.4.3",
+    "standard": "^10.0.3",
     "three": "^0.83.0"
   },
   "scripts": {
@@ -24,6 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "flow": "flow",
+    "lint": "standard src/**/*.js --fix"
   }
 }

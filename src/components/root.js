@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({state, setState}) => (
+export default ({state, setState, changeTree}) => (
   <div className={css(styles.root)}>
     <Header />
     <Overlay
@@ -45,11 +45,7 @@ export default ({state, setState}) => (
         <TwoDee
           className={css(styles.viz)}
           state={state}
-          setState={(treeStateChange) => {
-            return setState({
-              tree: Object.assign({}, state.tree, treeStateChange)
-            })
-          }}
+          changeTree={changeTree}
         />
       </div>
       <ThreeDee state={state} setState={setState} />

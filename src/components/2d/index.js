@@ -4,7 +4,7 @@ const { g } = require('hyperscript-helpers/dist/svg')(createElement)
 import getContainerDimensions from '../../layout'
 import Units from './units'
 
-export default ({state: {tree, ui}, setState}) => {
+export default ({state: {tree, ui}, changeTree}) => {
   const {width, height} = getContainerDimensions(ui)
   return (
     div({
@@ -20,7 +20,7 @@ export default ({state: {tree, ui}, setState}) => {
         },
           Units({
             state: tree,
-            setState
+            setState: changeTree
           })
         )
       )

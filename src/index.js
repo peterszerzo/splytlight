@@ -1,7 +1,8 @@
 // @flow
+import React from 'react'
 import { render } from 'react-dom'
 import Root from './components/root'
-import { get, set, subscribe } from './state'
+import { store, rawStateChange, fetchTreeRequest, changeTree } from './state'
 import { Observable } from 'rxjs'
 
 const resizeStream = Observable.fromEvent(window, 'resize').map(e => ({
@@ -13,13 +14,29 @@ const resizeStream = Observable.fromEvent(window, 'resize').map(e => ({
 })
 
 resizeStream.subscribe(dim => {
-  set({
+  store.dispatch(rawStateChange({
     ui: dim
-  })
+  }))
 })
 
 const container = document.getElementById('app')
-render(Root({state: get(), setState: set}), container)
-subscribe(state => {
-  render(Root({state, setState: set}), container)
+
+function renderApp () {
+  const props = {
+    state: store.getState(),
+    setState: stateChange => {
+      store.dispatch(rawStateChange(stateChange))
+    },
+    changeTree: stateChange => {
+      store.dispatch(changeTree(stateChange))
+    }
+  }
+  render(<Root {...props} />, container)
+}
+
+
+store.dispatch(fetchTreeRequest())
+renderApp()
+store.subscribe(() => {
+  renderApp()
 })
