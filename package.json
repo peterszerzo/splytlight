@@ -10,6 +10,8 @@
   "dependencies": {
     "aphrodite": "^1.1.0",
     "flow-bin": "^0.52.0",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.5.0",
     "hyperscript-helpers": "^3.0.2",
     "marked": "^0.3.6",
     "react": "^15.4.1",

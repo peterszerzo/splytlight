@@ -4,6 +4,7 @@ import { render } from 'react-dom'
 import Root from './components/root'
 import { store, rawStateChange, fetchTreeRequest, changeTree, navigate } from './state'
 import { Observable } from 'rxjs'
+import './styles'
 
 const resizeStream = Observable.fromEvent(window, 'resize').map(e => ({
   windowWidth: e.target.innerWidth,
