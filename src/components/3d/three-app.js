@@ -11,10 +11,10 @@ import {
   Mesh,
   MeshLambertMaterial,
   CircleGeometry
-} from 'three'
-import getVizContainerDimensions from '../../layout'
-import create from './splyt'
-import { blue, white } from '../../constants/styling'
+} from "three"
+import getVizContainerDimensions from "../../styles/layout"
+import create from "./splyt"
+import { blue, white } from "../../styles/vars"
 
 export default (container, initialState) => {
   let state = initialState
@@ -38,7 +38,7 @@ export default (container, initialState) => {
 
   /* Lights */
 
-  const lights = (function () {
+  const lights = (function() {
     const light1 = new DirectionalLight(white, 0.2)
     light1.position.set(10, 10, 10)
 
@@ -48,18 +48,18 @@ export default (container, initialState) => {
     const light3 = new AmbientLight(blue)
 
     return [light1, light2, light3]
-  }())
+  })()
 
   /* Scene */
 
   const scene = new Scene()
 
-  if (false && process.env.NODE_ENV === 'development') {
+  if (false && process.env.NODE_ENV === "development") {
     scene.add(axisHelper)
     scene.add(plane)
   }
 
-  lights.forEach((light) => {
+  lights.forEach(light => {
     scene.add(light)
   })
 
@@ -75,17 +75,17 @@ export default (container, initialState) => {
 
   /* Renderer */
 
-  const renderer = new WebGLRenderer({antialias: true})
+  const renderer = new WebGLRenderer({ antialias: true })
   renderer.setClearColor(0xffffff, 1)
   renderer.shadowMap.enabled = true
 
-  function render (node) {
+  function render(node) {
     renderer.render(scene, camera)
   }
 
   /* Update */
 
-  function resize ({width, height}, {x, y}, cameraAngle) {
+  function resize({ width, height }, { x, y }, cameraAngle) {
     renderer.setSize(width, height)
     camera.aspect = width / height
     camera.position.set(
@@ -100,7 +100,7 @@ export default (container, initialState) => {
   let model
   let modelBounds
 
-  function setModel (tree) {
+  function setModel(tree) {
     if (model) {
       scene.remove(model)
     }
@@ -110,21 +110,29 @@ export default (container, initialState) => {
     return model
   }
 
-  function update (newState) {
+  function update(newState) {
     let prevState = state
     state = newState
-    if (state.global.ui.windowWidth === 0 || state.global.ui.windowHeight === 0) {
+    if (
+      state.global.ui.windowWidth === 0 ||
+      state.global.ui.windowHeight === 0
+    ) {
       return
     }
-    const cameraAngle = -(state.drag.totalFinalized[0] + state.drag.current[0]) / 200
+    const cameraAngle =
+      -(state.drag.totalFinalized[0] + state.drag.current[0]) / 200
     if (prevState.global.tree !== state.global.tree || !model) {
       setModel(state.global.tree)
     }
     const { min, max } = modelBounds
-    resize(getVizContainerDimensions(state.global.ui), {
-      x: Math.abs(min.x - max.x),
-      y: Math.abs(min.y - max.y)
-    }, cameraAngle)
+    resize(
+      getVizContainerDimensions(state.global.ui),
+      {
+        x: Math.abs(min.x - max.x),
+        y: Math.abs(min.y - max.y)
+      },
+      cameraAngle
+    )
     render()
   }
 

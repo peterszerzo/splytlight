@@ -1,29 +1,25 @@
-import { Group } from 'three'
+import { Group } from "three"
 
-import * as splyt from '../../../constants/geometries'
-import createSplytUnit from './unit'
+import * as splyt from "../../../constants/geometries"
+import createSplytUnit from "./unit"
 
 const { sin, cos } = Math
 
-function transformSplyt (object, dimensions, direction) {
-  const {baseHeight} = dimensions
-  const {angle, length} = dimensions[direction + 'Arm']
+function transformSplyt(object, dimensions, direction) {
+  const { baseHeight } = dimensions
+  const { angle, length } = dimensions[direction + "Arm"]
   object.rotateZ(angle)
-  object.position.set(
-    -length * sin(angle),
-    baseHeight + length * cos(angle),
-    0
-  )
+  object.position.set(-length * sin(angle), baseHeight + length * cos(angle), 0)
 }
 
-function createSplytTree (state) {
-  if (!state || (state.status === 'adding')) {
+function createSplytTree(state) {
+  if (!state || state.status === "adding") {
     return new Group()
   } else {
     const leftGroup = createSplytTree(state.left)
-    transformSplyt(leftGroup, splyt[state.size], 'left')
+    transformSplyt(leftGroup, splyt[state.size], "left")
     const rightGroup = createSplytTree(state.right)
-    transformSplyt(rightGroup, splyt[state.size], 'right')
+    transformSplyt(rightGroup, splyt[state.size], "right")
     const group = new Group()
     group.add(leftGroup)
     group.add(rightGroup)
@@ -32,7 +28,7 @@ function createSplytTree (state) {
   }
 }
 
-export default function create (tree) {
+export default function create(tree) {
   const obj = createSplytTree(tree)
   return obj
 }

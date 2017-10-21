@@ -1,43 +1,23 @@
-// @flow
-import { createStore, applyMiddleware } from 'redux'
-import { createEpicMiddleware } from 'redux-observable'
-import { Observable } from 'rxjs'
-import 'rxjs/add/observable/of'
-import 'rxjs/add/operator/mapTo'
-import 'rxjs/add/operator/delay'
+import { createStore, applyMiddleware } from "redux"
+import { createEpicMiddleware } from "redux-observable"
+import { Observable } from "rxjs"
+import "rxjs/add/observable/of"
+import "rxjs/add/operator/mapTo"
+import "rxjs/add/operator/delay"
 
 // State
 
-type Route = string
-
-type Tree = {
-  size: string,
-  status: string,
-  left: ?Tree,
-  right: ?Tree
-}
-
-type State = {
-  +tree: Tree,
-  +currentSize: 'small' | 'large',
-  +route: Route,
-  +ui: {
-    +windowHeight: number,
-    +windowWidth: number
-  }
-}
-
-const initialTree: Tree = {
-  size: 'small',
-  status: 'added',
+const initialTree = {
+  size: "small",
+  status: "added",
   left: null,
   right: null
 }
 
-const initialState: State = {
+const initialState = {
   tree: initialTree,
-  currentSize: 'small',
-  route: '/',
+  currentSize: "small",
+  route: "/",
   ui: {
     windowHeight: 0,
     windowWidth: 0
@@ -46,100 +26,66 @@ const initialState: State = {
 
 // Actions
 
-type RawStateChange = {
-  type: 'rawStateChange',
-  payload: Object
-}
-
-type Resize = {
-  type: 'resize',
-  payload: {
-    +height: number,
-    +width: number
-  }
-}
-
-type FetchTreeRequest = {
-  type: 'fetchTreeRequest'
-}
-
-type FetchTreeResponse = {
-  type: 'fetchTreeResponse',
-  payload: Tree
-}
-
-type ChangeTree = {
-  type: 'changeTree',
-  payload: Tree
-}
-
-type Navigate = {
-  type: 'navigate',
-  payload: Route
-}
-
-type Action = RawStateChange | Resize | FetchTreeRequest | FetchTreeResponse | ChangeTree | Navigate
-
-export function rawStateChange (stateChange: Object): Action {
+export function rawStateChange(stateChange) {
   return {
-    type: 'rawStateChange',
+    type: "rawStateChange",
     payload: stateChange
   }
 }
 
-export function fetchTreeRequest (): Action {
+export function fetchTreeRequest() {
   return {
-    type: 'fetchTreeRequest'
+    type: "fetchTreeRequest"
   }
 }
 
-export function changeTree (newTree: Tree): Action {
+export function changeTree(newTree) {
   return {
-    type: 'changeTree',
+    type: "changeTree",
     payload: newTree
   }
 }
 
-export function navigate (newRoute: string): Action {
+export function navigate(newRoute) {
   return {
-    type: 'navigate',
+    type: "navigate",
     payload: newRoute
   }
 }
 
 // Reducers
 
-function reducer (state: State = initialState, action: Action): State {
+function reducer(state = initialState, action) {
   switch (action.type) {
-    case 'rawStateChange':
+    case "rawStateChange":
       return Object.assign({}, state, action.payload)
-    case 'resize':
+    case "resize":
       return Object.assign({}, state, {
         ui: {
           windowWidth: action.payload.width,
           windowHeight: action.payload.height
         }
       })
-    case 'fetchTreeRequest':
+    case "fetchTreeRequest":
       return state
-    case 'fetchTreeResponse':
+    case "fetchTreeResponse":
       return Object.assign({}, state, {
         tree: action.payload
       })
-    case 'changeTree':
+    case "changeTree":
       const newTree = Object.assign({}, state.tree, action.payload)
-      localStorage.setItem('splytstate', JSON.stringify(newTree))
+      localStorage.setItem("splytstate", JSON.stringify(newTree))
       return Object.assign({}, state, {
         tree: newTree
       })
-    case 'navigate':
+    case "navigate":
       global.history.pushState(null, null, action.payload)
       return Object.assign({}, state, {
         route: action.payload
       })
     default:
       // eslint-disable-next-line
-      (action: empty)
+      ;(action: empty)
       return state
   }
 }
@@ -147,24 +93,25 @@ function reducer (state: State = initialState, action: Action): State {
 // Epics
 
 const fetchTreeEpic = action$ =>
-  action$.ofType('fetchTreeRequest')
+  action$
+    .ofType("fetchTreeRequest")
     .delay(10)
-    .switchMap(() => (
+    .switchMap(() =>
       Observable.of({
-        type: 'fetchTreeResponse',
+        type: "fetchTreeResponse",
         payload: (function() {
           try {
-            const tree = JSON.parse(localStorage.getItem('splytstate') || '1')
+            const tree = JSON.parse(localStorage.getItem("splytstate") || "1")
             if (!tree || !tree.size) {
-              throw new Error('Not a tree!')
+              throw new Error("Not a tree!")
             }
             return tree
           } catch (err) {
             return initialTree
           }
-        }())
+        })()
       })
-    ))
+    )
 
 // Store
 

@@ -1,8 +1,8 @@
-import { Component, createElement } from 'react'
+import { Component, createElement } from "react"
 
-export default Comp => {
-  return class DragContainer extends Component {
-    constructor (props) {
+export default Comp =>
+  class DragContainer extends Component {
+    constructor(props) {
       super(props)
       this.state = {
         atDragStart: null,
@@ -14,9 +14,10 @@ export default Comp => {
       this.onMouseMove = this.onMouseMove.bind(this)
     }
 
-    render () {
-      return (
-        createElement(Comp, Object.assign({}, this.props, {
+    render() {
+      return createElement(
+        Comp,
+        Object.assign({}, this.props, {
           drag: {
             current: this.state.current,
             totalFinalized: this.state.totalFinalizedDrag
@@ -25,11 +26,11 @@ export default Comp => {
           onMouseUp: this.onMouseUp,
           onMouseMove: this.onMouseMove,
           onMouseOut: this.onMouseUp
-        }))
+        })
       )
     }
 
-    onMouseUp () {
+    onMouseUp() {
       const { totalFinalizedDrag, current, atDragStart } = this.state
       if (!atDragStart || !current) {
         return this.setState({
@@ -47,7 +48,7 @@ export default Comp => {
       })
     }
 
-    onMouseMove (e) {
+    onMouseMove(e) {
       const { atDragStart } = this.state
       if (!atDragStart) {
         return
@@ -60,14 +61,10 @@ export default Comp => {
       })
     }
 
-    onMouseDown (e) {
+    onMouseDown(e) {
       this.setState({
-        atDragStart: [
-          e.nativeEvent.offsetX,
-          e.nativeEvent.offsetY
-        ],
+        atDragStart: [e.nativeEvent.offsetX, e.nativeEvent.offsetY],
         current: [0, 0]
       })
     }
   }
-}

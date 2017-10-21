@@ -1,4 +1,4 @@
-import {css} from 'glamor'
+import { css } from "glamor"
 
 css.insert(`
   @import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro';
@@ -33,26 +33,5 @@ css.insert(`
 css.insert(`
   button {
     border: 0;
-  }
-`)
-
-css.insert(`
-  .static a {
-    text-decoration:none;
-    color: currentColor;
-    border-bottom: 1px solid currentColor;
-  }
-`)
-
-css.insert(`
-  .editor circle {
-    opacity: .1;
-    cursor: pointer;
-  }
-`)
-
-css.insert(`
-  .editor circle:hover {
-    opacity: .6;
   }
 `)
