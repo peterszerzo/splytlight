@@ -4,15 +4,15 @@ import {
   SceneUtils,
   SmoothShading,
   MeshLambertMaterial
-} from 'three'
+} from "three"
 
 const { sin, cos } = Math
 
-function createCylinder (length, radius) {
+function createCylinder(length, radius) {
   return new CylinderGeometry(radius, radius, length, 24, 8, false)
 }
 
-function createArm ({length, angle}, baseHeight, radius) {
+function createArm({ length, angle }, baseHeight, radius) {
   const obj = createCylinder(length, radius)
   obj.rotateZ(angle)
   obj.translate(
@@ -23,7 +23,7 @@ function createArm ({length, angle}, baseHeight, radius) {
   return obj
 }
 
-export default function createSplytUnit (size) {
+export default function createSplytUnit(size) {
   const { baseHeight, radius, leftArm, rightArm } = size
 
   const baseObj = createCylinder(baseHeight, radius)
@@ -34,13 +34,13 @@ export default function createSplytUnit (size) {
 
   const materials = [
     new MeshLambertMaterial({
-      color: 0xFFF9DC,
+      color: 0xfff9dc,
       shading: SmoothShading
     })
   ]
 
-  const smallYGeo = new Geometry();
-  [ baseObj, leftArmObj, rightArmObj ].forEach(o => smallYGeo.merge(o, o.matrix))
+  const smallYGeo = new Geometry()
+  ;[baseObj, leftArmObj, rightArmObj].forEach(o => smallYGeo.merge(o, o.matrix))
 
   const smallYMesh = SceneUtils.createMultiMaterialObject(smallYGeo, materials)
 

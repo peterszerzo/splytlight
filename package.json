@@ -5,20 +5,26 @@
   "author": "Peter Szerzo, Scott Leinweber",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.8.4"
+    "prettier": "^1.7.4",
+    "react-scripts": "1.0.14"
   },
   "dependencies": {
-    "aphrodite": "^1.1.0",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.5.0",
     "hyperscript-helpers": "^3.0.2",
     "marked": "^0.3.6",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "redux": "^3.7.2",
+    "redux-observable": "^0.15.0",
+    "rxjs": "^5.4.3",
     "three": "^0.83.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "prettier './src/**/*.js' --no-semi --write"
   }
 }
