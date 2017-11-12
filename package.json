@@ -24,6 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "prettier './src/**/*.js' --no-semi --write"
+    "lint": "prettier './src/**/*.js' --no-semi --write",
+    "deploy": "npm run build && surge build splytlight.surge.sh"
   }
 }
