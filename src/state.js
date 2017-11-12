@@ -10,6 +10,7 @@ import "rxjs/add/operator/delay"
 const initialTree = {
   size: "small",
   status: "added",
+  rotation: 0,
   left: null,
   right: null
 }
@@ -58,34 +59,32 @@ export function navigate(newRoute) {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case "rawStateChange":
-      return Object.assign({}, state, action.payload)
+      return { ...state, ...action.payload }
     case "resize":
-      return Object.assign({}, state, {
+      return { ...state,
         ui: {
           windowWidth: action.payload.width,
           windowHeight: action.payload.height
         }
-      })
+      }
     case "fetchTreeRequest":
       return state
     case "fetchTreeResponse":
-      return Object.assign({}, state, {
+      return { ...state,
         tree: action.payload
-      })
+      }
     case "changeTree":
       const newTree = Object.assign({}, state.tree, action.payload)
       localStorage.setItem("splytstate", JSON.stringify(newTree))
-      return Object.assign({}, state, {
+      return { ...state,
         tree: newTree
-      })
+      }
     case "navigate":
       global.history.pushState(null, null, action.payload)
-      return Object.assign({}, state, {
+      return { ...state,
         route: action.payload
-      })
+      }
     default:
-      // eslint-disable-next-line
-      ;(action: empty)
       return state
   }
 }
@@ -99,7 +98,7 @@ const fetchTreeEpic = action$ =>
     .switchMap(() =>
       Observable.of({
         type: "fetchTreeResponse",
-        payload: (function() {
+        payload: (() => {
           try {
             const tree = JSON.parse(localStorage.getItem("splytstate") || "1")
             if (!tree || !tree.size) {

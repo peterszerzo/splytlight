@@ -20,9 +20,7 @@ export default ({ state: { tree, ui }, changeTree }) => {
     <Container>
       <svg id="splyt-editor" viewBox={`0 0 ${width} ${height}`}>
         <g
-          transform={`translate(${width / 2} ${height *
-            9 /
-            10}) rotate(${180})`}
+          transform={`translate(${width / 2} ${height * 0.1})`}
         >
           <Units state={tree} setState={changeTree} />
         </g>

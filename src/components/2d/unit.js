@@ -40,8 +40,8 @@ function Lines(state) {
       strokeLinecap={"round"}
       strokeLinejoin={"round"}
     >
-      <line x1={x0} y1={y0} x2={xm} y2={ym} />,
-      <line x1={xm} y1={ym} x2={xl} y2={yl} />,
+      <line x1={x0} y1={y0} x2={xm} y2={ym} />
+      <line x1={xm} y1={ym} x2={xl} y2={yl} />
       <line x1={xm} y1={ym} x2={xr} y2={yr} />
     </g>
   )
@@ -82,14 +82,14 @@ function Controls({
         onClick={onControlClick.bind(this, "left")}
         onMouseOver={onControlMouseEnter.bind(this, "left")}
         onMouseOut={onControlMouseLeave.bind(this, "left")}
-      />,
+      />
       <ControlCircle
         point={rightPoint}
         status={state.right ? state.right.status : "neutral"}
         onClick={onControlClick.bind(this, "right")}
         onMouseOver={onControlMouseEnter.bind(this, "right")}
         onMouseOut={onControlMouseLeave.bind(this, "right")}
-      />,
+      />
       <ControlCircle
         point={midPoint}
         status={"neutral"}
