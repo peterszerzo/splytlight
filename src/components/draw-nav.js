@@ -1,6 +1,6 @@
 import React from "react"
 import glamorous from "glamorous"
-import IconButton from "./icon-button"
+import Button from "./button"
 
 const Container = glamorous.div({
   position: "absolute",
@@ -12,28 +12,12 @@ const Container = glamorous.div({
 
 export default ({ state, setState }) => (
   <Container>
-    <IconButton
+    <Button
       icon={state.currentSize + "Splyt"}
       title={`Set Splyt unit size | current: ${state.currentSize}`}
       onClick={() => {
         setState({
           currentSize: state.currentSize === "small" ? "large" : "small"
-        })
-      }}
-    />
-    <IconButton
-      icon={"download"}
-      title={"Download design"}
-      href={`data:application/octet-stream;type=,${JSON.stringify(state.tree)}`}
-    />
-    <IconButton
-      icon={"upload"}
-      title={"Upload design"}
-      uploadId={"uploadFile"}
-      onUpload={fileContents => {
-        const tree = JSON.parse(fileContents)
-        setState({
-          tree
         })
       }}
     />

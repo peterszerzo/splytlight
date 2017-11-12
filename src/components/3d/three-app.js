@@ -71,6 +71,7 @@ export default (container, initialState) => {
     10,
     10000
   )
+  camera.up = new Vector3(0, -1, 0)
   camera.position.set(0, 300, 300)
 
   /* Renderer */
@@ -90,10 +91,10 @@ export default (container, initialState) => {
     camera.aspect = width / height
     camera.position.set(
       (x + y) * 1.2 * Math.sin(cameraAngle),
-      (x + y) * 1.2,
+      (x + y) * 0.8,
       (x + y) * 1.2 * Math.cos(cameraAngle)
     )
-    camera.lookAt(new Vector3(0, (x + y) * 0.3), 0)
+    camera.lookAt(new Vector3(0, (x + y) * 0.45), 0)
     camera.updateProjectionMatrix()
   }
 

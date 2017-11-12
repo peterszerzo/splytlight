@@ -23,11 +23,13 @@ function createArm({ length, angle }, baseHeight, radius) {
   return obj
 }
 
+const o = 1
+
 export default function createSplytUnit(size) {
   const { baseHeight, radius, leftArm, rightArm } = size
 
-  const baseObj = createCylinder(baseHeight, radius)
-  baseObj.translate(0, baseHeight / 2, 0)
+  const baseObj = createCylinder(baseHeight - o, radius)
+  baseObj.translate(0, baseHeight / 2 + o, 0)
 
   const leftArmObj = createArm(leftArm, baseHeight, radius)
   const rightArmObj = createArm(rightArm, baseHeight, radius)

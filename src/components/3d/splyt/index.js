@@ -5,10 +5,11 @@ import createSplytUnit from "./unit"
 
 const { sin, cos } = Math
 
-function transformSplyt(object, dimensions, direction) {
+function transformSplyt(object, dimensions, direction, rotation) {
   const { baseHeight } = dimensions
   const { angle, length } = dimensions[direction + "Arm"]
   object.rotateZ(angle)
+  object.rotateY(rotation)
   object.position.set(-length * sin(angle), baseHeight + length * cos(angle), 0)
 }
 
@@ -17,9 +18,9 @@ function createSplytTree(state) {
     return new Group()
   } else {
     const leftGroup = createSplytTree(state.left)
-    transformSplyt(leftGroup, splyt[state.size], "left")
+    transformSplyt(leftGroup, splyt[state.size], "left", state.rotation)
     const rightGroup = createSplytTree(state.right)
-    transformSplyt(rightGroup, splyt[state.size], "right")
+    transformSplyt(rightGroup, splyt[state.size], "right", state.rotation)
     const group = new Group()
     group.add(leftGroup)
     group.add(rightGroup)

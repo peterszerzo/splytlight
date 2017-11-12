@@ -16,14 +16,12 @@ const rootClass = css({
   borderTop: `2px solid ${vars.white}`,
   opacity: "0",
   pointerEvents: "none",
-  transform: "translate(0, 10px)",
-  transition: "all .3s",
+  transition: "all .2s",
   textAlign: "right"
 })
 
 const activeClass = css({
   pointerEvents: "all",
-  transform: "translate(0, 0)",
   opacity: "1"
 })
 
