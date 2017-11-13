@@ -121,7 +121,7 @@ export default (container, initialState) => {
       return
     }
     const cameraAngle =
-      -(state.drag.totalFinalized[0] + state.drag.current[0]) / 200
+      (state.drag.totalFinalized[0] + state.drag.current[0]) / 200
     if (prevState.global.tree !== state.global.tree || !model) {
       setModel(state.global.tree)
     }
