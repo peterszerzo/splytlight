@@ -8,19 +8,21 @@ import {
   changeTree,
   navigate
 } from "./state";
-import { Observable } from "rxjs";
+import { fromEvent, interval } from "rxjs";
+import { throttle, map, startWith } from "rxjs/operators";
 import "./styles/setup";
 
-const resizeStream = Observable.fromEvent(window, "resize")
-  .map(e => ({
+const resizeStream = fromEvent(window, "resize").pipe(
+  map(e => ({
     windowWidth: e.target.innerWidth,
     windowHeight: e.target.innerHeight
-  }))
-  .throttle(ev => Observable.interval(50))
-  .startWith({
+  })),
+  throttle(() => interval(50)),
+  startWith({
     windowWidth: global.window.innerWidth,
     windowHeight: global.window.innerHeight
-  });
+  })
+);
 
 resizeStream.subscribe(dim => {
   store.dispatch(
@@ -30,7 +32,7 @@ resizeStream.subscribe(dim => {
   );
 });
 
-Observable.fromEvent(window, "popstate").subscribe(() => {
+fromEvent(window, "popstate").subscribe(() => {
   store.dispatch(navigate(window.location.pathname));
 });
 

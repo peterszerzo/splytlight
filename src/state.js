@@ -1,9 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import { createEpicMiddleware } from "redux-observable";
-import { Observable } from "rxjs";
-import "rxjs/add/observable/of";
-import "rxjs/add/operator/mapTo";
-import "rxjs/add/operator/delay";
+import { of } from "rxjs";
+import { filter, switchMap, delay } from "rxjs/operators";
 
 // State
 
@@ -87,11 +85,11 @@ function reducer(state = initialState, action) {
 // Epics
 
 const fetchTreeEpic = action$ =>
-  action$
-    .ofType("fetchTreeRequest")
-    .delay(10)
-    .switchMap(() =>
-      Observable.of({
+  action$.pipe(
+    filter(action => action.type === "fetchTreeRequest"),
+    delay(10),
+    switchMap(() =>
+      of({
         type: "fetchTreeResponse",
         payload: (() => {
           try {
@@ -105,11 +103,13 @@ const fetchTreeEpic = action$ =>
           }
         })()
       })
-    );
+    )
+  );
 
 // Store
 
-export const store = createStore(
-  reducer,
-  applyMiddleware(createEpicMiddleware(fetchTreeEpic))
-);
+const epicMiddleware = createEpicMiddleware();
+
+export const store = createStore(reducer, applyMiddleware(epicMiddleware));
+
+epicMiddleware.run(fetchTreeEpic);

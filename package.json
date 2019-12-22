@@ -5,18 +5,18 @@
   "author": "Peter Szerzo, Scott Leinweber",
   "private": true,
   "devDependencies": {
-    "prettier": "^1.7.4",
-    "react-scripts": "1.0.14"
+    "prettier": "^1.15.0",
+    "react-scripts": "^3.3.0"
   },
   "dependencies": {
     "glamor": "^2.20.40",
     "glamorous": "^4.5.0",
     "marked": "^0.3.6",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "redux": "^3.7.2",
-    "redux-observable": "^0.15.0",
-    "rxjs": "^5.4.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "redux": "^4.0.0",
+    "redux-observable": "^1.2.0",
+    "rxjs": "^6.0.0",
     "three": "^0.83.0"
   },
   "scripts": {
@@ -26,5 +26,17 @@
     "eject": "react-scripts eject",
     "format": "prettier './src/**/*.js' --write",
     "deploy": "npm run build && git branch -D gh-pages && git checkout --orphan gh-pages && trash src public && mv build/* . && git add . && git commit -m 'Deploy' && git push origin gh-pages && git checkout master"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
