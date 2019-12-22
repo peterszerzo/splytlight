@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+
 import { title } from "../content";
 import * as vars from "../styles/vars";
 import Icon from "./icon";

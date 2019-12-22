@@ -16,7 +16,7 @@ import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
 import { blue, white } from "../../styles/vars";
 
-export default (container: any, initialState: any) => {
+export default (container: HTMLElement, initialState: any) => {
   let state = initialState;
 
   /* Environment */

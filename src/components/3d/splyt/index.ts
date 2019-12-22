@@ -9,7 +9,7 @@ function transformSplyt(
   object: any,
   dimensions: any,
   direction: any,
-  rotation: any
+  rotation: number
 ) {
   const { baseHeight } = dimensions;
   const { angle, length } = dimensions[direction + "Arm"];

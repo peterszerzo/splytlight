@@ -1,41 +1,57 @@
-import React, { Component } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { useDrag } from "react-use-gesture";
+
 import createThreeApp from "./three-app";
-import mouseDragContainer from "./mouse-drag-container";
+import { State, SetState } from "../../state";
 
-class ThreeDee extends Component<any, any> {
-  render() {
-    const props = this.props as any;
-    return (
-      <div
-        ref={this.setContainerNode.bind(this)}
-        onMouseDown={props.onMouseDown}
-        onMouseUp={props.onMouseUp}
-        onMouseMove={props.onMouseMove}
-        onMouseOut={props.onMouseOut}
-      />
-    );
-  }
+type Pt = [number, number];
 
-  containerNode: any = null;
-  threeApp: any = null;
+const addPts = ([x1, y1]: Pt, [x2, y2]: Pt): Pt => [x1 + x2, y1 + y2];
 
-  setContainerNode(node: any) {
-    this.containerNode = node;
-  }
+const ThreeDee = (props: { state: State, setState: SetState}) => {
+  const containerEl = useRef(null); 
 
-  componentDidMount() {
-    this.threeApp = createThreeApp(this.containerNode, {
-      global: this.props.state,
-      drag: this.props.drag
+  const [ threeApp, setThreeApp ] = useState<any>(undefined);
+
+  const [ drag, setDrag ] = useState<{
+    current: Pt;
+    totalFinalized: Pt;
+  }>({
+    current: [0, 0],
+    totalFinalized: [0, 0]
+  });
+
+  const bind = useDrag(state => {
+    setDrag({
+      current: state.dragging ? state.movement : [0, 0],
+      totalFinalized: state.dragging ? drag.totalFinalized : addPts(drag.totalFinalized, drag.current)
     });
-  }
+  });
 
-  componentDidUpdate() {
-    this.threeApp.update({
-      global: this.props.state,
-      drag: this.props.drag
+  useEffect(() => {
+    if (!containerEl || !containerEl.current) {
+      return;
+    }
+    const threeApp = createThreeApp(containerEl.current as unknown as HTMLElement, {
+      global: props.state,
+      drag
     });
-  }
+    setThreeApp(threeApp);
+    return () => {
+    }
+  }, [containerEl]);
+
+  useEffect(() => {
+    threeApp && threeApp.update({
+      global: props.state,
+      drag
+    });
+  }, [props.state, drag, threeApp]);
+
+  return <div
+    {...bind()}
+    ref={containerEl}
+  />
 }
 
-export default mouseDragContainer(ThreeDee as any);
+export default ThreeDee;
