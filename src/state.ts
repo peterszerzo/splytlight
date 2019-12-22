@@ -6,7 +6,9 @@ import { Size } from "./splyt";
 
 // State
 
-type Status = "added";
+export type Status = "added" | "adding" | "removing";
+
+export type Dir = "left" | "right";
 
 export interface Tree {
   size: Size;
@@ -29,6 +31,8 @@ export interface State {
 }
 
 export type SetState = (stateChange: Partial<State>) => void;
+
+export type SetTree = (treeChange: Partial<Tree>) => void;
 
 const initialTree: Tree = {
   size: "small",
@@ -63,7 +67,7 @@ export function fetchTreeRequest() {
   };
 }
 
-export function changeTree(newTree: Tree) {
+export function changeTree(newTree: Partial<Tree>) {
   return {
     type: "changeTree",
     payload: newTree
@@ -96,7 +100,7 @@ function reducer(state: State = initialState, action: any) {
     case "fetchTreeResponse":
       return { ...state, tree: action.payload };
     case "changeTree":
-      const newTree = Object.assign({}, state.tree, action.payload);
+      const newTree = { ...state.tree, ...action.payload };
       localStorage.setItem("splytstate", JSON.stringify(newTree));
       return { ...state, tree: newTree };
     case "navigate":

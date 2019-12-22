@@ -47,7 +47,7 @@ const renderApp = () => {
     setState: (stateChange: Partial<State>) => {
       store.dispatch(rawStateChange(stateChange));
     },
-    changeTree: (treeChange: Tree) => {
+    changeTree: (treeChange: Partial<Tree>) => {
       store.dispatch(changeTree(treeChange));
     }
   };

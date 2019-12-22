@@ -1,6 +1,7 @@
 import React from "react";
 
 import { part, getPoints } from "../../splyt";
+import { Tree, Status } from "../../state";
 import {
   brown,
   green,
@@ -26,7 +27,7 @@ export default (props: any) => {
   );
 };
 
-const Lines = (state: any) => {
+const Lines = (state: Tree) => {
   const {
     left: { x: xl, y: yl },
     right: { x: xr, y: yr },
@@ -45,9 +46,21 @@ const Lines = (state: any) => {
       <line x1={xm} y1={ym} x2={xr} y2={yr} />
     </g>
   );
-}
+};
 
-function ControlCircle({ point, status, onClick, onMouseOver, onMouseOut }: any) {
+function ControlCircle({
+  point,
+  status,
+  onClick,
+  onMouseOver,
+  onMouseOut
+}: {
+  status: Status | "neutral";
+  point: { x: number; y: number };
+  onClick: () => void;
+  onMouseOver?: () => void;
+  onMouseOut?: () => void;
+}) {
   return (
     <g
       transform={`translate(${point.x} ${point.y})`}
@@ -69,7 +82,13 @@ function Controls({
   onControlMouseEnter,
   onControlMouseLeave,
   onEditControlClick
-}: any) {
+}: {
+  state: Tree;
+  onControlClick: () => void;
+  onControlMouseEnter: () => void;
+  onControlMouseLeave: () => void;
+  onEditControlClick: () => void;
+}) {
   const { left: leftPoint, right: rightPoint, mid: midPoint } = getPoints(
     part(state.size),
     { useOffset: false }

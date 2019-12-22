@@ -15,8 +15,19 @@ import {
 import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
 import { blue, white } from "../../styles/vars";
+import { State } from "../../state";
 
-export default (container: HTMLElement, initialState: any) => {
+type Pt = [number, number];
+
+export interface ThreeAppState {
+  global: State;
+  drag: {
+    current: Pt;
+    totalFinalized: Pt;
+  };
+}
+
+export default (container: HTMLElement, initialState: ThreeAppState) => {
   let state = initialState;
 
   /* Environment */
@@ -86,7 +97,23 @@ export default (container: HTMLElement, initialState: any) => {
 
   /* Update */
 
-  function resize({ width, height }: any, { x, y }: any, cameraAngle: number) {
+  function resize(
+    {
+      width,
+      height
+    }: {
+      width: number;
+      height: number;
+    },
+    {
+      x,
+      y
+    }: {
+      x: number;
+      y: number;
+    },
+    cameraAngle: number
+  ) {
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.position.set(

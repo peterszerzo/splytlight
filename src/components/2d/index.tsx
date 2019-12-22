@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
+
 import getContainerDimensions from "../../styles/layout";
+import { State, SetTree } from "../../state";
 import Units from "./units";
 
 const Container = styled.div({
@@ -14,7 +16,7 @@ const Container = styled.div({
   }
 });
 
-export default ({ state: { tree, ui }, changeTree }: any) => {
+export default ({ state: { tree, ui }, changeTree }: {state: State, changeTree: SetTree}) => {
   const { width, height } = getContainerDimensions(ui);
   return (
     <Container>

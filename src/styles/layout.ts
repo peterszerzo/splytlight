@@ -1,7 +1,10 @@
 export default function getContainerDimensions({
   windowWidth,
   windowHeight
-}: any) {
+}: {
+  windowWidth: number;
+  windowHeight: number;
+}) {
   return {
     width: windowWidth / 2,
     height: windowHeight - 60

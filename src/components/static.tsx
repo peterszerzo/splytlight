@@ -10,6 +10,6 @@ const Container = styled.div({
   }
 });
 
-export default ({ content }: any) => (
+export default ({ content }: { content: string }) => (
   <Container dangerouslySetInnerHTML={{ __html: marked(content) }} />
 );

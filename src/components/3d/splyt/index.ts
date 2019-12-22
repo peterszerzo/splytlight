@@ -1,18 +1,20 @@
 import { Group, SphereGeometry, MeshBasicMaterial, Mesh } from "three";
 
-import { part } from "../../../splyt";
+import { part, Geometry } from "../../../splyt";
+import { Dir, Tree } from "../../../state";
 import createSplytUnit from "./unit";
 
 const { sin, cos } = Math;
 
-function transformSplyt(
+const transformSplyt = (
   object: any,
-  dimensions: any,
-  direction: any,
+  dimensions: Geometry,
+  dir: Dir,
   rotation: number
-) {
+) => {
   const { baseHeight } = dimensions;
-  const { angle, length } = dimensions[direction + "Arm"];
+  const { angle, length } =
+    dir === "left" ? dimensions.leftArm : dimensions.rightArm;
   object.rotateZ(angle);
   object.rotateY(rotation);
   object.position.set(
@@ -20,9 +22,9 @@ function transformSplyt(
     baseHeight + length * cos(angle),
     0
   );
-}
+};
 
-export default function createSplytTree(state: any) {
+export default function createSplytTree(state: Tree | null) {
   if (!state || state.status === "adding") {
     const emptyGroup = new Group();
     const sphereGeometry = new SphereGeometry(12, 16, 16);

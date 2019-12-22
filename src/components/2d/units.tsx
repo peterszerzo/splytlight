@@ -2,16 +2,23 @@ import React from "react";
 
 import Unit from "./unit";
 import { part, getEndPoints } from "../../splyt";
+import { Dir, Tree, SetTree } from "../../state";
 
 const { PI } = Math;
 
-export default function Units({ state, setState }: any) {
+export default function Units({
+  state,
+  setState
+}: {
+  state: Tree | null;
+  setState: SetTree;
+}) {
   if (!state) {
     return null;
   }
   const splytPart = part(state.size);
   const { leftArm, rightArm } = splytPart;
-  const [{ x: xl, y: yl }, { x: xr, y: yr }] = (getEndPoints as any)(splytPart);
+  const [{ x: xl, y: yl }, { x: xr, y: yr }] = getEndPoints(splytPart);
   return (
     <g opacity={["added", "removing"].indexOf(state.status) > -1 ? 1 : 0.5}>
       <g
@@ -20,8 +27,11 @@ export default function Units({ state, setState }: any) {
       >
         <Units
           state={state.left}
-          setState={(ch: any) => {
-            setState({ left: { ...state.left, ...ch } });
+          setState={(change: Partial<Tree>) => {
+            if (!state.left) {
+              return;
+            }
+            setState({ left: { ...state.left, ...change } });
           }}
         />
       </g>
@@ -31,8 +41,11 @@ export default function Units({ state, setState }: any) {
       >
         <Units
           state={state.right}
-          setState={(ch: any) => {
-            setState({ right: { ...state.right, ...ch } });
+          setState={(change: Partial<Tree>) => {
+            if (!state.right) {
+              return;
+            }
+            setState({ right: { ...state.right, ...change } });
           }}
         />
       </g>
@@ -43,12 +56,12 @@ export default function Units({ state, setState }: any) {
             size: state.size === "small" ? "large" : "small"
           });
         }}
-        onControlClick={(dir: any) => {
+        onControlClick={(dir: Dir) => {
           setState({
             [dir]: {
               status:
                 state[dir] &&
-                [ "added", "removing" ].indexOf(state[dir].status) > -1
+                ["added", "removing"].indexOf(state[dir]!.status) > -1
                   ? "adding"
                   : "removing",
               rotation: 2 * Math.PI * Math.random(),
@@ -56,7 +69,7 @@ export default function Units({ state, setState }: any) {
             }
           });
         }}
-        onControlMouseEnter={(dir: any) => {
+        onControlMouseEnter={(dir: Dir) => {
           if (!state[dir]) {
             return setState({
               [dir]: {
@@ -65,22 +78,22 @@ export default function Units({ state, setState }: any) {
               }
             });
           }
-          if (["adding", "removing"].indexOf(state[dir].status) === -1) {
+          if (["adding", "removing"].indexOf(state[dir]!.status) === -1) {
             setState({
               [dir]: { ...state[dir], status: "removing" }
             });
           }
         }}
-        onControlMouseLeave={(dir: any) => {
+        onControlMouseLeave={(dir: Dir) => {
           if (!state[dir]) {
             return;
           }
-          if (state[dir].status === "adding") {
+          if (state[dir]!.status === "adding") {
             return setState({
               [dir]: null
             });
           }
-          if (state[dir].status === "removing") {
+          if (state[dir]!.status === "removing") {
             setState({
               [dir]: { ...state[dir], status: "added" }
             });

@@ -48,9 +48,13 @@ export const part = (size: Size): Geometry => {
   return large;
 };
 
+export type GeometryOptions = {
+  useOffset: boolean;
+};
+
 export const getPoints = (
   { baseHeight, leftArm, rightArm }: Geometry,
-  options: any
+  options?: GeometryOptions
 ) => {
   const offset = options && options.useOffset ? controlCircleOffset : 0;
   return {
@@ -75,7 +79,7 @@ export const getPoints = (
 
 export const getEndPoints = (
   { baseHeight, leftArm, rightArm }: Geometry,
-  options: any
+  options?: GeometryOptions
 ) => {
   const offset = options && options.useOffset ? controlCircleOffset : 0;
   return [
@@ -90,7 +94,10 @@ export const getEndPoints = (
   ];
 };
 
-export const getStartPoint = ({ baseHeight }: Geometry, options: any) => {
+export const getStartPoint = (
+  { baseHeight }: Geometry,
+  options?: GeometryOptions
+) => {
   const offset = options && options.useOffset ? controlCircleOffset : 0;
   return {
     x: 0,
@@ -98,7 +105,7 @@ export const getStartPoint = ({ baseHeight }: Geometry, options: any) => {
   };
 };
 
-export const getMidPoint = ({ baseHeight }: any) => {
+export const getMidPoint = ({ baseHeight }: Geometry) => {
   return {
     x: 0,
     y: baseHeight

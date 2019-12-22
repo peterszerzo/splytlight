@@ -6,6 +6,8 @@ import {
   MeshLambertMaterial
 } from "three";
 
+import { Geometry as SplytGeometry } from "../../../splyt";
+
 const { sin, cos } = Math;
 
 function createCylinder(length: number, radius: number) {
@@ -25,7 +27,7 @@ function createArm({ length, angle }: any, baseHeight: number, radius: number) {
 
 const o = 1;
 
-export default function createSplytUnit(size: any) {
+export default function createSplytUnit(size: SplytGeometry) {
   const { baseHeight, radius, leftArm, rightArm } = size;
 
   const baseObj = createCylinder(baseHeight - o, radius);
