@@ -8,11 +8,11 @@ import {
 
 const { sin, cos } = Math;
 
-function createCylinder(length, radius) {
+function createCylinder(length: number, radius: number) {
   return new CylinderGeometry(radius, radius, length, 24, 8, false);
 }
 
-function createArm({ length, angle }, baseHeight, radius) {
+function createArm({ length, angle }: any, baseHeight: number, radius: number) {
   const obj = createCylinder(length, radius);
   obj.rotateZ(angle);
   obj.translate(
@@ -25,7 +25,7 @@ function createArm({ length, angle }, baseHeight, radius) {
 
 const o = 1;
 
-export default function createSplytUnit(size) {
+export default function createSplytUnit(size: any) {
   const { baseHeight, radius, leftArm, rightArm } = size;
 
   const baseObj = createCylinder(baseHeight - o, radius);

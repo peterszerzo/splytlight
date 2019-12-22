@@ -1,7 +1,6 @@
 import React from "react";
 
-import * as splyt from "../../constants/geometries";
-import { getPoints } from "../../splyt.js";
+import { part, getPoints } from "../../splyt";
 import {
   brown,
   green,
@@ -11,14 +10,14 @@ import {
   controlCircleRadius
 } from "../../styles/vars";
 
-const fillByControlStatus = {
+const fillByControlStatus: Record<string, string> = {
   neutral: brown,
   adding: green,
   removing: red,
   added: brown
 };
 
-export default props => {
+export default (props: any) => {
   return (
     <g>
       <Lines {...props.state} />
@@ -27,13 +26,13 @@ export default props => {
   );
 };
 
-function Lines(state) {
+const Lines = (state: any) => {
   const {
     left: { x: xl, y: yl },
     right: { x: xr, y: yr },
     mid: { x: xm, y: ym },
     start: { x: x0, y: y0 }
-  } = getPoints(splyt[state.size], { useOffset: true });
+  } = getPoints(part(state.size), { useOffset: true });
   return (
     <g
       stroke={blue}
@@ -48,7 +47,7 @@ function Lines(state) {
   );
 }
 
-function ControlCircle({ point, status, onClick, onMouseOver, onMouseOut }) {
+function ControlCircle({ point, status, onClick, onMouseOver, onMouseOut }: any) {
   return (
     <g
       transform={`translate(${point.x} ${point.y})`}
@@ -70,9 +69,9 @@ function Controls({
   onControlMouseEnter,
   onControlMouseLeave,
   onEditControlClick
-}) {
+}: any) {
   const { left: leftPoint, right: rightPoint, mid: midPoint } = getPoints(
-    splyt[state.size],
+    part(state.size),
     { useOffset: false }
   );
   return (
@@ -80,16 +79,16 @@ function Controls({
       <ControlCircle
         point={leftPoint}
         status={state.left ? state.left.status : "neutral"}
-        onClick={onControlClick.bind(this, "left")}
-        onMouseOver={onControlMouseEnter.bind(this, "left")}
-        onMouseOut={onControlMouseLeave.bind(this, "left")}
+        onClick={onControlClick.bind({}, "left")}
+        onMouseOver={onControlMouseEnter.bind({}, "left")}
+        onMouseOut={onControlMouseLeave.bind({}, "left")}
       />
       <ControlCircle
         point={rightPoint}
         status={state.right ? state.right.status : "neutral"}
-        onClick={onControlClick.bind(this, "right")}
-        onMouseOver={onControlMouseEnter.bind(this, "right")}
-        onMouseOut={onControlMouseLeave.bind(this, "right")}
+        onClick={onControlClick.bind({}, "right")}
+        onMouseOver={onControlMouseEnter.bind({}, "right")}
+        onMouseOut={onControlMouseLeave.bind({}, "right")}
       />
       <ControlCircle
         point={midPoint}

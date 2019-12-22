@@ -14,7 +14,7 @@ const Container = styled.div({
   }
 });
 
-export default ({ state: { tree, ui }, changeTree }) => {
+export default ({ state: { tree, ui }, changeTree }: any) => {
   const { width, height } = getContainerDimensions(ui);
   return (
     <Container>

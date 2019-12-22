@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import * as vars from "../styles/vars";
-import { store, navigate } from "../state.js";
+import { State, SetState, store, navigate } from "../state";
 
 const Nav = styled.nav({
   position: "static"
@@ -25,7 +25,7 @@ const Link = styled.a({
   cursor: "pointer"
 });
 
-export default ({ state, setState }) => (
+export default ({ state, setState }: {state: State, setState: SetState}) => (
   <Nav>
     <Toggle>
       <Link

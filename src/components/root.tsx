@@ -8,6 +8,7 @@ import TwoDee from "./2d";
 import ThreeDee from "./3d";
 import * as vars from "../styles/vars";
 import { css } from "../styles/setup";
+import { State, SetState } from "../state";
 
 const Root = styled.div({
   position: "relative"
@@ -32,7 +33,11 @@ const Viz = styled.div({
   }
 });
 
-export default ({ state, setState, changeTree }) => {
+export default ({ state, setState, changeTree }: {
+  state: State;
+  setState: SetState;
+  changeTree: any;
+}) => {
   useEffect(() => {
     const styleTag = document.createElement("style");
     styleTag.innerText = css;

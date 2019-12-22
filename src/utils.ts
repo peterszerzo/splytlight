@@ -1,4 +1,4 @@
-export function log(val) {
+export function log(val: any) {
   console.log(val);
   return val;
 }

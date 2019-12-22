@@ -16,7 +16,7 @@ import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
 import { blue, white } from "../../styles/vars";
 
-export default (container, initialState) => {
+export default (container: any, initialState: any) => {
   let state = initialState;
 
   /* Environment */
@@ -80,13 +80,13 @@ export default (container, initialState) => {
   renderer.setClearColor(0xffffff, 1);
   renderer.shadowMap.enabled = true;
 
-  function render(node) {
+  function render(node?: any) {
     renderer.render(scene, camera);
   }
 
   /* Update */
 
-  function resize({ width, height }, { x, y }, cameraAngle) {
+  function resize({ width, height }: any, { x, y }: any, cameraAngle: number) {
     renderer.setSize(width, height);
     camera.aspect = width / height;
     camera.position.set(
@@ -98,10 +98,10 @@ export default (container, initialState) => {
     camera.updateProjectionMatrix();
   }
 
-  let model;
-  let modelBounds;
+  let model: any;
+  let modelBounds: any;
 
-  function setModel(tree) {
+  function setModel(tree: any) {
     if (model) {
       scene.remove(model);
     }
@@ -111,7 +111,7 @@ export default (container, initialState) => {
     return model;
   }
 
-  function update(newState) {
+  function update(newState: any) {
     let prevState = state;
     state = newState;
     if (

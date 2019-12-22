@@ -9,19 +9,21 @@ import {
   rawStateChange,
   fetchTreeRequest,
   changeTree,
-  navigate
+  navigate,
+  State,
+  Tree
 } from "./state";
 import "./styles/setup";
 
 const resizeStream = fromEvent(window, "resize").pipe(
-  map(e => ({
-    windowWidth: e.target.innerWidth,
-    windowHeight: e.target.innerHeight
+  map((ev: any) => ({
+    windowWidth: ev.target.innerWidth,
+    windowHeight: ev.target.innerHeight
   })),
   throttle(() => interval(50)),
   startWith({
-    windowWidth: global.window.innerWidth,
-    windowHeight: global.window.innerHeight
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight
   })
 );
 
@@ -42,11 +44,11 @@ const container = document.getElementById("app");
 const renderApp = () => {
   const props = {
     state: store.getState(),
-    setState: stateChange => {
+    setState: (stateChange: Partial<State>) => {
       store.dispatch(rawStateChange(stateChange));
     },
-    changeTree: stateChange => {
-      store.dispatch(changeTree(stateChange));
+    changeTree: (treeChange: Tree) => {
+      store.dispatch(changeTree(treeChange));
     }
   };
   render(<Root {...props} />, container);

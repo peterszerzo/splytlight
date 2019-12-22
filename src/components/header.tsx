@@ -18,11 +18,11 @@ const Container = styled.header({
 });
 
 const H1 = styled.h1({
-  paddingLeft: "8px",
+  paddingLeft: 8,
   textAlign: "left",
   width: "100%",
   margin: "auto",
-  fontWeight: "300",
+  fontWeight: 300,
   fontSize: "1.25rem",
   letterSpacing: ".03rem",
   color: vars.white

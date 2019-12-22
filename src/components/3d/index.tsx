@@ -2,20 +2,24 @@ import React, { Component } from "react";
 import createThreeApp from "./three-app";
 import mouseDragContainer from "./mouse-drag-container";
 
-class ThreeDee extends Component {
+class ThreeDee extends Component<any, any> {
   render() {
+    const props = this.props as any;
     return (
       <div
         ref={this.setContainerNode.bind(this)}
-        onMouseDown={this.props.onMouseDown}
-        onMouseUp={this.props.onMouseUp}
-        onMouseMove={this.props.onMouseMove}
-        onMouseOut={this.props.onMouseOut}
+        onMouseDown={props.onMouseDown}
+        onMouseUp={props.onMouseUp}
+        onMouseMove={props.onMouseMove}
+        onMouseOut={props.onMouseOut}
       />
     );
   }
 
-  setContainerNode(node) {
+  containerNode: any = null;
+  threeApp: any = null;
+
+  setContainerNode(node: any) {
     this.containerNode = node;
   }
 
@@ -34,4 +38,4 @@ class ThreeDee extends Component {
   }
 }
 
-export default mouseDragContainer(ThreeDee);
+export default mouseDragContainer(ThreeDee as any);

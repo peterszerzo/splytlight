@@ -19,7 +19,7 @@ const icons = {
   }
 };
 
-export default ({ id, style }) => (
+export default ({ id }: {id: keyof (typeof icons)}) => (
   <svg viewBox={icons[id].viewBox}>
     <use xlinkHref={`#${id}`} />
   </svg>

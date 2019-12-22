@@ -2,10 +2,35 @@ import { createStore, applyMiddleware } from "redux";
 import { createEpicMiddleware } from "redux-observable";
 import { of } from "rxjs";
 import { filter, switchMap, delay } from "rxjs/operators";
+import { Size } from "./splyt";
 
 // State
 
-const initialTree = {
+type Status = "added";
+
+export interface Tree {
+  size: Size;
+  status: Status;
+  rotation: number;
+  left: Tree | null;
+  right: Tree | null;
+}
+
+interface UiState {
+  windowWidth: number;
+  windowHeight: number;
+}
+
+export interface State {
+  tree: Tree;
+  currentSize: Size;
+  route: string;
+  ui: UiState;
+}
+
+export type SetState = (stateChange: Partial<State>) => void;
+
+const initialTree: Tree = {
   size: "small",
   status: "added",
   rotation: 0,
@@ -13,7 +38,7 @@ const initialTree = {
   right: null
 };
 
-const initialState = {
+const initialState: State = {
   tree: initialTree,
   currentSize: "small",
   route: "/",
@@ -25,7 +50,7 @@ const initialState = {
 
 // Actions
 
-export function rawStateChange(stateChange) {
+export function rawStateChange(stateChange: Partial<State>) {
   return {
     type: "rawStateChange",
     payload: stateChange
@@ -38,14 +63,14 @@ export function fetchTreeRequest() {
   };
 }
 
-export function changeTree(newTree) {
+export function changeTree(newTree: Tree) {
   return {
     type: "changeTree",
     payload: newTree
   };
 }
 
-export function navigate(newRoute) {
+export function navigate(newRoute: string) {
   return {
     type: "navigate",
     payload: newRoute
@@ -54,7 +79,7 @@ export function navigate(newRoute) {
 
 // Reducers
 
-function reducer(state = initialState, action) {
+function reducer(state: State = initialState, action: any) {
   switch (action.type) {
     case "rawStateChange":
       return { ...state, ...action.payload };
@@ -75,7 +100,7 @@ function reducer(state = initialState, action) {
       localStorage.setItem("splytstate", JSON.stringify(newTree));
       return { ...state, tree: newTree };
     case "navigate":
-      global.history.pushState(null, null, action.payload);
+      window.history.pushState(null, "", action.payload);
       return { ...state, route: action.payload };
     default:
       return state;
@@ -84,9 +109,9 @@ function reducer(state = initialState, action) {
 
 // Epics
 
-const fetchTreeEpic = action$ =>
+const fetchTreeEpic = (action$: any) =>
   action$.pipe(
-    filter(action => action.type === "fetchTreeRequest"),
+    filter((action: any) => action.type === "fetchTreeRequest"),
     delay(10),
     switchMap(() =>
       of({
