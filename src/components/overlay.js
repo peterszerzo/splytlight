@@ -1,9 +1,9 @@
 import React from "react";
-import { css } from "glamor";
+import styled from "@emotion/styled";
 import * as vars from "../styles/vars";
 import Static from "./static";
 
-const rootClass = css({
+const Container = styled.div(({ isActive }) => ({
   position: "fixed",
   width: "100vw",
   height: `calc(100vh - ${vars.headerHeight}px)`,
@@ -17,16 +17,17 @@ const rootClass = css({
   opacity: "0",
   pointerEvents: "none",
   transition: "all .2s",
-  textAlign: "right"
-});
-
-const activeClass = css({
-  pointerEvents: "all",
-  opacity: "1"
-});
+  textAlign: "right",
+  ...(isActive
+    ? {
+        pointerEvents: "all",
+        opacity: "1"
+      }
+    : {})
+}));
 
 export default ({ isActive, content }) => (
-  <div className={`${rootClass} ${isActive ? activeClass : ""}`}>
+  <Container isActive={isActive}>
     <Static content={content} />
-  </div>
+  </Container>
 );

@@ -1,5 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
+import { fromEvent, interval } from "rxjs";
+import { throttle, map, startWith } from "rxjs/operators";
+
 import Root from "./components/root";
 import {
   store,
@@ -8,8 +11,6 @@ import {
   changeTree,
   navigate
 } from "./state";
-import { fromEvent, interval } from "rxjs";
-import { throttle, map, startWith } from "rxjs/operators";
 import "./styles/setup";
 
 const resizeStream = fromEvent(window, "resize").pipe(

@@ -20,18 +20,7 @@ const icons = {
 };
 
 export default ({ id, style }) => (
-  <svg
-    style={Object.assign(
-      {},
-      {
-        width: "100%",
-        height: "100%",
-        fill: "#FFFFFF"
-      },
-      style
-    )}
-    viewBox={icons[id].viewBox}
-  >
+  <svg viewBox={icons[id].viewBox}>
     <use xlinkHref={`#${id}`} />
   </svg>
 );

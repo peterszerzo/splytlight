@@ -1,9 +1,9 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import getContainerDimensions from "../../styles/layout";
 import Units from "./units";
 
-const Container = glamorous.div({
+const Container = styled.div({
   margin: "auto",
   "& circle": {
     opacity: 0.1,

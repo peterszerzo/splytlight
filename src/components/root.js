@@ -1,19 +1,19 @@
-import React from "react";
-import glamorous, { ThemeProvider } from "glamorous";
-import * as vars from "../styles/vars";
-import DrawNav from "./draw-nav";
+import React, { useEffect } from "react";
+import styled from "@emotion/styled";
 import Overlay from "./overlay";
 import Nav from "./nav";
 import { about } from "../content";
 import Header from "./header";
 import TwoDee from "./2d";
 import ThreeDee from "./3d";
+import * as vars from "../styles/vars";
+import { css } from "../styles/setup";
 
-const Root = glamorous.div({
+const Root = styled.div({
   position: "relative"
 });
 
-const Main = glamorous.main({
+const Main = styled.main({
   position: "fixed",
   width: "100%",
   display: "flex",
@@ -22,7 +22,7 @@ const Main = glamorous.main({
   left: "0"
 });
 
-const Viz = glamorous.div({
+const Viz = styled.div({
   position: "relative",
   width: "50%",
   height: "100%",
@@ -32,8 +32,14 @@ const Viz = glamorous.div({
   }
 });
 
-export default ({ state, setState, changeTree }) => (
-  <ThemeProvider theme={vars}>
+export default ({ state, setState, changeTree }) => {
+  useEffect(() => {
+    const styleTag = document.createElement("style");
+    styleTag.innerText = css;
+    document.head.appendChild(styleTag);
+  }, []);
+
+  return (
     <Root>
       <Header />
       <Overlay isActive={state.route === "/about"} content={about} />
@@ -45,8 +51,7 @@ export default ({ state, setState, changeTree }) => (
         <Viz>
           <ThreeDee state={state} setState={setState} />
         </Viz>
-        <DrawNav state={state} setState={setState} />
       </Main>
     </Root>
-  </ThemeProvider>
-);
+  );
+};

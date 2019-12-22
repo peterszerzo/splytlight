@@ -1,8 +1,8 @@
 import React from "react";
 import marked from "marked";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 
-const Div = glamorous.div({
+const Container = styled.div({
   "& a": {
     textDecoration: "none",
     color: "currentColor",
@@ -11,5 +11,5 @@ const Div = glamorous.div({
 });
 
 export default ({ content }) => (
-  <Div dangerouslySetInnerHTML={{ __html: marked(content) }} />
+  <Container dangerouslySetInnerHTML={{ __html: marked(content) }} />
 );

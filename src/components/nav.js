@@ -1,13 +1,13 @@
 import React from "react";
-import glamorous from "glamorous";
+import styled from "@emotion/styled";
 import * as vars from "../styles/vars";
 import { store, navigate } from "../state.js";
 
-const Nav = glamorous.nav({
+const Nav = styled.nav({
   position: "static"
 });
 
-const Toggle = glamorous.div({
+const Toggle = styled.div({
   position: "fixed",
   height: vars.headerHeight,
   top: "0",
@@ -19,7 +19,7 @@ const Toggle = glamorous.div({
   paddingRight: vars.standardPadding
 });
 
-const Link = glamorous.a({
+const Link = styled.a({
   textDecoration: "none",
   color: vars.white,
   cursor: "pointer"
