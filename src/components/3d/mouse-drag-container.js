@@ -1,17 +1,17 @@
-import { Component, createElement } from "react"
+import { Component, createElement } from "react";
 
 export default Comp =>
   class DragContainer extends Component {
     constructor(props) {
-      super(props)
+      super(props);
       this.state = {
         atDragStart: null,
         current: [0, 0],
         totalFinalizedDrag: [0, 0]
-      }
-      this.onMouseDown = this.onMouseDown.bind(this)
-      this.onMouseUp = this.onMouseUp.bind(this)
-      this.onMouseMove = this.onMouseMove.bind(this)
+      };
+      this.onMouseDown = this.onMouseDown.bind(this);
+      this.onMouseUp = this.onMouseUp.bind(this);
+      this.onMouseMove = this.onMouseMove.bind(this);
     }
 
     render() {
@@ -27,16 +27,16 @@ export default Comp =>
           onMouseMove: this.onMouseMove,
           onMouseOut: this.onMouseUp
         })
-      )
+      );
     }
 
     onMouseUp() {
-      const { totalFinalizedDrag, current, atDragStart } = this.state
+      const { totalFinalizedDrag, current, atDragStart } = this.state;
       if (!atDragStart || !current) {
         return this.setState({
           atDragStart: null,
           current: [0, 0]
-        })
+        });
       }
       this.setState({
         atDragStart: null,
@@ -45,26 +45,26 @@ export default Comp =>
           totalFinalizedDrag[0] + current[0],
           totalFinalizedDrag[1] + current[1]
         ]
-      })
+      });
     }
 
     onMouseMove(e) {
-      const { atDragStart } = this.state
+      const { atDragStart } = this.state;
       if (!atDragStart) {
-        return
+        return;
       }
       this.setState({
         current: [
           e.nativeEvent.offsetX - atDragStart[0],
           e.nativeEvent.offsetY - atDragStart[1]
         ]
-      })
+      });
     }
 
     onMouseDown(e) {
       this.setState({
         atDragStart: [e.nativeEvent.offsetX, e.nativeEvent.offsetY],
         current: [0, 0]
-      })
+      });
     }
-  }
+  };

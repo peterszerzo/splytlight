@@ -9,7 +9,7 @@ export const small = {
     length: 40,
     angle: -Math.PI / 6
   }
-}
+};
 
 export const large = {
   baseHeight: 70,
@@ -22,4 +22,4 @@ export const large = {
     length: 80,
     angle: -Math.PI / 6
   }
-}
+};

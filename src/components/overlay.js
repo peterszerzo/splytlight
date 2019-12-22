@@ -1,7 +1,7 @@
-import React from "react"
-import { css } from "glamor"
-import * as vars from "../styles/vars"
-import Static from "./static"
+import React from "react";
+import { css } from "glamor";
+import * as vars from "../styles/vars";
+import Static from "./static";
 
 const rootClass = css({
   position: "fixed",
@@ -18,15 +18,15 @@ const rootClass = css({
   pointerEvents: "none",
   transition: "all .2s",
   textAlign: "right"
-})
+});
 
 const activeClass = css({
   pointerEvents: "all",
   opacity: "1"
-})
+});
 
 export default ({ isActive, content }) => (
   <div className={`${rootClass} ${isActive ? activeClass : ""}`}>
     <Static content={content} />
   </div>
-)
+);

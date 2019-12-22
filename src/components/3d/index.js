@@ -1,6 +1,6 @@
-import React, { Component } from "react"
-import createThreeApp from "./three-app"
-import mouseDragContainer from "./mouse-drag-container"
+import React, { Component } from "react";
+import createThreeApp from "./three-app";
+import mouseDragContainer from "./mouse-drag-container";
 
 class ThreeDee extends Component {
   render() {
@@ -12,26 +12,26 @@ class ThreeDee extends Component {
         onMouseMove={this.props.onMouseMove}
         onMouseOut={this.props.onMouseOut}
       />
-    )
+    );
   }
 
   setContainerNode(node) {
-    this.containerNode = node
+    this.containerNode = node;
   }
 
   componentDidMount() {
     this.threeApp = createThreeApp(this.containerNode, {
       global: this.props.state,
       drag: this.props.drag
-    })
+    });
   }
 
   componentDidUpdate() {
     this.threeApp.update({
       global: this.props.state,
       drag: this.props.drag
-    })
+    });
   }
 }
 
-export default mouseDragContainer(ThreeDee)
+export default mouseDragContainer(ThreeDee);

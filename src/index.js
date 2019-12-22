@@ -1,15 +1,15 @@
-import React from "react"
-import { render } from "react-dom"
-import Root from "./components/root"
+import React from "react";
+import { render } from "react-dom";
+import Root from "./components/root";
 import {
   store,
   rawStateChange,
   fetchTreeRequest,
   changeTree,
   navigate
-} from "./state"
-import { Observable } from "rxjs"
-import "./styles/setup"
+} from "./state";
+import { Observable } from "rxjs";
+import "./styles/setup";
 
 const resizeStream = Observable.fromEvent(window, "resize")
   .map(e => ({
@@ -20,37 +20,39 @@ const resizeStream = Observable.fromEvent(window, "resize")
   .startWith({
     windowWidth: global.window.innerWidth,
     windowHeight: global.window.innerHeight
-  })
+  });
 
 resizeStream.subscribe(dim => {
   store.dispatch(
     rawStateChange({
       ui: dim
     })
-  )
-})
+  );
+});
 
 Observable.fromEvent(window, "popstate").subscribe(() => {
-  store.dispatch(navigate(location.pathname))
-})
+  store.dispatch(navigate(window.location.pathname));
+});
 
-const container = document.getElementById("app")
+const container = document.getElementById("app");
 
-function renderApp() {
+const renderApp = () => {
   const props = {
     state: store.getState(),
     setState: stateChange => {
-      store.dispatch(rawStateChange(stateChange))
+      store.dispatch(rawStateChange(stateChange));
     },
     changeTree: stateChange => {
-      store.dispatch(changeTree(stateChange))
+      store.dispatch(changeTree(stateChange));
     }
-  }
-  render(<Root {...props} />, container)
-}
+  };
+  render(<Root {...props} />, container);
+};
 
-store.dispatch(fetchTreeRequest())
-renderApp()
+store.dispatch(fetchTreeRequest());
+
+renderApp();
+
 store.subscribe(() => {
-  renderApp()
-})
+  renderApp();
+});

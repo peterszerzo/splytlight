@@ -1,6 +1,6 @@
-import React from "react"
-import glamorous from "glamorous"
-import Button from "./button"
+import React from "react";
+import glamorous from "glamorous";
+import Button from "./button";
 
 const Container = glamorous.div({
   position: "absolute",
@@ -8,7 +8,7 @@ const Container = glamorous.div({
   left: "50%",
   transform: "translate(-50%, 0)",
   width: "40px"
-})
+});
 
 export default ({ state, setState }) => (
   <Container>
@@ -18,8 +18,8 @@ export default ({ state, setState }) => (
       onClick={() => {
         setState({
           currentSize: state.currentSize === "small" ? "large" : "small"
-        })
+        });
       }}
     />
   </Container>
-)
+);

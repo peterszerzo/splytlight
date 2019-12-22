@@ -1,8 +1,8 @@
-import { css } from "glamor"
+import { css } from "glamor";
 
 css.insert(`
   @import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro';
-`)
+`);
 
 css.insert(`
   * {
@@ -10,7 +10,7 @@ css.insert(`
     font-family: 'Source Sans Pro', sans-serif;
     box-sizing: border-box;
   }
-`)
+`);
 
 css.insert(`
   html,
@@ -20,7 +20,7 @@ css.insert(`
     padding: 0;
     margin: 0;
   }
-`)
+`);
 
 css.insert(`
   p {
@@ -28,10 +28,10 @@ css.insert(`
     letter-spacing: .03rem;
     font-weight: 400;
   }
-`)
+`);
 
 css.insert(`
   button {
     border: 0;
   }
-`)
+`);

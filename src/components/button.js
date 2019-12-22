@@ -1,7 +1,7 @@
-import React from "react"
-import { css } from "glamor"
-import Icon from "./icon"
-import * as vars from "../styles/vars"
+import React from "react";
+import { css } from "glamor";
+import Icon from "./icon";
+import * as vars from "../styles/vars";
 
 const rootClass = css({
   position: "relative",
@@ -28,13 +28,13 @@ const rootClass = css({
   ":focus": {
     outline: 0
   }
-})
+});
 
 export default ({ icon, onClick, title }) => {
-  const child = <Icon id={icon} />
-    return (
-      <button className={rootClass} title={title} onClick={onClick}>
-        {child}
-      </button>
-    )
-}
+  const child = <Icon id={icon} />;
+  return (
+    <button className={rootClass} title={title} onClick={onClick}>
+      {child}
+    </button>
+  );
+};

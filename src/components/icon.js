@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 // See /public/index.html for icon declarations as <symbol> tags
 const icons = {
@@ -17,7 +17,7 @@ const icons = {
   largeSplyt: {
     viewBox: "0 0 800 800"
   }
-}
+};
 
 export default ({ id, style }) => (
   <svg
@@ -34,4 +34,4 @@ export default ({ id, style }) => (
   >
     <use xlinkHref={`#${id}`} />
   </svg>
-)
+);

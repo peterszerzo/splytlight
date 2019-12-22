@@ -1,6 +1,6 @@
-import React from "react"
-import * as splyt from "../../constants/geometries"
-import { getPoints } from "../../splyt.js"
+import React from "react";
+import * as splyt from "../../constants/geometries";
+import { getPoints } from "../../splyt.js";
 import {
   brown,
   green,
@@ -8,14 +8,14 @@ import {
   blue,
   strokeWeight,
   controlCircleRadius
-} from "../../styles/vars"
+} from "../../styles/vars";
 
 const fillByControlStatus = {
   neutral: brown,
   adding: green,
   removing: red,
   added: brown
-}
+};
 
 export default props => {
   return (
@@ -23,8 +23,8 @@ export default props => {
       <Lines {...props.state} />
       <Controls {...props} />
     </g>
-  )
-}
+  );
+};
 
 function Lines(state) {
   const {
@@ -32,7 +32,7 @@ function Lines(state) {
     right: { x: xr, y: yr },
     mid: { x: xm, y: ym },
     start: { x: x0, y: y0 }
-  } = getPoints(splyt[state.size], { useOffset: true })
+  } = getPoints(splyt[state.size], { useOffset: true });
   return (
     <g
       stroke={blue}
@@ -44,7 +44,7 @@ function Lines(state) {
       <line x1={xm} y1={ym} x2={xl} y2={yl} />
       <line x1={xm} y1={ym} x2={xr} y2={yr} />
     </g>
-  )
+  );
 }
 
 function ControlCircle({ point, status, onClick, onMouseOver, onMouseOut }) {
@@ -60,7 +60,7 @@ function ControlCircle({ point, status, onClick, onMouseOver, onMouseOut }) {
     >
       <circle cx={0} cy={0} r={controlCircleRadius} />
     </g>
-  )
+  );
 }
 
 function Controls({
@@ -73,7 +73,7 @@ function Controls({
   const { left: leftPoint, right: rightPoint, mid: midPoint } = getPoints(
     splyt[state.size],
     { useOffset: false }
-  )
+  );
   return (
     <g stroke="none">
       <ControlCircle
@@ -96,5 +96,5 @@ function Controls({
         onClick={onEditControlClick}
       />
     </g>
-  )
+  );
 }

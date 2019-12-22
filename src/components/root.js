@@ -1,17 +1,17 @@
-import React from "react"
-import glamorous, { ThemeProvider } from "glamorous"
-import * as vars from "../styles/vars"
-import DrawNav from "./draw-nav"
-import Overlay from "./overlay"
-import Nav from "./nav"
-import { about } from "../content"
-import Header from "./header"
-import TwoDee from "./2d"
-import ThreeDee from "./3d"
+import React from "react";
+import glamorous, { ThemeProvider } from "glamorous";
+import * as vars from "../styles/vars";
+import DrawNav from "./draw-nav";
+import Overlay from "./overlay";
+import Nav from "./nav";
+import { about } from "../content";
+import Header from "./header";
+import TwoDee from "./2d";
+import ThreeDee from "./3d";
 
 const Root = glamorous.div({
   position: "relative"
-})
+});
 
 const Main = glamorous.main({
   position: "fixed",
@@ -20,7 +20,7 @@ const Main = glamorous.main({
   height: `calc(100% - ${vars.headerHeight}px)`,
   bottom: "0",
   left: "0"
-})
+});
 
 const Viz = glamorous.div({
   position: "relative",
@@ -30,7 +30,7 @@ const Viz = glamorous.div({
   ":first-of-type": {
     borderRight: `1px solid ${vars.faintBlue}`
   }
-})
+});
 
 export default ({ state, setState, changeTree }) => (
   <ThemeProvider theme={vars}>
@@ -49,4 +49,4 @@ export default ({ state, setState, changeTree }) => (
       </Main>
     </Root>
   </ThemeProvider>
-)
+);
