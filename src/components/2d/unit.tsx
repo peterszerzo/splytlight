@@ -1,7 +1,7 @@
 import React from "react";
 
 import { part, getPoints } from "../../splyt";
-import { Tree, Status } from "../../state";
+import { Tree, Status, Dir } from "../../state";
 import {
   brown,
   green,
@@ -18,7 +18,13 @@ const fillByControlStatus: Record<string, string> = {
   added: brown
 };
 
-export default (props: any) => {
+export default (props: {
+  state: Tree;
+  onControlClick: (dir: Dir) => void;
+  onControlMouseEnter: (dir: Dir) => void;
+  onControlMouseLeave: (dir: Dir) => void;
+  onEditControlClick: () => void;
+}) => {
   return (
     <g>
       <Lines {...props.state} />
@@ -84,9 +90,9 @@ function Controls({
   onEditControlClick
 }: {
   state: Tree;
-  onControlClick: () => void;
-  onControlMouseEnter: () => void;
-  onControlMouseLeave: () => void;
+  onControlClick: (dir: Dir) => void;
+  onControlMouseEnter: (dir: Dir) => void;
+  onControlMouseLeave: (dir: Dir) => void;
   onEditControlClick: () => void;
 }) {
   const { left: leftPoint, right: rightPoint, mid: midPoint } = getPoints(
@@ -98,16 +104,16 @@ function Controls({
       <ControlCircle
         point={leftPoint}
         status={state.left ? state.left.status : "neutral"}
-        onClick={onControlClick.bind({}, "left")}
-        onMouseOver={onControlMouseEnter.bind({}, "left")}
-        onMouseOut={onControlMouseLeave.bind({}, "left")}
+        onClick={() => { onControlClick("left") }}
+        onMouseOver={() => { onControlMouseEnter("left") }}
+        onMouseOut={() => { onControlMouseLeave("left") }}
       />
       <ControlCircle
         point={rightPoint}
         status={state.right ? state.right.status : "neutral"}
-        onClick={onControlClick.bind({}, "right")}
-        onMouseOver={onControlMouseEnter.bind({}, "right")}
-        onMouseOut={onControlMouseLeave.bind({}, "right")}
+        onClick={() => { onControlClick("right") }}
+        onMouseOver={() => { onControlMouseEnter("right") }}
+        onMouseOut={() => { onControlMouseLeave("right") }}
       />
       <ControlCircle
         point={midPoint}

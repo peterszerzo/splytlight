@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import * as vars from "../styles/vars";
-import { State, SetState, store, navigate } from "../state";
+import { State, SetState, store, navigate, Action } from "../state";
 
 const Nav = styled.nav({
   position: "static"
@@ -32,7 +32,7 @@ export default ({ state, setState }: {state: State, setState: SetState}) => (
         href={"/about"}
         onClick={e => {
           e.preventDefault();
-          store.dispatch(navigate(state.route === "/about" ? "/" : "/about"));
+          store.dispatch(navigate(state.route === "/about" ? "/" : "/about") as Action);
         }}
       >
         About

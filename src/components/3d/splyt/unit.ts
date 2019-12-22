@@ -14,7 +14,17 @@ function createCylinder(length: number, radius: number) {
   return new CylinderGeometry(radius, radius, length, 24, 8, false);
 }
 
-function createArm({ length, angle }: any, baseHeight: number, radius: number) {
+function createArm(
+  {
+    length,
+    angle
+  }: {
+    length: number;
+    angle: number;
+  },
+  baseHeight: number,
+  radius: number
+) {
   const obj = createCylinder(length, radius);
   obj.rotateZ(angle);
   obj.translate(

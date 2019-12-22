@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from "redux";
-import { createEpicMiddleware } from "redux-observable";
-import { of } from "rxjs";
+import { createEpicMiddleware, combineEpics } from "redux-observable";
+import { of, empty, Observable } from "rxjs";
 import { filter, switchMap, delay } from "rxjs/operators";
 import { Size } from "./splyt";
 
@@ -45,7 +45,7 @@ const initialTree: Tree = {
 const initialState: State = {
   tree: initialTree,
   currentSize: "small",
-  route: "/",
+  route: window.location.pathname,
   ui: {
     windowHeight: 0,
     windowWidth: 0
@@ -54,91 +54,135 @@ const initialState: State = {
 
 // Actions
 
-export function rawStateChange(stateChange: Partial<State>) {
-  return {
-    type: "rawStateChange",
-    payload: stateChange
-  };
+enum ActionTypes {
+  RawStateChange = "RawStateChange",
+  FetchTreeRequest = "FetchTreeRequest",
+  FetchTreeResponse = "FetchTreeResponse",
+  ChangeTree = "ChangeTree",
+  Navigate = "Navigate"
 }
 
-export function fetchTreeRequest() {
-  return {
-    type: "fetchTreeRequest"
-  };
+interface RawStateChange {
+  type: ActionTypes.RawStateChange;
+  payload: Partial<State>;
 }
 
-export function changeTree(newTree: Partial<Tree>) {
-  return {
-    type: "changeTree",
-    payload: newTree
-  };
+export const rawStateChange = (
+  stateChange: Partial<State>
+): RawStateChange => ({
+  type: ActionTypes.RawStateChange,
+  payload: stateChange
+});
+
+interface FetchTreeRequest {
+  type: ActionTypes.FetchTreeRequest;
 }
 
-export function navigate(newRoute: string) {
-  return {
-    type: "navigate",
-    payload: newRoute
-  };
+export const fetchTreeRequest = (): FetchTreeRequest => ({
+  type: ActionTypes.FetchTreeRequest
+});
+
+interface FetchTreeResponse {
+  type: ActionTypes.FetchTreeResponse;
+  payload: Tree;
 }
+
+export const fetchTreeResponse = (tree: Tree): FetchTreeResponse => ({
+  type: ActionTypes.FetchTreeResponse,
+  payload: tree
+});
+
+interface ChangeTree {
+  type: ActionTypes.ChangeTree;
+  payload: Partial<Tree>;
+}
+
+export const changeTree = (newTree: Partial<Tree>): ChangeTree => ({
+  type: ActionTypes.ChangeTree,
+  payload: newTree
+});
+
+interface Navigate {
+  type: ActionTypes.Navigate;
+  payload: string;
+}
+
+export const navigate = (newRoute: string): Navigate => ({
+  type: ActionTypes.Navigate,
+  payload: newRoute
+});
+
+export type Action =
+  | RawStateChange
+  | ChangeTree
+  | Navigate
+  | FetchTreeRequest
+  | FetchTreeResponse;
 
 // Reducers
 
-function reducer(state: State = initialState, action: any) {
+const reducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
-    case "rawStateChange":
+    case ActionTypes.RawStateChange:
       return { ...state, ...action.payload };
-    case "resize":
-      return {
-        ...state,
-        ui: {
-          windowWidth: action.payload.width,
-          windowHeight: action.payload.height
-        }
-      };
-    case "fetchTreeRequest":
+    case ActionTypes.FetchTreeRequest:
       return state;
-    case "fetchTreeResponse":
+    case ActionTypes.FetchTreeResponse:
       return { ...state, tree: action.payload };
-    case "changeTree":
+    case ActionTypes.ChangeTree:
       const newTree = { ...state.tree, ...action.payload };
       localStorage.setItem("splytstate", JSON.stringify(newTree));
       return { ...state, tree: newTree };
-    case "navigate":
-      window.history.pushState(null, "", action.payload);
+    case ActionTypes.Navigate:
       return { ...state, route: action.payload };
     default:
       return state;
   }
-}
+};
 
 // Epics
 
-const fetchTreeEpic = (action$: any) =>
+const fetchTreeEpic = (action$: Observable<Action>): Observable<Action> =>
   action$.pipe(
-    filter((action: any) => action.type === "fetchTreeRequest"),
+    filter((action: Action) => action.type === ActionTypes.FetchTreeRequest),
     delay(10),
     switchMap(() =>
-      of({
-        type: "fetchTreeResponse",
-        payload: (() => {
-          try {
-            const tree = JSON.parse(localStorage.getItem("splytstate") || "1");
-            if (!tree || !tree.size) {
-              throw new Error("Not a tree!");
+      of(
+        fetchTreeResponse(
+          (() => {
+            try {
+              const tree = JSON.parse(
+                localStorage.getItem("splytstate") || "1"
+              );
+              if (!tree || !tree.size) {
+                throw new Error("Not a tree!");
+              }
+              return tree;
+            } catch (err) {
+              return initialTree;
             }
-            return tree;
-          } catch (err) {
-            return initialTree;
-          }
-        })()
-      })
+          })()
+        ) as Action
+      )
     )
+  );
+
+const navigateEpic = (action$: Observable<Action>): Observable<Action> =>
+  action$.pipe(
+    filter((action: Action) => action.type === ActionTypes.Navigate),
+    switchMap((action: Action) => {
+      window.history.pushState(null, "", (action as Navigate).payload);
+      return empty() as Observable<Action>;
+    })
   );
 
 // Store
 
 const epicMiddleware = createEpicMiddleware();
 
-export const store = createStore(reducer, applyMiddleware(epicMiddleware));
+export const store = createStore<State, Action, {}, {}>(
+  reducer,
+  applyMiddleware(epicMiddleware)
+);
 
-epicMiddleware.run(fetchTreeEpic);
+epicMiddleware.run(combineEpics(fetchTreeEpic, navigateEpic));

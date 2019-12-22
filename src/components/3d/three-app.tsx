@@ -15,7 +15,7 @@ import {
 import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
 import { blue, white } from "../../styles/vars";
-import { State } from "../../state";
+import { State, Tree } from "../../state";
 
 type Pt = [number, number];
 
@@ -128,7 +128,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
   let model: any;
   let modelBounds: any;
 
-  function setModel(tree: any) {
+  function setModel(tree: Tree) {
     if (model) {
       scene.remove(model);
     }
@@ -138,7 +138,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
     return model;
   }
 
-  function update(newState: any) {
+  function update(newState: ThreeAppState) {
     let prevState = state;
     state = newState;
     if (
