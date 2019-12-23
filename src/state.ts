@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
-import { createEpicMiddleware, combineEpics } from "redux-observable";
+import { createEpicMiddleware, combineEpics, Epic } from "redux-observable";
 import { of, empty, Observable } from "rxjs";
 import { filter, switchMap, delay } from "rxjs/operators";
 import { Size } from "./splyt";
@@ -131,7 +131,6 @@ const reducer = (state: State = initialState, action: Action) => {
       return { ...state, tree: action.payload };
     case ActionTypes.ChangeTree:
       const newTree = { ...state.tree, ...action.payload };
-      localStorage.setItem("splytstate", JSON.stringify(newTree));
       return { ...state, tree: newTree };
     case ActionTypes.Navigate:
       return { ...state, route: action.payload };
@@ -142,9 +141,13 @@ const reducer = (state: State = initialState, action: Action) => {
 
 // Epics
 
-const fetchTreeEpic = (action$: Observable<Action>): Observable<Action> =>
+type EpicDependencies = never;
+
+type ApplicationEpic = Epic<Action, Action, State, EpicDependencies>;
+
+const fetchTreeEpic: ApplicationEpic = action$ =>
   action$.pipe(
-    filter((action: Action) => action.type === ActionTypes.FetchTreeRequest),
+    filter(action => action.type === ActionTypes.FetchTreeRequest),
     delay(10),
     switchMap(() =>
       of(
@@ -167,22 +170,43 @@ const fetchTreeEpic = (action$: Observable<Action>): Observable<Action> =>
     )
   );
 
-const navigateEpic = (action$: Observable<Action>): Observable<Action> =>
+const navigateEpic: ApplicationEpic = action$ =>
   action$.pipe(
-    filter((action: Action) => action.type === ActionTypes.Navigate),
-    switchMap((action: Action) => {
+    filter(action => action.type === ActionTypes.Navigate),
+    switchMap(action => {
       window.history.pushState(null, "", (action as Navigate).payload);
       return empty() as Observable<Action>;
     })
   );
 
+const saveTreeEpic: ApplicationEpic = (action$, state$) =>
+  action$.pipe(
+    filter(action => action.type === ActionTypes.ChangeTree),
+    delay(200),
+    switchMap(() => {
+      localStorage.setItem("splytstate", JSON.stringify(state$.value.tree));
+      return empty() as Observable<Action>;
+    })
+  );
+
+const mainEpic: ApplicationEpic = combineEpics(
+  fetchTreeEpic,
+  navigateEpic,
+  saveTreeEpic
+);
+
 // Store
 
-const epicMiddleware = createEpicMiddleware();
+const epicMiddleware = createEpicMiddleware<
+  Action,
+  Action,
+  State,
+  EpicDependencies
+>();
 
 export const store = createStore<State, Action, {}, {}>(
   reducer,
   applyMiddleware(epicMiddleware)
 );
 
-epicMiddleware.run(combineEpics(fetchTreeEpic, navigateEpic));
+epicMiddleware.run(mainEpic);
