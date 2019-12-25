@@ -165,7 +165,7 @@ const fetchTreeEpic: ApplicationEpic = action$ =>
               return initialTree;
             }
           })()
-        ) as Action
+        )
       )
     )
   );
