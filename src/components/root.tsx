@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
+import { Provider, useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
+import { fromEvent, interval } from "rxjs";
+import { throttle, map, startWith } from "rxjs/operators";
+
 import Overlay from "./overlay";
 import Nav from "./nav";
 import { about } from "../content";
@@ -8,9 +12,17 @@ import TwoDee from "./2d";
 import ThreeDee from "./3d";
 import * as vars from "../styles/vars";
 import { css } from "../styles/setup";
-import { State, SetState, SetTree } from "../state";
+import {
+  store,
+  State,
+  rawStateChange,
+  fetchTreeRequest,
+  changeTree,
+  navigate,
+  Tree
+} from "../state";
 
-const Root = styled.div({
+const Container = styled.div({
   position: "relative"
 });
 
@@ -33,30 +45,73 @@ const Viz = styled.div({
   }
 });
 
-export default ({ state, setState, changeTree }: {
-  state: State;
-  setState: SetState;
-  changeTree: SetTree;
-}) => {
-  useEffect(() => {
-    const styleTag = document.createElement("style");
-    styleTag.innerText = css;
-    document.head.appendChild(styleTag);
-  }, []);
+const Root = () => {
+  const state = useSelector<State, State>(s => s);
+
+  const dispatch = useDispatch();
+
+  const setState = (stateChange: Partial<State>) => {
+    dispatch(rawStateChange(stateChange));
+  };
+  const setTree = (treeChange: Partial<Tree>) => {
+    dispatch(changeTree(treeChange));
+  };
 
   return (
-    <Root>
+    <Container>
       <Header />
       <Overlay isActive={state.route === "/about"} content={about} />
-      <Nav state={state} setState={setState} />
+      <Nav />
       <Main>
         <Viz>
-          <TwoDee state={state} changeTree={changeTree} />
+          <TwoDee state={state} changeTree={setTree} />
         </Viz>
         <Viz>
           <ThreeDee state={state} setState={setState} />
         </Viz>
       </Main>
-    </Root>
+    </Container>
+  );
+};
+
+export default () => {
+  useEffect(() => {
+    const styleTag = document.createElement("style");
+    styleTag.innerText = css;
+    document.head.appendChild(styleTag);
+
+    const resizeStream = fromEvent(window, "resize").pipe(
+      map((ev: any) => ({
+        windowWidth: ev.target.innerWidth,
+        windowHeight: ev.target.innerHeight
+      })),
+      throttle(() => interval(50)),
+      startWith({
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight
+      })
+    );
+
+    // No need to unsubscribe because the app is never unmounted
+    resizeStream.subscribe(dim => {
+      store.dispatch(
+        rawStateChange({
+          ui: dim
+        })
+      );
+    });
+
+    store.dispatch(fetchTreeRequest());
+
+    // No need to unsubscribe because the app is never unmounted
+    fromEvent(window, "popstate").subscribe(() => {
+      store.dispatch(navigate(window.location.pathname));
+    });
+  }, []);
+
+  return (
+    <Provider store={store}>
+      <Root />
+    </Provider>
   );
 };

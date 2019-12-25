@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
+
 import * as vars from "../styles/vars";
-import { State, SetState, store, navigate, Action } from "../state";
+import { State, navigate } from "../state";
 
 const Nav = styled.nav({
   position: "static"
@@ -25,18 +27,22 @@ const Link = styled.a({
   cursor: "pointer"
 });
 
-export default ({ state, setState }: {state: State, setState: SetState}) => (
-  <Nav>
-    <Toggle>
-      <Link
-        href={"/about"}
-        onClick={e => {
-          e.preventDefault();
-          store.dispatch(navigate(state.route === "/about" ? "/" : "/about") as Action);
-        }}
-      >
-        About
-      </Link>
-    </Toggle>
-  </Nav>
-);
+export default () => {
+  const state = useSelector<State, State>(s => s);
+  const dispatch = useDispatch();
+  return (
+    <Nav>
+      <Toggle>
+        <Link
+          href={"/about"}
+          onClick={e => {
+            e.preventDefault();
+            dispatch(navigate(state.route === "/about" ? "/" : "/about"));
+          }}
+        >
+          About
+        </Link>
+      </Toggle>
+    </Nav>
+  );
+};

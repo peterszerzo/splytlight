@@ -111,17 +111,3 @@ export const getMidPoint = ({ baseHeight }: Geometry) => {
     y: baseHeight
   };
 };
-
-export const countUnits = (tree: any): number => {
-  if (!tree || ["added", "removing"].indexOf(tree.status) === -1) {
-    return 0;
-  }
-  return 1 + countUnits(tree.left) + countUnits(tree.right);
-};
-
-export const countLooseEnds = (tree: any): number => {
-  if (!tree || ["added", "removing"].indexOf(tree.status) === -1) {
-    return 1;
-  }
-  return countLooseEnds(tree.left) + countLooseEnds(tree.right);
-};
