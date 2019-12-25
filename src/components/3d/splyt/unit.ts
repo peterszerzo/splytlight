@@ -1,20 +1,13 @@
-import {
-  CylinderGeometry,
-  Geometry,
-  SceneUtils,
-  SmoothShading,
-  MeshLambertMaterial
-} from "three";
+import { CylinderGeometry, Geometry, Mesh, MeshLambertMaterial } from "three";
 
 import { Geometry as SplytGeometry } from "../../../splyt";
 
 const { sin, cos } = Math;
 
-function createCylinder(length: number, radius: number) {
-  return new CylinderGeometry(radius, radius, length, 24, 8, false);
-}
+const createCylinder = (length: number, radius: number) =>
+  new CylinderGeometry(radius, radius, length, 24, 8, false);
 
-function createArm(
+const createArm = (
   {
     length,
     angle
@@ -24,7 +17,7 @@ function createArm(
   },
   baseHeight: number,
   radius: number
-) {
+) => {
   const obj = createCylinder(length, radius);
   obj.rotateZ(angle);
   obj.translate(
@@ -33,9 +26,13 @@ function createArm(
     0
   );
   return obj;
-}
+};
 
 const o = 1;
+
+const material = new MeshLambertMaterial({
+  color: 0x4a76b2
+});
 
 export default function createSplytUnit(size: SplytGeometry) {
   const { baseHeight, radius, leftArm, rightArm } = size;
@@ -46,17 +43,10 @@ export default function createSplytUnit(size: SplytGeometry) {
   const leftArmObj = createArm(leftArm, baseHeight, radius);
   const rightArmObj = createArm(rightArm, baseHeight, radius);
 
-  const materials = [
-    new MeshLambertMaterial({
-      color: 0xfff9dc,
-      shading: SmoothShading
-    })
-  ];
+  const geometryAccumulator = new Geometry();
+  [baseObj, leftArmObj, rightArmObj].forEach(object =>
+    geometryAccumulator.merge(object)
+  );
 
-  const smallYGeo = new Geometry();
-  [baseObj, leftArmObj, rightArmObj].forEach(o => smallYGeo.merge(o, o.matrix));
-
-  const smallYMesh = SceneUtils.createMultiMaterialObject(smallYGeo, materials);
-
-  return smallYMesh;
+  return new Mesh(geometryAccumulator, material);
 }

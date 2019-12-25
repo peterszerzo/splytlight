@@ -1,4 +1,4 @@
-import { Group, SphereGeometry, MeshBasicMaterial, Mesh } from "three";
+import { Group, SphereGeometry, MeshLambertMaterial, Mesh } from "three";
 
 import { part, Geometry } from "../../../splyt";
 import { Dir, Tree } from "../../../state";
@@ -7,7 +7,7 @@ import createSplytUnit from "./unit";
 const { sin, cos } = Math;
 
 const transformSplyt = (
-  object: any,
+  object: Group,
   dimensions: Geometry,
   dir: Dir,
   rotation: number
@@ -24,11 +24,11 @@ const transformSplyt = (
   );
 };
 
-export default function createSplytTree(state: Tree | null) {
+const createSplytTree = (state: Tree | null): Group => {
   if (!state || state.status === "adding") {
     const emptyGroup = new Group();
     const sphereGeometry = new SphereGeometry(12, 16, 16);
-    const sphereMaterial = new MeshBasicMaterial({ color: 0xffc235 });
+    const sphereMaterial = new MeshLambertMaterial({ color: 0xefd439 });
     const sphereMesh = new Mesh(sphereGeometry, sphereMaterial);
     sphereMesh.translateY(13);
     emptyGroup.add(sphereMesh);
@@ -45,4 +45,6 @@ export default function createSplytTree(state: Tree | null) {
     group.add(createSplytUnit(splytPart));
     return group;
   }
-}
+};
+
+export default createSplytTree;

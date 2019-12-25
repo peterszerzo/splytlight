@@ -1,5 +1,6 @@
 import {
   WebGLRenderer,
+  Group,
   Scene,
   Vector3,
   Box3,
@@ -7,14 +8,14 @@ import {
   AmbientLight,
   DirectionalLight,
   DoubleSide,
-  AxisHelper,
+  AxesHelper,
   Mesh,
   MeshLambertMaterial,
   CircleGeometry
 } from "three";
 import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
-import { blue, white } from "../../styles/vars";
+import { white } from "../../styles/vars";
 import { State, Tree } from "../../state";
 
 type Pt = [number, number];
@@ -32,7 +33,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
 
   /* Environment */
 
-  const axisHelper = new AxisHelper(50);
+  const axisHelper = new AxesHelper(50);
 
   const planeGeometry = new CircleGeometry(50, 40);
   const planeMaterial = new MeshLambertMaterial({
@@ -56,7 +57,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
     const light2 = new DirectionalLight(white, 0.2);
     light2.position.set(-10, -10, -10);
 
-    const light3 = new AmbientLight(blue);
+    const light3 = new AmbientLight(white);
 
     return [light1, light2, light3];
   })();
@@ -78,7 +79,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
 
   const camera = new PerspectiveCamera(
     45,
-    null, // Set subsequently in update
+    undefined, // Set subsequently in update
     10,
     10000
   );
@@ -91,7 +92,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
   renderer.setClearColor(0xffffff, 1);
   renderer.shadowMap.enabled = true;
 
-  function render(node?: any) {
+  function render() {
     renderer.render(scene, camera);
   }
 
@@ -125,8 +126,8 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
     camera.updateProjectionMatrix();
   }
 
-  let model: any;
-  let modelBounds: any;
+  let model: Group | undefined;
+  let modelBounds: Box3 | undefined;
 
   function setModel(tree: Tree) {
     if (model) {
@@ -152,15 +153,17 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
     if (prevState.global.tree !== state.global.tree || !model) {
       setModel(state.global.tree);
     }
+    if (modelBounds) {
     const { min, max } = modelBounds;
-    resize(
-      getVizContainerDimensions(state.global.ui),
-      {
-        x: Math.abs(min.x - max.x),
-        y: Math.abs(min.y - max.y)
-      },
-      cameraAngle
-    );
+      resize(
+        getVizContainerDimensions(state.global.ui),
+        {
+          x: Math.abs(min.x - max.x),
+          y: Math.abs(min.y - max.y)
+        },
+        cameraAngle
+      );
+    }
     render();
   }
 

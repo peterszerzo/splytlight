@@ -74,26 +74,27 @@ const Root = () => {
   );
 };
 
+const createResizeStream = () =>
+  fromEvent(window, "resize").pipe(
+    map((ev: any) => ({
+      windowWidth: ev.target.innerWidth,
+      windowHeight: ev.target.innerHeight
+    })),
+    throttle(() => interval(50)),
+    startWith({
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight
+    })
+  );
+
 export default () => {
   useEffect(() => {
-    const styleTag = document.createElement("style");
+    const styleTag: HTMLElement = document.createElement("style");
     styleTag.innerText = css;
     document.head.appendChild(styleTag);
 
-    const resizeStream = fromEvent(window, "resize").pipe(
-      map((ev: any) => ({
-        windowWidth: ev.target.innerWidth,
-        windowHeight: ev.target.innerHeight
-      })),
-      throttle(() => interval(50)),
-      startWith({
-        windowWidth: window.innerWidth,
-        windowHeight: window.innerHeight
-      })
-    );
-
     // No need to unsubscribe because the app is never unmounted
-    resizeStream.subscribe(dim => {
+    createResizeStream().subscribe(dim => {
       store.dispatch(
         rawStateChange({
           ui: dim
