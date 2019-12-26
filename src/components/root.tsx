@@ -15,11 +15,11 @@ import { css } from "../styles/setup";
 import {
   store,
   State,
-  rawStateChange,
-  fetchTreeRequest,
-  changeTree,
-  navigate,
-  Tree
+  initialize,
+  changeUiState,
+  changeNewTree,
+  Route,
+  navigate
 } from "../state";
 
 const Container = styled.div({
@@ -50,26 +50,40 @@ const Root = () => {
 
   const dispatch = useDispatch();
 
-  const setState = (stateChange: Partial<State>) => {
-    dispatch(rawStateChange(stateChange));
-  };
-  const setTree = (treeChange: Partial<Tree>) => {
-    dispatch(changeTree(treeChange));
-  };
-
   return (
     <Container>
       <Header />
-      <Overlay isActive={state.route === "/about"} content={about} />
       <Nav />
-      <Main>
-        <Viz>
-          <TwoDee state={state} changeTree={setTree} />
-        </Viz>
-        <Viz>
-          <ThreeDee state={state} setState={setState} />
-        </Viz>
-      </Main>
+      {(() => {
+        if (!state.page) {
+          return null;
+        }
+        switch (state.page.route) {
+          case Route.About:
+            return (
+              <Overlay isActive={state.route === "/about"} content={about} />
+            );
+          case Route.New:
+            return (
+              <Main>
+                <Viz>
+                  <TwoDee
+                    tree={state.page.tree}
+                    ui={state.ui}
+                    changeTree={change => {
+                      dispatch(changeNewTree(change));
+                    }}
+                  />
+                </Viz>
+                <Viz>
+                  <ThreeDee tree={state.page.tree} ui={state.ui} />
+                </Viz>
+              </Main>
+            );
+          default:
+            return null;
+        }
+      })()}
     </Container>
   );
 };
@@ -80,7 +94,7 @@ const createResizeStream = () =>
       windowWidth: ev.target.innerWidth,
       windowHeight: ev.target.innerHeight
     })),
-    throttle(() => interval(50)),
+    throttle(() => interval(100)),
     startWith({
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight
@@ -94,15 +108,13 @@ export default () => {
     document.head.appendChild(styleTag);
 
     // No need to unsubscribe because the app is never unmounted
-    createResizeStream().subscribe(dim => {
+    createResizeStream().subscribe(newUiState => {
       store.dispatch(
-        rawStateChange({
-          ui: dim
-        })
+        changeUiState(newUiState)
       );
     });
 
-    store.dispatch(fetchTreeRequest());
+    store.dispatch(initialize());
 
     // No need to unsubscribe because the app is never unmounted
     fromEvent(window, "popstate").subscribe(() => {

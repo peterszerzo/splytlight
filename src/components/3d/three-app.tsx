@@ -16,20 +16,22 @@ import {
 import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
 import { white } from "../../styles/vars";
-import { State, Tree } from "../../state";
+import { UiState } from "../../state";
+import { Tree } from "../../splyt";
 
 type Pt = [number, number];
 
 export interface ThreeAppState {
-  global: State;
+  tree: Tree;
+  ui: UiState;
   drag: {
     current: Pt;
     totalFinalized: Pt;
   };
 }
 
-export default (container: HTMLElement, initialState: ThreeAppState) => {
-  let state = initialState;
+const createThreeApp = (container: HTMLElement, initialState: ThreeAppState) => {
+  let state: ThreeAppState = initialState;
 
   /* Environment */
 
@@ -143,20 +145,20 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
     let prevState = state;
     state = newState;
     if (
-      state.global.ui.windowWidth === 0 ||
-      state.global.ui.windowHeight === 0
+      state.ui.windowWidth === 0 ||
+      state.ui.windowHeight === 0
     ) {
       return;
     }
     const cameraAngle =
       (state.drag.totalFinalized[0] + state.drag.current[0]) / 200;
-    if (prevState.global.tree !== state.global.tree || !model) {
-      setModel(state.global.tree);
+    if (prevState.tree !== state.tree || !model) {
+      setModel(state.tree);
     }
     if (modelBounds) {
     const { min, max } = modelBounds;
       resize(
-        getVizContainerDimensions(state.global.ui),
+        getVizContainerDimensions(state.ui),
         {
           x: Math.abs(min.x - max.x),
           y: Math.abs(min.y - max.y)
@@ -176,3 +178,7 @@ export default (container: HTMLElement, initialState: ThreeAppState) => {
     update
   };
 };
+
+export type ThreeApp = ReturnType<typeof createThreeApp>;
+
+export default createThreeApp;

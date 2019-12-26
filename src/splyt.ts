@@ -1,5 +1,17 @@
 import { controlCircleOffset } from "./styles/vars";
 
+export type Status = "added" | "adding" | "removing";
+
+export type Dir = "left" | "right";
+
+export interface Tree {
+  size: Size;
+  status: Status;
+  rotation: number;
+  left: Tree | null;
+  right: Tree | null;
+}
+
 export interface Geometry {
   baseHeight: number;
   radius: number;

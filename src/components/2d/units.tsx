@@ -1,37 +1,37 @@
 import React from "react";
 
 import Unit from "./unit";
-import { part, getEndPoints } from "../../splyt";
-import { Dir, Tree, SetTree } from "../../state";
+import { part, getEndPoints, Dir, Tree } from "../../splyt";
+import { HandleChange } from "../../state";
 
 const { PI } = Math;
 
 export default function Units({
-  state,
-  setState
+  tree,
+  onTreeChange
 }: {
-  state: Tree | null;
-  setState: SetTree;
+  tree: Tree | null;
+  onTreeChange: HandleChange<Tree>;
 }) {
-  if (!state) {
+  if (!tree) {
     return null;
   }
-  const splytPart = part(state.size);
+  const splytPart = part(tree.size);
   const { leftArm, rightArm } = splytPart;
   const [{ x: xl, y: yl }, { x: xr, y: yr }] = getEndPoints(splytPart);
   return (
-    <g opacity={["added", "removing"].indexOf(state.status) > -1 ? 1 : 0.5}>
+    <g opacity={["added", "removing"].indexOf(tree.status) > -1 ? 1 : 0.5}>
       <g
         transform={`translate(${xl} ${yl}) rotate(${(-leftArm.angle * 180) /
           PI})`}
       >
         <Units
-          state={state.left}
-          setState={(change: Partial<Tree>) => {
-            if (!state.left) {
+          tree={tree.left}
+          onTreeChange={(change: Partial<Tree>) => {
+            if (!tree.left) {
               return;
             }
-            setState({ left: { ...state.left, ...change } });
+            onTreeChange({ left: { ...tree.left, ...change } });
           }}
         />
       </g>
@@ -40,28 +40,28 @@ export default function Units({
           PI})`}
       >
         <Units
-          state={state.right}
-          setState={(change: Partial<Tree>) => {
-            if (!state.right) {
+          tree={tree.right}
+          onTreeChange={(change: Partial<Tree>) => {
+            if (!tree.right) {
               return;
             }
-            setState({ right: { ...state.right, ...change } });
+            onTreeChange({ right: { ...tree.right, ...change } });
           }}
         />
       </g>
       <Unit
-        state={state}
+        state={tree}
         onEditControlClick={() => {
-          setState({
-            size: state.size === "small" ? "large" : "small"
+          onTreeChange({
+            size: tree.size === "small" ? "large" : "small"
           });
         }}
         onControlClick={(dir: Dir) => {
-          setState({
+          onTreeChange({
             [dir]: {
               status:
-                state[dir] &&
-                ["added", "removing"].indexOf(state[dir]!.status) > -1
+                tree[dir] &&
+                ["added", "removing"].indexOf(tree[dir]!.status) > -1
                   ? "adding"
                   : "removing",
               rotation: 2 * Math.PI * Math.random(),
@@ -70,32 +70,32 @@ export default function Units({
           });
         }}
         onControlMouseEnter={(dir: Dir) => {
-          if (!state[dir]) {
-            return setState({
+          if (!tree[dir]) {
+            return onTreeChange({
               [dir]: {
                 status: "adding",
                 size: "small"
               }
             });
           }
-          if (["adding", "removing"].indexOf(state[dir]!.status) === -1) {
-            setState({
-              [dir]: { ...state[dir], status: "removing" }
+          if (["adding", "removing"].indexOf(tree[dir]!.status) === -1) {
+            onTreeChange({
+              [dir]: { ...tree[dir], status: "removing" }
             });
           }
         }}
         onControlMouseLeave={(dir: Dir) => {
-          if (!state[dir]) {
+          if (!tree[dir]) {
             return;
           }
-          if (state[dir]!.status === "adding") {
-            return setState({
+          if (tree[dir]!.status === "adding") {
+            return onTreeChange({
               [dir]: null
             });
           }
-          if (state[dir]!.status === "removing") {
-            setState({
-              [dir]: { ...state[dir], status: "added" }
+          if (tree[dir]!.status === "removing") {
+            onTreeChange({
+              [dir]: { ...tree[dir], status: "added" }
             });
           }
         }}

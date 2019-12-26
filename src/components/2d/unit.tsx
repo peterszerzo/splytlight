@@ -1,7 +1,6 @@
 import React from "react";
 
-import { part, getPoints } from "../../splyt";
-import { Tree, Status, Dir } from "../../state";
+import { part, getPoints, Tree, Status, Dir } from "../../splyt";
 import {
   brown,
   green,

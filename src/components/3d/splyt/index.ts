@@ -1,7 +1,6 @@
 import { Group, SphereGeometry, MeshLambertMaterial, Mesh } from "three";
 
-import { part, Geometry } from "../../../splyt";
-import { Dir, Tree } from "../../../state";
+import { part, Geometry, Dir, Tree } from "../../../splyt";
 import createSplytUnit from "./unit";
 
 const { sin, cos } = Math;
