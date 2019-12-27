@@ -240,7 +240,6 @@ export type Action =
 // Reducers
 
 const reducer = (state: State = initialState, action: Action): State => {
-  console.log(action);
   switch (action.type) {
     case ActionTypes.ChangeUiState:
       return {
