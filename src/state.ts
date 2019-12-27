@@ -424,7 +424,14 @@ const saveNewTreeEpic: ApplicationEpic = (action$, state$) =>
           treeId: translator.new(),
           tree: (action as SaveNewTree).payload
         })
-      ).pipe(map(response => saveNewTreeResponse(response)))
+      ).pipe(
+        switchMap(splyt =>
+          from([
+            saveNewTreeResponse(splyt),
+            navigate(routes.toUrl(routes.editRoute(splyt.treeId)))
+          ])
+        )
+      )
     )
   );
 

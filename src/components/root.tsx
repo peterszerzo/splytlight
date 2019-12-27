@@ -4,10 +4,11 @@ import styled from "@emotion/styled";
 import { fromEvent, interval } from "rxjs";
 import { throttle, map, startWith } from "rxjs/operators";
 
-import Overlay from "./overlay";
+import SimpleScreen from "./simple-screen";
 import getVizContainerDimensions from "../styles/layout";
 import { about } from "../content";
 import Header from "./header";
+import Loader from "./loader";
 import Splyt2dEditor from "./splyt-2d-editor";
 import Splyt3dViewer from "./splyt-3d-viewer";
 import * as vars from "../styles/vars";
@@ -35,14 +36,31 @@ const Viz = styled.div({
   height: "100%",
   flex: "1",
   ":first-of-type": {
-    borderRight: `1px solid ${vars.faintBlue}`
+    borderRight: `1px solid ${vars.gray}`
   }
 });
 
 const Button = styled.button({
   position: "absolute",
+  backgroundColor: vars.blue,
+  color: vars.white,
+  borderRadius: 20,
+  fontSize: "1rem",
+  padding: "8px 16px",
   bottom: 20,
   right: 20
+});
+
+const LinkGrid = styled.div({
+});
+
+const LinkGridLink = styled.a({
+  width: 300,
+  height: 240,
+  display: "inline-block",
+  "&:hover": {
+    filter: "brightness(96%)",
+  }
 });
 
 const Root = () => {
@@ -60,25 +78,25 @@ const Root = () => {
           return null;
         }
         if (routes.isAboutRoute(currentState.page.route)) {
-          return <Overlay isActive={true} content={about} />;
+          return <SimpleScreen content={about} />;
         }
         if (routes.isHomeRoute(currentState.page.route)) {
           const splyts = (currentState.page as state.HomePage).splyts;
           if (!splyts) {
-            return "Loading...";
+            return <Loader />;
           }
           return (
-            <div>
+            <LinkGrid>
               {splyts.map((splyt, index) => (
-                <a {...linkAttrs(routes.editRoute(splyt.treeId))} key={index}>
+                <LinkGridLink {...linkAttrs(routes.editRoute(splyt.treeId))} key={index}>
                   <Splyt3dViewer
                     key={index}
                     tree={splyt.tree}
                     size={{ width: 300, height: 240 }}
                   />
-                </a>
+                </LinkGridLink>
               ))}
-            </div>
+            </LinkGrid>
           );
         }
         if (routes.isEditRoute(currentState.page.route)) {
@@ -87,7 +105,7 @@ const Root = () => {
           );
           const { splyt } = currentState.page as state.EditPage;
           if (!splyt) {
-            return "Loading...";
+            return <Loader />;
           }
           return (
             <Main>

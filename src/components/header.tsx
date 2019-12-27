@@ -11,38 +11,37 @@ const Container = styled.header({
   boxSizing: "border-box",
   width: "100%",
   height: vars.headerHeight,
-  background: vars.blue,
   padding: `0 ${vars.standardPadding}px`,
-  position: "fixed",
   display: "flex",
-  color: vars.white,
+  color: vars.black,
+  borderBottom: `1px solid ${vars.gray}`,
   alignItems: "center",
-  justifyContent: "space-between",
-  top: 0,
-  left: 0
+  justifyContent: "space-between"
 });
 
 const H1 = styled.h1({
   paddingLeft: 8,
   textAlign: "left",
+  textTransform: "uppercase",
   width: "100%",
   margin: "auto",
   fontWeight: 300,
-  fontSize: "1.25rem",
+  fontSize: "1rem",
   letterSpacing: ".03rem",
-  color: vars.white
+  color: "inherit"
 });
 
 const LogoContainer = styled.div({
-  width: 30,
-  height: 30,
-  color: vars.white
+  width: 24,
+  height: 24
 });
 
-const Link = styled.a({
+const Link = styled.a<{ isActive?: boolean | null }>(({ isActive }) => ({
   textDecoration: "none",
+  borderBottom: "1px solid currentColor",
   color: "inherit",
-});
+  ...(isActive ? { fontWeight: 700 } : {})
+}));
 
 const MainLink = styled.a({
   textDecoration: "none",
@@ -57,7 +56,7 @@ const Nav = styled.nav({
   alignItems: "center",
   justifyContent: "flex-start",
   "& > *": {
-    marginLeft: 15
+    marginLeft: 20
   }
 });
 
@@ -71,10 +70,10 @@ export default () => {
         </LogoContainer>
         <H1>{title}</H1>
       </MainLink>
-        <Nav>
-      <Link {...linkAttrs(routes.newRoute)}>New</Link>
-      <Link {...linkAttrs(routes.aboutRoute)}>About</Link>
-        </Nav>
+      <Nav>
+        <Link {...linkAttrs(routes.newRoute)}>New</Link>
+        <Link {...linkAttrs(routes.aboutRoute)}>About</Link>
+      </Nav>
     </Container>
   );
 };
