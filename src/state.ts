@@ -1,9 +1,13 @@
 import { createStore, applyMiddleware } from "redux";
+import shortUuid from "short-uuid";
 import { createEpicMiddleware, combineEpics, Epic } from "redux-observable";
 import { of, from, empty, Observable } from "rxjs";
 import { filter, switchMap, delay, map } from "rxjs/operators";
+
 import { Tree } from "./splyt";
 import * as backend from "./backend";
+import * as routes from "./routes";
+import * as state from "./state";
 
 // State
 
@@ -17,41 +21,28 @@ export interface UiState {
   windowHeight: number;
 }
 
-export enum Route {
-  Home = "Home",
-  New = "New",
-  About = "About"
+export type Page = HomePage | NewPage | EditPage | AboutPage | null;
+
+export interface HomePage {
+  route: routes.HomeRoute;
+  splyts: Splyt[] | null;
 }
 
-export const toRoute = (): Route | null => {
-  switch (window.location.pathname) {
-    case "/":
-      return Route.Home;
-    case "/new":
-      return Route.New;
-    case "/about":
-      return Route.About;
-    default:
-      return null;
-  }
-};
+export interface NewPage {
+  route: routes.NewRoute;
+  tree: Tree;
+}
 
-export type Page =
-  | {
-      route: Route.Home;
-      splyts: Splyt[] | null;
-    }
-  | {
-      route: Route.New;
-      tree: Tree;
-    }
-  | {
-      route: Route.About;
-    }
-  | null;
+export interface EditPage {
+  route: routes.EditRoute;
+  splyt: Splyt | null;
+}
+
+export interface AboutPage {
+  route: routes.AboutRoute;
+}
 
 export interface State {
-  route: string;
   ui: UiState;
   page: Page;
 }
@@ -67,7 +58,6 @@ const initialTree: Tree = {
 };
 
 const initialState: State = {
-  route: window.location.pathname,
   ui: {
     windowHeight: 0,
     windowWidth: 0
@@ -88,7 +78,10 @@ enum ActionTypes {
   SaveNewTreeResponse = "SaveNewTreeResponse",
   // Home
   FetchSplyts = "FetchSplyts",
-  FetchSplytsResponse = "FetchSplytsResponse"
+  FetchSplytsResponse = "FetchSplytsResponse",
+  // Edit
+  EditPageFetchSplyt = "EditPageFetchSplyt",
+  EditPageFetchSplytResponse = "EditPageFetchSplytResponse"
 }
 
 //
@@ -169,7 +162,7 @@ export const saveNewTree = (payload: SaveNewTree["payload"]): SaveNewTree => ({
 
 interface SaveNewTreeResponse {
   type: ActionTypes.SaveNewTreeResponse;
-  payload: Tree;
+  payload: Splyt;
 }
 
 export const saveNewTreeResponse = (
@@ -203,6 +196,34 @@ export const fetchSplytsResponse = (
   payload
 });
 
+//
+
+interface EditPageFetchSplyt {
+  type: ActionTypes.EditPageFetchSplyt;
+  payload: string;
+}
+
+export const editPageFetchSplyt = (
+  payload: EditPageFetchSplyt["payload"]
+): EditPageFetchSplyt => ({
+  type: ActionTypes.EditPageFetchSplyt,
+  payload
+});
+
+//
+
+interface EditPageFetchSplytResponse {
+  type: ActionTypes.EditPageFetchSplytResponse;
+  payload: Splyt;
+}
+
+export const editPageFetchSplytResponse = (
+  payload: EditPageFetchSplytResponse["payload"]
+): EditPageFetchSplytResponse => ({
+  type: ActionTypes.EditPageFetchSplytResponse,
+  payload
+});
+
 export type Action =
   | ChangeUiState
   | Initialize
@@ -212,11 +233,14 @@ export type Action =
   | SaveNewTree
   | SaveNewTreeResponse
   | FetchSplyts
-  | FetchSplytsResponse;
+  | FetchSplytsResponse
+  | EditPageFetchSplyt
+  | EditPageFetchSplytResponse;
 
 // Reducers
 
 const reducer = (state: State = initialState, action: Action): State => {
+  console.log(action);
   switch (action.type) {
     case ActionTypes.ChangeUiState:
       return {
@@ -229,20 +253,20 @@ const reducer = (state: State = initialState, action: Action): State => {
     case ActionTypes.Initialize:
       return state;
     case ActionTypes.Navigate:
-      return { ...state, route: action.payload };
+      return state;
     case ActionTypes.PageChange:
       return {
         ...state,
         page: action.payload
       };
     case ActionTypes.ChangeNewTree:
-      return state.page && state.page.route === Route.New
+      return state.page && routes.isNewRoute(state.page.route)
         ? {
             ...state,
             page: {
               ...state.page,
               tree: {
-                ...state.page.tree,
+                ...(state.page as NewPage).tree,
                 ...action.payload
               }
             }
@@ -255,7 +279,27 @@ const reducer = (state: State = initialState, action: Action): State => {
     case ActionTypes.FetchSplyts:
       return state;
     case ActionTypes.FetchSplytsResponse:
+      return state.page && routes.isHomeRoute(state.page.route)
+        ? {
+            ...state,
+            page: {
+              ...state.page,
+              splyts: action.payload
+            }
+          }
+        : state;
+    case ActionTypes.EditPageFetchSplyt:
       return state;
+    case ActionTypes.EditPageFetchSplytResponse:
+      return state.page && routes.isEditRoute(state.page.route)
+        ? {
+            ...state,
+            page: {
+              ...state.page,
+              splyt: action.payload
+            }
+          }
+        : state;
     default:
       return state;
   }
@@ -283,29 +327,41 @@ const initializeEpic: ApplicationEpic = action$ =>
   action$.pipe(
     filter(action => action.type === ActionTypes.Initialize),
     switchMap(() => {
-      const route = toRoute();
-      if (route === Route.Home) {
+      const route = routes.toRoute();
+      if (!route) {
+        return empty();
+      }
+      if (routes.isHomeRoute(route)) {
         return of(
           pageChange({
-            route: Route.Home,
+            route,
             splyts: null
           }),
           fetchSplyts()
         );
       }
-      if (route === Route.About) {
+      if (routes.isAboutRoute(route)) {
         return of(
           pageChange({
-            route: Route.About
+            route
           })
         );
       }
-      if (route === Route.New) {
+      if (routes.isNewRoute(route)) {
         return of(
           pageChange({
-            route: Route.New,
+            route,
             tree: getInitialTree()
           })
+        );
+      }
+      if (routes.isEditRoute(route)) {
+        return of(
+          pageChange({
+            route,
+            splyt: null
+          }),
+          editPageFetchSplyt(route.id)
         );
       }
       return empty();
@@ -331,7 +387,17 @@ const fetchSplytsEpic: ApplicationEpic = (action$, state$) =>
     })
   );
 
-const saveTreeEpic: ApplicationEpic = (action$, state$) =>
+const fetchSplytEpic: ApplicationEpic = (action$, state$) =>
+  action$.pipe(
+    filter(action => action.type === ActionTypes.EditPageFetchSplyt),
+    switchMap(action => {
+      return from(
+        backend.fetchSplyt((action as EditPageFetchSplyt).payload)
+      ).pipe(map(splyt => editPageFetchSplytResponse(splyt)));
+    })
+  );
+
+const saveNewTreeInLocalStorageEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     filter(action => action.type === ActionTypes.ChangeNewTree),
     delay(200),
@@ -339,8 +405,8 @@ const saveTreeEpic: ApplicationEpic = (action$, state$) =>
       localStorage.setItem(
         "splytstate",
         JSON.stringify(
-          state$.value.page && state$.value.page.route === Route.New
-            ? state$.value.page.tree
+          state$.value.page && routes.isNewRoute(state$.value.page.route)
+            ? (state$.value.page as state.NewPage).tree
             : {}
         )
       );
@@ -348,11 +414,28 @@ const saveTreeEpic: ApplicationEpic = (action$, state$) =>
     })
   );
 
+const translator = shortUuid();
+
+const saveNewTreeEpic: ApplicationEpic = (action$, state$) =>
+  action$.pipe(
+    filter(action => action.type === ActionTypes.SaveNewTree),
+    switchMap(action =>
+      from(
+        backend.createSplyt({
+          treeId: translator.new(),
+          tree: (action as SaveNewTree).payload
+        })
+      ).pipe(map(response => saveNewTreeResponse(response)))
+    )
+  );
+
 const mainEpic: ApplicationEpic = combineEpics(
   initializeEpic,
   navigateEpic,
   fetchSplytsEpic,
-  saveTreeEpic
+  saveNewTreeInLocalStorageEpic,
+  fetchSplytEpic,
+  saveNewTreeEpic
 );
 
 // Store

@@ -7,6 +7,12 @@ export const fetchSplyts = (): Promise<Splyt[]> =>
     .then(res => res.json())
     .then(res => res.body.Items);
 
+export const fetchSplyt = (treeId: string): Promise<Splyt> =>
+  fetch(`${apiBase}/splyts`)
+    .then(res => res.json())
+    .then(res => res.body.Items)
+    .then(res => res.filter((splyt: Splyt) => splyt.treeId === treeId)[0]);
+
 export const createSplyt = (splyt: Splyt): Promise<Splyt> =>
   fetch(`${apiBase}/splyts`, {
     method: "PUT",

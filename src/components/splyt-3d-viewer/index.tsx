@@ -11,7 +11,6 @@ const addPts = ([x1, y1]: Pt, [x2, y2]: Pt): Pt => [x1 + x2, y1 + y2];
 export interface Props {
   size: { width: number; height: number };
   tree: Tree;
-  key?: number | string;
 }
 
 const Splyt3dViewer: React.SFC<Props> = props => {
@@ -61,7 +60,7 @@ const Splyt3dViewer: React.SFC<Props> = props => {
       });
   }, [props.tree, drag, threeApp, props.size]);
 
-  return <div key={props.key} {...bind()} ref={containerEl} />;
+  return <div {...bind()} ref={containerEl} style={{ width: props.size.width, height: props.size.height }} />;
 };
 
 export default Splyt3dViewer;

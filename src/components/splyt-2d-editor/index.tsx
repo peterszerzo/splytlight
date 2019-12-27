@@ -5,6 +5,15 @@ import { HandleChange } from "../../state";
 import { Tree } from "../../splyt";
 import Units from "./units";
 
+interface Props {
+  tree: Tree;
+  size: {
+    width: number;
+    height: number;
+  };
+  changeTree: HandleChange<Tree>;
+}
+
 const Container = styled.div({
   margin: "auto",
   "& circle": {
@@ -20,14 +29,7 @@ export default ({
   tree,
   size,
   changeTree
-}: {
-  tree: Tree;
-  size: {
-    width: number;
-    height: number;
-  };
-  changeTree: HandleChange<Tree>;
-}) => {
+}: Props) => {
   return (
     <Container>
       <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>

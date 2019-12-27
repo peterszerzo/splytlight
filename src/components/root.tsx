@@ -6,22 +6,15 @@ import { throttle, map, startWith } from "rxjs/operators";
 
 import Overlay from "./overlay";
 import getVizContainerDimensions from "../styles/layout";
-import Nav from "./nav";
 import { about } from "../content";
 import Header from "./header";
 import Splyt2dEditor from "./splyt-2d-editor";
 import Splyt3dViewer from "./splyt-3d-viewer";
 import * as vars from "../styles/vars";
 import { css } from "../styles/setup";
-import {
-  store,
-  State,
-  initialize,
-  changeUiState,
-  changeNewTree,
-  Route,
-  navigate
-} from "../state";
+import * as state from "../state";
+import * as routes from "../routes";
+import { useLink } from "./hooks";
 
 const Container = styled.div({
   position: "relative"
@@ -46,57 +39,104 @@ const Viz = styled.div({
   }
 });
 
+const Button = styled.button({
+  position: "absolute",
+  bottom: 20,
+  right: 20
+});
+
 const Root = () => {
-  const state = useSelector<State, State>(s => s);
+  const currentState = useSelector<state.State, state.State>(s => s);
 
   const dispatch = useDispatch();
+
+  const linkAttrs = useLink();
 
   return (
     <Container>
       <Header />
-      <Nav />
       {(() => {
-        if (!state.page) {
+        if (!currentState.page) {
           return null;
         }
-        switch (state.page.route) {
-          case Route.About:
-            return (
-              <Overlay isActive={true} content={about} />
-            );
-          case Route.Home:
-            const splyts = state.page.splyts;
-            if (!splyts) {
-              return "Loading...";
-            }
-            return (
-              <div>
-                {splyts.map((splyt, index) => (
-                  <Splyt3dViewer key={index} tree={splyt.tree} size={{ width: 300, height: 240 }} />
-                ))}
-              </div>
-            );
-          case Route.New:
-            const vizContainerDimensions = getVizContainerDimensions(state.ui);
-            return (
-              <Main>
-                <Viz>
-                  <Splyt2dEditor
-                    tree={state.page.tree}
-                    size={vizContainerDimensions}
-                    changeTree={change => {
-                      dispatch(changeNewTree(change));
-                    }}
-                  />
-                </Viz>
-                <Viz>
-                  <Splyt3dViewer tree={state.page.tree} size={vizContainerDimensions} />
-                </Viz>
-              </Main>
-            );
-          default:
-            return null;
+        if (routes.isAboutRoute(currentState.page.route)) {
+          return <Overlay isActive={true} content={about} />;
         }
+        if (routes.isHomeRoute(currentState.page.route)) {
+          const splyts = (currentState.page as state.HomePage).splyts;
+          if (!splyts) {
+            return "Loading...";
+          }
+          return (
+            <div>
+              {splyts.map((splyt, index) => (
+                <a {...linkAttrs(routes.editRoute(splyt.treeId))} key={index}>
+                  <Splyt3dViewer
+                    key={index}
+                    tree={splyt.tree}
+                    size={{ width: 300, height: 240 }}
+                  />
+                </a>
+              ))}
+            </div>
+          );
+        }
+        if (routes.isEditRoute(currentState.page.route)) {
+          const vizContainerDimensions = getVizContainerDimensions(
+            currentState.ui
+          );
+          const { splyt } = currentState.page as state.EditPage;
+          if (!splyt) {
+            return "Loading...";
+          }
+          return (
+            <Main>
+              <Viz>
+                <Splyt2dEditor
+                  tree={splyt.tree}
+                  size={vizContainerDimensions}
+                  changeTree={change => {}}
+                />
+              </Viz>
+              <Viz>
+                <Splyt3dViewer
+                  tree={splyt.tree}
+                  size={vizContainerDimensions}
+                />
+              </Viz>
+            </Main>
+          );
+        }
+        if (routes.isNewRoute(currentState.page.route)) {
+          const vizContainerDimensions = getVizContainerDimensions(
+            currentState.ui
+          );
+          const { tree } = currentState.page as state.NewPage;
+          return (
+            <Main>
+              <Viz>
+                <Splyt2dEditor
+                  tree={tree}
+                  size={vizContainerDimensions}
+                  changeTree={change => {
+                    dispatch(state.changeNewTree(change));
+                  }}
+                />
+              </Viz>
+              <Viz>
+                <Splyt3dViewer tree={tree} size={vizContainerDimensions} />
+              </Viz>
+              <Button
+                onClick={() => {
+                  dispatch(state.saveNewTree(tree));
+                }}
+              >
+                Save
+              </Button>
+            </Main>
+          );
+        }
+        return null;
       })()}
     </Container>
   );
@@ -123,21 +163,19 @@ export default () => {
 
     // No need to unsubscribe because the app is never unmounted
     createResizeStream().subscribe(newUiState => {
-      store.dispatch(
-        changeUiState(newUiState)
-      );
+      state.store.dispatch(state.changeUiState(newUiState));
     });
 
-    store.dispatch(initialize());
+    state.store.dispatch(state.initialize());
 
     // No need to unsubscribe because the app is never unmounted
     fromEvent(window, "popstate").subscribe(() => {
-      store.dispatch(navigate(window.location.pathname));
+      state.store.dispatch(state.navigate(window.location.pathname));
     });
   }, []);
 
   return (
-    <Provider store={store}>
+    <Provider store={state.store}>
       <Root />
     </Provider>
   );
