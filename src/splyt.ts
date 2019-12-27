@@ -4,6 +4,11 @@ export type Status = "added" | "adding" | "removing";
 
 export type Dir = "left" | "right";
 
+export interface Splyt {
+  treeId: string;
+  tree: Tree;
+}
+
 export interface Tree {
   size: Size;
   status: Status;

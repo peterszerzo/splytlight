@@ -5,11 +5,12 @@ import { fromEvent, interval } from "rxjs";
 import { throttle, map, startWith } from "rxjs/operators";
 
 import Overlay from "./overlay";
+import getVizContainerDimensions from "../styles/layout";
 import Nav from "./nav";
 import { about } from "../content";
 import Header from "./header";
-import TwoDee from "./2d";
-import ThreeDee from "./3d";
+import Splyt2dEditor from "./splyt-2d-editor";
+import Splyt3dViewer from "./splyt-3d-viewer";
 import * as vars from "../styles/vars";
 import { css } from "../styles/setup";
 import {
@@ -61,22 +62,35 @@ const Root = () => {
         switch (state.page.route) {
           case Route.About:
             return (
-              <Overlay isActive={state.route === "/about"} content={about} />
+              <Overlay isActive={true} content={about} />
+            );
+          case Route.Home:
+            const splyts = state.page.splyts;
+            if (!splyts) {
+              return "Loading...";
+            }
+            return (
+              <div>
+                {splyts.map((splyt, index) => (
+                  <Splyt3dViewer key={index} tree={splyt.tree} size={{ width: 300, height: 240 }} />
+                ))}
+              </div>
             );
           case Route.New:
+            const vizContainerDimensions = getVizContainerDimensions(state.ui);
             return (
               <Main>
                 <Viz>
-                  <TwoDee
+                  <Splyt2dEditor
                     tree={state.page.tree}
-                    ui={state.ui}
+                    size={vizContainerDimensions}
                     changeTree={change => {
                       dispatch(changeNewTree(change));
                     }}
                   />
                 </Viz>
                 <Viz>
-                  <ThreeDee tree={state.page.tree} ui={state.ui} />
+                  <Splyt3dViewer tree={state.page.tree} size={vizContainerDimensions} />
                 </Viz>
               </Main>
             );

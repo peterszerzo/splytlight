@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import getContainerDimensions from "../../styles/layout";
-import { HandleChange, UiState } from "../../state";
+import { HandleChange } from "../../state";
 import { Tree } from "../../splyt";
 import Units from "./units";
 
@@ -17,12 +16,22 @@ const Container = styled.div({
   }
 });
 
-export default ({ tree, ui, changeTree }: { tree: Tree, ui: UiState; changeTree: HandleChange<Tree> }) => {
-  const { width, height } = getContainerDimensions(ui);
+export default ({
+  tree,
+  size,
+  changeTree
+}: {
+  tree: Tree;
+  size: {
+    width: number;
+    height: number;
+  };
+  changeTree: HandleChange<Tree>;
+}) => {
   return (
     <Container>
-      <svg id="splyt-editor" viewBox={`0 0 ${width} ${height}`}>
-        <g transform={`translate(${width / 2} ${height * 0.1})`}>
+      <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>
+        <g transform={`translate(${size.width / 2} ${size.height * 0.1})`}>
           <Units tree={tree} onTreeChange={changeTree} />
         </g>
       </svg>

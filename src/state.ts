@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import { createEpicMiddleware, combineEpics, Epic } from "redux-observable";
-import { of, empty, Observable } from "rxjs";
-import { filter, switchMap, delay } from "rxjs/operators";
+import { of, from, empty, Observable } from "rxjs";
+import { filter, switchMap, delay, map } from "rxjs/operators";
 import { Tree } from "./splyt";
 import * as backend from "./backend";
 
@@ -26,7 +26,7 @@ export enum Route {
 export const toRoute = (): Route | null => {
   switch (window.location.pathname) {
     case "/":
-      return Route.New;
+      return Route.Home;
     case "/new":
       return Route.New;
     case "/about":
@@ -88,7 +88,7 @@ enum ActionTypes {
   SaveNewTreeResponse = "SaveNewTreeResponse",
   // Home
   FetchSplyts = "FetchSplyts",
-  FetchSplytsResponse = "FetchSplyts"
+  FetchSplytsResponse = "FetchSplytsResponse"
 }
 
 //
@@ -193,7 +193,7 @@ export const fetchSplyts = (): FetchSplyts => ({
 
 interface FetchSplytsResponse {
   type: ActionTypes.FetchSplytsResponse;
-  payload: Tree;
+  payload: Splyt[];
 }
 
 export const fetchSplytsResponse = (
@@ -325,11 +325,9 @@ const fetchSplytsEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
     filter(action => action.type === ActionTypes.FetchSplyts),
     switchMap(action => {
-      console.log(action);
-      backend.fetchSplyts().then(splyts => {
-        console.log(splyts);
-      });
-      return empty();
+      return from(backend.fetchSplyts()).pipe(
+        map(splyts => fetchSplytsResponse(splyts))
+      );
     })
   );
 

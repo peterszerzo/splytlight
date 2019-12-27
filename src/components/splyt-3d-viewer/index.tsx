@@ -2,14 +2,19 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDrag } from "react-use-gesture";
 
 import createThreeApp, { ThreeApp } from "./three-app";
-import { UiState } from "../../state";
 import { Tree } from "../../splyt";
 
 type Pt = [number, number];
 
 const addPts = ([x1, y1]: Pt, [x2, y2]: Pt): Pt => [x1 + x2, y1 + y2];
 
-const ThreeDee = ({ ui, tree }: { ui: UiState; tree: Tree }) => {
+export interface Props {
+  size: { width: number; height: number };
+  tree: Tree;
+  key?: number | string;
+}
+
+const Splyt3dViewer: React.SFC<Props> = props => {
   const containerEl = useRef(null);
 
   const [threeApp, setThreeApp] = useState<ThreeApp | undefined>(undefined);
@@ -38,8 +43,8 @@ const ThreeDee = ({ ui, tree }: { ui: UiState; tree: Tree }) => {
     const threeApp = createThreeApp(
       (containerEl.current as unknown) as HTMLElement,
       {
-        tree,
-        ui,
+        tree: props.tree,
+        size: props.size,
         drag
       }
     );
@@ -50,13 +55,13 @@ const ThreeDee = ({ ui, tree }: { ui: UiState; tree: Tree }) => {
   useEffect(() => {
     threeApp &&
       threeApp.update({
-        tree,
-        ui,
+        tree: props.tree,
+        size: props.size,
         drag
       });
-  }, [tree, drag, threeApp, ui]);
+  }, [props.tree, drag, threeApp, props.size]);
 
-  return <div {...bind()} ref={containerEl} />;
+  return <div key={props.key} {...bind()} ref={containerEl} />;
 };
 
-export default ThreeDee;
+export default Splyt3dViewer;

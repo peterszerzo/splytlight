@@ -13,24 +13,30 @@ import {
   MeshLambertMaterial,
   CircleGeometry
 } from "three";
-import getVizContainerDimensions from "../../styles/layout";
 import create from "./splyt";
 import { white } from "../../styles/vars";
-import { UiState } from "../../state";
 import { Tree } from "../../splyt";
 
 type Pt = [number, number];
 
+export interface Size {
+  width: number;
+  height: number;
+}
+
 export interface ThreeAppState {
   tree: Tree;
-  ui: UiState;
+  size: Size;
   drag: {
     current: Pt;
     totalFinalized: Pt;
   };
 }
 
-const createThreeApp = (container: HTMLElement, initialState: ThreeAppState) => {
+const createThreeApp = (
+  container: HTMLElement,
+  initialState: ThreeAppState
+) => {
   let state: ThreeAppState = initialState;
 
   /* Environment */
@@ -144,10 +150,7 @@ const createThreeApp = (container: HTMLElement, initialState: ThreeAppState) => 
   function update(newState: ThreeAppState) {
     let prevState = state;
     state = newState;
-    if (
-      state.ui.windowWidth === 0 ||
-      state.ui.windowHeight === 0
-    ) {
+    if (state.size.width === 0 || state.size.height === 0) {
       return;
     }
     const cameraAngle =
@@ -156,9 +159,9 @@ const createThreeApp = (container: HTMLElement, initialState: ThreeAppState) => 
       setModel(state.tree);
     }
     if (modelBounds) {
-    const { min, max } = modelBounds;
+      const { min, max } = modelBounds;
       resize(
-        getVizContainerDimensions(state.ui),
+        state.size,
         {
           x: Math.abs(min.x - max.x),
           y: Math.abs(min.y - max.y)
