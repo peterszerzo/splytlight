@@ -3,18 +3,18 @@ import styled from "@emotion/styled";
 
 import * as routes from "../routes";
 import { title } from "../content";
-import * as vars from "../styles/vars";
+import * as styles from "../styles";
 import Icon from "./icon";
 import { useLink } from "./hooks";
 
 const Container = styled.header({
   boxSizing: "border-box",
   width: "100%",
-  height: vars.headerHeight,
-  padding: `0 ${vars.standardPadding}px`,
+  height: styles.headerHeight,
+  padding: `0 ${styles.standardPadding}px`,
   display: "flex",
-  color: vars.black,
-  borderBottom: `1px solid ${vars.gray}`,
+  color: styles.black,
+  borderBottom: `1px solid ${styles.lightGray}`,
   alignItems: "center",
   justifyContent: "space-between"
 });

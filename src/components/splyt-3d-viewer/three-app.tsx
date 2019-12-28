@@ -14,7 +14,7 @@ import {
   CircleGeometry
 } from "three";
 import create from "./splyt";
-import { white } from "../../styles/vars";
+import * as styles from "../../styles";
 import { Tree } from "../../splyt";
 
 type Pt = [number, number];
@@ -59,13 +59,13 @@ const createThreeApp = (
   /* Lights */
 
   const lights = (function() {
-    const light1 = new DirectionalLight(white, 0.2);
+    const light1 = new DirectionalLight(styles.white, 0.2);
     light1.position.set(10, 10, 10);
 
-    const light2 = new DirectionalLight(white, 0.2);
+    const light2 = new DirectionalLight(styles.white, 0.2);
     light2.position.set(-10, -10, -10);
 
-    const light3 = new AmbientLight(white);
+    const light3 = new AmbientLight(styles.white);
 
     return [light1, light2, light3];
   })();

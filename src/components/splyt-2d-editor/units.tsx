@@ -11,7 +11,7 @@ export default function Units({
   onTreeChange
 }: {
   tree: Tree | null;
-  onTreeChange: HandleChange<Tree>;
+  onTreeChange?: HandleChange<Tree>;
 }) {
   if (!tree) {
     return null;
@@ -27,12 +27,15 @@ export default function Units({
       >
         <Units
           tree={tree.left}
-          onTreeChange={(change: Partial<Tree>) => {
-            if (!tree.left) {
-              return;
-            }
-            onTreeChange({ left: { ...tree.left, ...change } });
-          }}
+          onTreeChange={
+            onTreeChange &&
+            ((change: Partial<Tree>) => {
+              if (!tree.left) {
+                return;
+              }
+              onTreeChange({ left: { ...tree.left, ...change } });
+            })
+          }
         />
       </g>
       <g
@@ -41,64 +44,79 @@ export default function Units({
       >
         <Units
           tree={tree.right}
-          onTreeChange={(change: Partial<Tree>) => {
-            if (!tree.right) {
-              return;
-            }
-            onTreeChange({ right: { ...tree.right, ...change } });
-          }}
+          onTreeChange={
+            onTreeChange &&
+            ((change: Partial<Tree>) => {
+              if (!tree.right) {
+                return;
+              }
+              onTreeChange({ right: { ...tree.right, ...change } });
+            })
+          }
         />
       </g>
       <Unit
         state={tree}
-        onEditControlClick={() => {
-          onTreeChange({
-            size: tree.size === "small" ? "large" : "small"
-          });
-        }}
-        onControlClick={(dir: Dir) => {
-          onTreeChange({
-            [dir]: {
-              status:
-                tree[dir] &&
-                ["added", "removing"].indexOf(tree[dir]!.status) > -1
-                  ? "adding"
-                  : "removing",
-              rotation: 2 * Math.PI * Math.random(),
-              size: "small"
-            }
-          });
-        }}
-        onControlMouseEnter={(dir: Dir) => {
-          if (!tree[dir]) {
-            return onTreeChange({
+        onEditControlClick={
+          onTreeChange &&
+          (() => {
+            onTreeChange({
+              size: tree.size === "small" ? "large" : "small"
+            });
+          })
+        }
+        onControlClick={
+          onTreeChange &&
+          ((dir: Dir) => {
+            onTreeChange({
               [dir]: {
-                status: "adding",
+                status:
+                  tree[dir] &&
+                  ["added", "removing"].indexOf(tree[dir]!.status) > -1
+                    ? "adding"
+                    : "removing",
+                rotation: 2 * Math.PI * Math.random(),
                 size: "small"
               }
             });
-          }
-          if (["adding", "removing"].indexOf(tree[dir]!.status) === -1) {
-            onTreeChange({
-              [dir]: { ...tree[dir], status: "removing" }
-            });
-          }
-        }}
-        onControlMouseLeave={(dir: Dir) => {
-          if (!tree[dir]) {
-            return;
-          }
-          if (tree[dir]!.status === "adding") {
-            return onTreeChange({
-              [dir]: null
-            });
-          }
-          if (tree[dir]!.status === "removing") {
-            onTreeChange({
-              [dir]: { ...tree[dir], status: "added" }
-            });
-          }
-        }}
+          })
+        }
+        onControlMouseEnter={
+          onTreeChange &&
+          ((dir: Dir) => {
+            if (!tree[dir]) {
+              return onTreeChange({
+                [dir]: {
+                  status: "adding",
+                  size: "small"
+                }
+              });
+            }
+            if (["adding", "removing"].indexOf(tree[dir]!.status) === -1) {
+              onTreeChange({
+                [dir]: { ...tree[dir], status: "removing" }
+              });
+            }
+          })
+        }
+        onControlMouseLeave={
+          onTreeChange &&
+          ((dir: Dir) => {
+            if (!tree[dir]) {
+              return;
+            }
+            if (tree[dir]!.status === "adding") {
+              return onTreeChange({
+                [dir]: null
+              });
+            }
+            if (tree[dir]!.status === "removing") {
+              onTreeChange({
+                [dir]: { ...tree[dir], status: "added" }
+              });
+            }
+          })
+        }
       />
     </g>
   );

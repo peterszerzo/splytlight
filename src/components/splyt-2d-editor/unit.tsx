@@ -1,33 +1,38 @@
 import React from "react";
 
 import { part, getPoints, Tree, Status, Dir } from "../../splyt";
-import {
-  brown,
-  green,
-  red,
-  blue,
-  strokeWeight,
-  controlCircleRadius
-} from "../../styles/vars";
+import * as styles from "../../styles";
 
 const fillByControlStatus: Record<string, string> = {
-  neutral: brown,
-  adding: green,
-  removing: red,
-  added: brown
+  neutral: styles.brown,
+  adding: styles.green,
+  removing: styles.red,
+  added: styles.brown
 };
 
 export default (props: {
   state: Tree;
-  onControlClick: (dir: Dir) => void;
-  onControlMouseEnter: (dir: Dir) => void;
-  onControlMouseLeave: (dir: Dir) => void;
-  onEditControlClick: () => void;
+  onControlClick?: (dir: Dir) => void;
+  onControlMouseEnter?: (dir: Dir) => void;
+  onControlMouseLeave?: (dir: Dir) => void;
+  onEditControlClick?: () => void;
 }) => {
+  const controls =
+    props.onControlClick &&
+    props.onControlMouseEnter &&
+    props.onControlMouseLeave &&
+    props.onEditControlClick
+      ? {
+          onControlClick: props.onControlClick,
+          onControlMouseEnter: props.onControlMouseEnter,
+          onControlMouseLeave: props.onControlMouseLeave,
+          onEditControlClick: props.onEditControlClick
+        }
+      : undefined;
   return (
     <g>
       <Lines {...props.state} />
-      <Controls {...props} />
+      {controls && <Controls state={props.state} {...controls} />}
     </g>
   );
 };
@@ -41,8 +46,8 @@ const Lines = (state: Tree) => {
   } = getPoints(part(state.size), { useOffset: true });
   return (
     <g
-      stroke={blue}
-      strokeWidth={strokeWeight}
+      stroke={styles.blue}
+      strokeWidth={styles.strokeWeight}
       strokeLinecap={"round"}
       strokeLinejoin={"round"}
     >
@@ -76,7 +81,7 @@ function ControlCircle({
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      <circle cx={0} cy={0} r={controlCircleRadius} />
+      <circle cx={0} cy={0} r={styles.controlCircleRadius} />
     </g>
   );
 }
@@ -103,16 +108,28 @@ function Controls({
       <ControlCircle
         point={leftPoint}
         status={state.left ? state.left.status : "neutral"}
-        onClick={() => { onControlClick("left") }}
-        onMouseOver={() => { onControlMouseEnter("left") }}
-        onMouseOut={() => { onControlMouseLeave("left") }}
+        onClick={() => {
+          onControlClick("left");
+        }}
+        onMouseOver={() => {
+          onControlMouseEnter("left");
+        }}
+        onMouseOut={() => {
+          onControlMouseLeave("left");
+        }}
       />
       <ControlCircle
         point={rightPoint}
         status={state.right ? state.right.status : "neutral"}
-        onClick={() => { onControlClick("right") }}
-        onMouseOver={() => { onControlMouseEnter("right") }}
-        onMouseOut={() => { onControlMouseLeave("right") }}
+        onClick={() => {
+          onControlClick("right");
+        }}
+        onMouseOver={() => {
+          onControlMouseEnter("right");
+        }}
+        onMouseOut={() => {
+          onControlMouseLeave("right");
+        }}
       />
       <ControlCircle
         point={midPoint}

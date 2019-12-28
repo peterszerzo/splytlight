@@ -13,7 +13,7 @@ export const useLink = () => {
     href: routes.toUrl(route),
     onClick: (ev: any) => {
       ev.preventDefault();
-      dispatch(state.navigate(routes.toUrl(route)));
+      dispatch(state.navigate(route));
     }
   });
 };

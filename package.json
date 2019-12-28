@@ -16,6 +16,7 @@
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
     "@types/marked": "^0.7.2",
+    "date-fns": "^2.8.1",
     "emotion-theming": "^10.0.19",
     "marked": "^0.3.6",
     "react": "^16.9.0",

@@ -1,4 +1,4 @@
-import { controlCircleOffset } from "./styles/vars";
+import * as styles from "./styles";
 
 export type Status = "added" | "adding" | "removing";
 
@@ -6,7 +6,10 @@ export type Dir = "left" | "right";
 
 export interface Splyt {
   treeId: string;
+  name: string;
+  isPublic: boolean;
   tree: Tree;
+  createdAt?: string;
 }
 
 export interface Tree {
@@ -73,7 +76,7 @@ export const getPoints = (
   { baseHeight, leftArm, rightArm }: Geometry,
   options?: GeometryOptions
 ) => {
-  const offset = options && options.useOffset ? controlCircleOffset : 0;
+  const offset = options && options.useOffset ? styles.controlCircleOffset : 0;
   return {
     left: {
       x: (leftArm.length - offset / 2) * Math.sin(leftArm.angle),
@@ -98,7 +101,7 @@ export const getEndPoints = (
   { baseHeight, leftArm, rightArm }: Geometry,
   options?: GeometryOptions
 ) => {
-  const offset = options && options.useOffset ? controlCircleOffset : 0;
+  const offset = options && options.useOffset ? styles.controlCircleOffset : 0;
   return [
     {
       x: (leftArm.length - offset / 2) * Math.sin(leftArm.angle),
@@ -115,7 +118,7 @@ export const getStartPoint = (
   { baseHeight }: Geometry,
   options?: GeometryOptions
 ) => {
-  const offset = options && options.useOffset ? controlCircleOffset : 0;
+  const offset = options && options.useOffset ? styles.controlCircleOffset : 0;
   return {
     x: 0,
     y: offset / 2

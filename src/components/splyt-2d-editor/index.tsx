@@ -11,7 +11,7 @@ interface Props {
     width: number;
     height: number;
   };
-  changeTree: HandleChange<Tree>;
+  changeTree?: HandleChange<Tree>;
 }
 
 const Container = styled.div({

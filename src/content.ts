@@ -1,3 +1,3 @@
 export const title = "Splyt Light Interactive";
 export const about =
-  "Experimental drawing app for [Splyt Light](http://www.splytlight.com/).\n\nMade by [Scott](http://scottleinweber.com/) and [Peter](http://www.peterszerzo.com/).";
+  "Hello! This is a drawing app for [Splyt Light](http://www.splytlight.com/), brought to you by [Scott](http://scottleinweber.com/) and [Peter](http://www.peterszerzo.com/).";

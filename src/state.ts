@@ -8,13 +8,9 @@ import { Tree } from "./splyt";
 import * as backend from "./backend";
 import * as routes from "./routes";
 import * as state from "./state";
+import { Splyt } from "./splyt";
 
 // State
-
-export interface Splyt {
-  treeId: string;
-  tree: Tree;
-}
 
 export interface UiState {
   windowWidth: number;
@@ -31,6 +27,9 @@ export interface HomePage {
 export interface NewPage {
   route: routes.NewRoute;
   tree: Tree;
+  name: string;
+  isPublic: boolean;
+  status: "editingTree" | "editingSettings" | "saving";
 }
 
 export interface EditPage {
@@ -80,8 +79,9 @@ enum ActionTypes {
   FetchSplyts = "FetchSplyts",
   FetchSplytsResponse = "FetchSplytsResponse",
   // Edit
-  EditPageFetchSplyt = "EditPageFetchSplyt",
-  EditPageFetchSplytResponse = "EditPageFetchSplytResponse"
+  FetchSplyt = "FetchSplyt",
+  FetchSplytResponse = "FetchSplytResponse",
+  CloneTree = "CloneTree"
 }
 
 //
@@ -112,7 +112,7 @@ export const initialize = (): Initialize => ({
 
 interface Navigate {
   type: ActionTypes.Navigate;
-  payload: string;
+  payload: routes.Route;
 }
 
 export const navigate = (payload: Navigate["payload"]): Navigate => ({
@@ -150,7 +150,11 @@ export const changeNewTree = (
 
 interface SaveNewTree {
   type: ActionTypes.SaveNewTree;
-  payload: Tree;
+  payload: {
+    tree: Tree;
+    name: string;
+    isPublic: boolean;
+  };
 }
 
 export const saveNewTree = (payload: SaveNewTree["payload"]): SaveNewTree => ({
@@ -198,31 +202,43 @@ export const fetchSplytsResponse = (
 
 //
 
-interface EditPageFetchSplyt {
-  type: ActionTypes.EditPageFetchSplyt;
+interface FetchSplyt {
+  type: ActionTypes.FetchSplyt;
   payload: string;
 }
 
-export const editPageFetchSplyt = (
-  payload: EditPageFetchSplyt["payload"]
-): EditPageFetchSplyt => ({
-  type: ActionTypes.EditPageFetchSplyt,
+export const fetchSplyt = (payload: FetchSplyt["payload"]): FetchSplyt => ({
+  type: ActionTypes.FetchSplyt,
   payload
 });
 
 //
 
-interface EditPageFetchSplytResponse {
-  type: ActionTypes.EditPageFetchSplytResponse;
+interface FetchSplytResponse {
+  type: ActionTypes.FetchSplytResponse;
   payload: Splyt;
 }
 
-export const editPageFetchSplytResponse = (
-  payload: EditPageFetchSplytResponse["payload"]
-): EditPageFetchSplytResponse => ({
-  type: ActionTypes.EditPageFetchSplytResponse,
+export const fetchSplytResponse = (
+  payload: FetchSplytResponse["payload"]
+): FetchSplytResponse => ({
+  type: ActionTypes.FetchSplytResponse,
   payload
 });
+
+//
+
+interface CloneTree {
+  type: ActionTypes.CloneTree;
+  payload: Tree;
+}
+
+export const cloneTree = (payload: CloneTree["payload"]) => ({
+  type: ActionTypes.CloneTree,
+  payload
+});
+
+//
 
 export type Action =
   | ChangeUiState
@@ -232,10 +248,11 @@ export type Action =
   | ChangeNewTree
   | SaveNewTree
   | SaveNewTreeResponse
+  | CloneTree
   | FetchSplyts
   | FetchSplytsResponse
-  | EditPageFetchSplyt
-  | EditPageFetchSplytResponse;
+  | FetchSplyt
+  | FetchSplytResponse;
 
 // Reducers
 
@@ -272,7 +289,15 @@ const reducer = (state: State = initialState, action: Action): State => {
           }
         : state;
     case ActionTypes.SaveNewTree:
-      return state;
+      return state.page && routes.isNewRoute(state.page.route)
+        ? {
+            ...state,
+            page: {
+              ...state.page,
+              status: "saving"
+            }
+          }
+        : state;
     case ActionTypes.SaveNewTreeResponse:
       return state;
     case ActionTypes.FetchSplyts:
@@ -287,9 +312,9 @@ const reducer = (state: State = initialState, action: Action): State => {
             }
           }
         : state;
-    case ActionTypes.EditPageFetchSplyt:
+    case ActionTypes.FetchSplyt:
       return state;
-    case ActionTypes.EditPageFetchSplytResponse:
+    case ActionTypes.FetchSplytResponse:
       return state.page && routes.isEditRoute(state.page.route)
         ? {
             ...state,
@@ -309,18 +334,6 @@ const reducer = (state: State = initialState, action: Action): State => {
 type EpicDependencies = never;
 
 type ApplicationEpic = Epic<Action, Action, State, EpicDependencies>;
-
-const getInitialTree = (): Tree => {
-  try {
-    const tree = JSON.parse(localStorage.getItem("splytstate") || "1");
-    if (!tree || !tree.size) {
-      throw new Error("Not a tree!");
-    }
-    return tree;
-  } catch (err) {
-    return initialTree;
-  }
-};
 
 const initializeEpic: ApplicationEpic = action$ =>
   action$.pipe(
@@ -350,7 +363,10 @@ const initializeEpic: ApplicationEpic = action$ =>
         return of(
           pageChange({
             route,
-            tree: getInitialTree()
+            tree: retrieveTree(),
+            name: "NewSplyt",
+            isPublic: false,
+            status: "editingTree"
           })
         );
       }
@@ -360,7 +376,7 @@ const initializeEpic: ApplicationEpic = action$ =>
             route,
             splyt: null
           }),
-          editPageFetchSplyt(route.id)
+          fetchSplyt(route.id)
         );
       }
       return empty();
@@ -371,7 +387,11 @@ const navigateEpic: ApplicationEpic = action$ =>
   action$.pipe(
     filter(action => action.type === ActionTypes.Navigate),
     switchMap(action => {
-      window.history.pushState(null, "", (action as Navigate).payload);
+      window.history.pushState(
+        null,
+        "",
+        routes.toUrl((action as Navigate).payload)
+      );
       return of(initialize());
     })
   );
@@ -388,13 +408,29 @@ const fetchSplytsEpic: ApplicationEpic = (action$, state$) =>
 
 const fetchSplytEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
-    filter(action => action.type === ActionTypes.EditPageFetchSplyt),
+    filter(action => action.type === ActionTypes.FetchSplyt),
     switchMap(action => {
-      return from(
-        backend.fetchSplyt((action as EditPageFetchSplyt).payload)
-      ).pipe(map(splyt => editPageFetchSplytResponse(splyt)));
+      return from(backend.fetchSplyt((action as FetchSplyt).payload)).pipe(
+        map(splyt => fetchSplytResponse(splyt))
+      );
     })
   );
+
+const saveTree = (tree: Tree) => {
+  localStorage.setItem("splytstate", JSON.stringify(tree));
+};
+
+const retrieveTree = (): Tree => {
+  try {
+    const tree = JSON.parse(localStorage.getItem("splytstate") || "1");
+    if (!tree || !tree.size) {
+      throw new Error("Not a tree!");
+    }
+    return tree;
+  } catch (err) {
+    return initialTree;
+  }
+};
 
 const saveNewTreeInLocalStorageEpic: ApplicationEpic = (action$, state$) =>
   action$.pipe(
@@ -415,24 +451,37 @@ const saveNewTreeInLocalStorageEpic: ApplicationEpic = (action$, state$) =>
 
 const translator = shortUuid();
 
-const saveNewTreeEpic: ApplicationEpic = (action$, state$) =>
+const saveNewTreeEpic: ApplicationEpic = action$ =>
   action$.pipe(
     filter(action => action.type === ActionTypes.SaveNewTree),
-    switchMap(action =>
-      from(
+    switchMap(action => {
+      const payload = (action as SaveNewTree).payload;
+      return from(
         backend.createSplyt({
           treeId: translator.new(),
-          tree: (action as SaveNewTree).payload
+          tree: payload.tree,
+          name: payload.name,
+          isPublic: payload.isPublic,
+          createdAt: new Date().toISOString()
         })
       ).pipe(
         switchMap(splyt =>
           from([
             saveNewTreeResponse(splyt),
-            navigate(routes.toUrl(routes.editRoute(splyt.treeId)))
+            navigate(routes.editRoute(splyt.treeId))
           ])
         )
-      )
-    )
+      );
+    })
+  );
+
+const cloneTreeEpic: ApplicationEpic = action$ =>
+  action$.pipe(
+    filter(action => action.type === ActionTypes.CloneTree),
+    switchMap(action => {
+      saveTree((action as CloneTree).payload);
+      return of(navigate(routes.newRoute));
+    })
   );
 
 const mainEpic: ApplicationEpic = combineEpics(
@@ -441,6 +490,7 @@ const mainEpic: ApplicationEpic = combineEpics(
   fetchSplytsEpic,
   saveNewTreeInLocalStorageEpic,
   fetchSplytEpic,
+  cloneTreeEpic,
   saveNewTreeEpic
 );
 

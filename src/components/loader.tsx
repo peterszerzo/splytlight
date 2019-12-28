@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import * as vars from "../styles/vars";
+import * as styles from "../styles";
 
 const Container = styled.div({
   padding: 80,
@@ -12,7 +12,7 @@ const IconContainer = styled.div({
   width: 24,
   height: 24,
   display: "inline-block",
-  color: vars.blue,
+  color: styles.blue,
   animation: "spin 2.5s infinite linear"
 });
 

@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
-import * as vars from "../styles/vars";
+import * as styles from "../styles";
 import Static from "./static";
 
 const Container = styled.div({
-  height: `calc(100vh - ${vars.headerHeight}px)`,
-  top: vars.headerHeight,
-  padding: vars.standardPadding,
+  height: `calc(100vh - ${styles.headerHeight}px)`,
+  top: styles.headerHeight,
+  padding: styles.standardPadding,
   display: "flex",
   alignItems: "center",
   justifyContent: "center"
