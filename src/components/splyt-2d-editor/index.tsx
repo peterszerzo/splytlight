@@ -26,15 +26,17 @@ const Container = styled.div({
   }
 });
 
-export default ({ tree, size, changeTree }: Props) => {
+const Splyt2dEditor: React.SFC<Props> = props => {
   const { dragContainerAttrs, drag } = useSimpleDrag();
   return (
     <Container {...dragContainerAttrs}>
-      <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>
-        <g transform={`translate(${size.width / 2 + drag[0]} ${size.height * 0.1 + drag[1]})`}>
-          <Units tree={tree} onTreeChange={changeTree} />
+      <svg id="splyt-editor" viewBox={`0 0 ${props.size.width} ${props.size.height}`}>
+        <g transform={`translate(${props.size.width / 2 + drag[0]} ${props.size.height * 0.1 + drag[1]}) scale(${props.zoom || 1})`}>
+          <Units tree={props.tree} onTreeChange={props.changeTree} />
         </g>
       </svg>
     </Container>
   );
 };
+
+export default Splyt2dEditor;

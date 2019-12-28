@@ -12,7 +12,7 @@ export const red = "#BF0015";
 
 export const strokeWeight = 6;
 export const controlCircleRadius = 10;
-export const controlCircleOffset = 10;
+export const controlCircleOffset = 2;
 
 export const headerHeight = 60;
 export const sidebarWidth = 60;

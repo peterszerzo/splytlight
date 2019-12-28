@@ -7,6 +7,7 @@ import { debounce, map, startWith } from "rxjs/operators";
 import SimpleScreen from "./simple-screen";
 import Header from "./header";
 import * as undoable from "../utils/undoable";
+import * as zoom from "../utils/zoom";
 import Loader from "./loader";
 import Sidebar from "./sidebar";
 import IconButton from "./icon-button";
@@ -103,7 +104,8 @@ const LinkGrid = styled.div({
     left: 0,
     right: 0,
     height: 50,
-    background: "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))"
+    background:
+      "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))"
   }
 });
 
@@ -165,6 +167,8 @@ const Root: React.SFC<{}> = () => {
                 <IconButton title="Create tree" icon="save" primary />
                 <IconButton title="Undo change" icon="rotateCcw" />
                 <IconButton title="Redo change" icon="rotateCw" />
+                <IconButton title="Zoom in" icon="zoomIn" />
+                <IconButton title="Zoom out" icon="zoomOut" />
                 <IconButton
                   title="Download image"
                   icon="image"
@@ -204,6 +208,20 @@ const Root: React.SFC<{}> = () => {
             currentState.ui
           );
           const page = currentState.page as state.NewPage;
+          const zoomLevel = (() => {
+            switch(page.zoom) {
+              case "XL":
+                return 3;
+              case "L":
+                return 2;
+              case "M":
+                return 1;
+              case "S":
+                return 0.6666;
+              case "XS":
+                return 0.3333;
+            }
+          })();
           return (
             <Main>
               <Sidebar>
@@ -231,9 +249,7 @@ const Root: React.SFC<{}> = () => {
                   onPress={
                     undoable.canUndo(page.tree)
                       ? () => {
-                          dispatch(
-                            state.undoRedoNewTree("undo")
-                          );
+                          dispatch(state.undoRedoNewTree("undo"));
                         }
                       : undefined
                   }
@@ -244,12 +260,36 @@ const Root: React.SFC<{}> = () => {
                   onPress={
                     undoable.canRedo(page.tree)
                       ? () => {
-                          dispatch(
-                            state.undoRedoNewTree("redo")
-                          );
+                          dispatch(state.undoRedoNewTree("redo"));
                         }
                       : undefined
                   }
+                />
+                <IconButton
+                  title="Zoom in"
+                  icon="zoomIn"
+                  onPress={(() => {
+                    const nextZoom = zoom.zoomIn(page.zoom);
+                    if (!nextZoom) {
+                      return undefined;
+                    }
+                    return () => {
+                      dispatch(state.changeZoom(nextZoom));
+                    };
+                  })()}
+                />
+                <IconButton
+                  title="Zoom out"
+                  icon="zoomOut"
+                  onPress={(() => {
+                    const nextZoom = zoom.zoomOut(page.zoom);
+                    if (!nextZoom) {
+                      return undefined;
+                    }
+                    return () => {
+                      dispatch(state.changeZoom(nextZoom));
+                    };
+                  })()}
                 />
                 <IconButton
                   title="Download image"
@@ -261,10 +301,9 @@ const Root: React.SFC<{}> = () => {
                 <Splyt2dEditor
                   tree={page.treeDraft || undoable.current(page.tree)}
                   size={vizContainerDimensions}
+                  zoom={zoomLevel}
                   changeTree={newTree => {
-                    dispatch(
-                      state.changeNewTree(newTree)
-                    );
+                    dispatch(state.changeNewTree(newTree));
                   }}
                 />
               </Viz>

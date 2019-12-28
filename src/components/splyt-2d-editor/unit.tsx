@@ -48,8 +48,6 @@ const Lines = (state: Tree) => {
     <g
       stroke={styles.blue}
       strokeWidth={styles.strokeWeight}
-      strokeLinecap={"round"}
-      strokeLinejoin={"round"}
     >
       <line x1={x0} y1={y0} x2={xm} y2={ym} />
       <line x1={xm} y1={ym} x2={xl} y2={yl} />

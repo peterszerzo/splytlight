@@ -7,6 +7,7 @@ import { filter, switchMap, delay, map } from "rxjs/operators";
 import { Tree } from "./splyt";
 import * as backend from "./backend";
 import * as undoable from "./utils/undoable";
+import * as zoom from "./utils/zoom";
 import * as routes from "./routes";
 import * as state from "./state";
 import * as splyt from "./splyt";
@@ -29,6 +30,7 @@ export interface NewPage {
   route: routes.NewRoute;
   treeDraft?: Tree;
   tree: undoable.Undoable<Tree>;
+  zoom: zoom.Zoom;
   name: string;
   isPublic: boolean;
   status: "editingTree" | "editingSettings" | "saving";
@@ -73,6 +75,7 @@ enum ActionTypes {
   PageChange = "PageChange",
   // New
   ChangeNewTree = "ChangeNewTree",
+  ChangeZoom = "ChangeZoom",
   UndoRedoNewTree = "UndoRedoNewTree",
   SaveNewTree = "SaveNewTree",
   SaveNewTreeResponse = "SaveNewTreeResponse",
@@ -130,6 +133,18 @@ interface PageChange {
 
 export const pageChange = (payload: PageChange["payload"]): PageChange => ({
   type: ActionTypes.PageChange,
+  payload
+});
+
+//
+
+interface ChangeZoom {
+  type: ActionTypes.ChangeZoom;
+  payload: zoom.Zoom;
+}
+
+export const changeZoom = (payload: ChangeZoom["payload"]): ChangeZoom => ({
+  type: ActionTypes.ChangeZoom,
   payload
 });
 
@@ -261,6 +276,7 @@ export type Action =
   | Navigate
   | PageChange
   | ChangeNewTree
+  | ChangeZoom
   | UndoRedoNewTree
   | SaveNewTree
   | SaveNewTreeResponse
@@ -291,6 +307,16 @@ const reducer = (state: State = initialState, action: Action): State => {
         ...state,
         page: action.payload
       };
+    case ActionTypes.ChangeZoom:
+      return state.page && routes.isNewRoute(state.page.route)
+        ? {
+            ...state,
+            page: {
+              ...state.page,
+              zoom: action.payload
+            }
+          }
+        : state;
     case ActionTypes.ChangeNewTree:
       return state.page && routes.isNewRoute(state.page.route)
         ? {
@@ -402,6 +428,7 @@ const initializeEpic: ApplicationEpic = action$ =>
             route,
             tree: undoable.create(retrieveTree()),
             name: "NewSplyt",
+            zoom: "M",
             isPublic: false,
             status: "editingTree"
           })
