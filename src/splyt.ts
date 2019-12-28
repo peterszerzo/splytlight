@@ -20,6 +20,16 @@ export interface Tree {
   right: Tree | null;
 }
 
+export const isTreeDraft = (tree: Tree | null): boolean => {
+  if (!tree) {
+    return false;
+  }
+  if (tree.status !== "added") {
+    return true;
+  }
+  return isTreeDraft(tree.left) || isTreeDraft(tree.right);
+};
+
 export interface Geometry {
   baseHeight: number;
   radius: number;

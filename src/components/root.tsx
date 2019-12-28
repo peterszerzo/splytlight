@@ -16,7 +16,7 @@ import SplytCard from "./splyt-card";
 import * as styles from "../styles";
 import * as state from "../state";
 import * as content from "../content";
-import { Splyt } from "../splyt";
+import * as splyt from "../splyt";
 import * as routes from "../routes";
 
 const Container = styled.div({
@@ -134,7 +134,7 @@ const Root: React.SFC<{}> = () => {
             Math.floor(currentState.ui.windowWidth / 320);
           return (
             <LinkGrid>
-              {splyts.map((splyt: Splyt, index: number) => (
+              {splyts.map((splyt: splyt.Splyt, index: number) => (
                 <SplytCard key={index} splyt={splyt} width={width} />
               ))}
             </LinkGrid>
@@ -221,7 +221,7 @@ const Root: React.SFC<{}> = () => {
                     undoable.canUndo(page.tree)
                       ? () => {
                           dispatch(
-                            state.changeNewTree(undoable.undo(page.tree))
+                            state.undoRedoNewTree("undo")
                           );
                         }
                       : undefined
@@ -234,7 +234,7 @@ const Root: React.SFC<{}> = () => {
                     undoable.canRedo(page.tree)
                       ? () => {
                           dispatch(
-                            state.changeNewTree(undoable.redo(page.tree))
+                            state.undoRedoNewTree("redo")
                           );
                         }
                       : undefined
@@ -248,13 +248,11 @@ const Root: React.SFC<{}> = () => {
               </Sidebar>
               <Viz>
                 <Splyt2dEditor
-                  tree={undoable.current(page.tree)}
+                  tree={page.treeDraft || undoable.current(page.tree)}
                   size={vizContainerDimensions}
                   changeTree={newTree => {
                     dispatch(
-                      state.changeNewTree(
-                        undoable.setCurrent(page.tree, newTree)
-                      )
+                      state.changeNewTree(newTree)
                     );
                   }}
                 />

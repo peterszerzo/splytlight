@@ -9,7 +9,7 @@ import * as backend from "./backend";
 import * as undoable from "./utils/undoable";
 import * as routes from "./routes";
 import * as state from "./state";
-import { Splyt } from "./splyt";
+import * as splyt from "./splyt";
 
 // State
 
@@ -22,11 +22,12 @@ export type Page = HomePage | NewPage | EditPage | AboutPage | null;
 
 export interface HomePage {
   route: routes.HomeRoute;
-  splyts: Splyt[] | null;
+  splyts: splyt.Splyt[] | null;
 }
 
 export interface NewPage {
   route: routes.NewRoute;
+  treeDraft?: Tree;
   tree: undoable.Undoable<Tree>;
   name: string;
   isPublic: boolean;
@@ -35,7 +36,7 @@ export interface NewPage {
 
 export interface EditPage {
   route: routes.EditRoute;
-  splyt: Splyt | null;
+  splyt: splyt.Splyt | null;
 }
 
 export interface AboutPage {
@@ -72,6 +73,7 @@ enum ActionTypes {
   PageChange = "PageChange",
   // New
   ChangeNewTree = "ChangeNewTree",
+  UndoRedoNewTree = "UndoRedoNewTree",
   SaveNewTree = "SaveNewTree",
   SaveNewTreeResponse = "SaveNewTreeResponse",
   // Home
@@ -135,13 +137,27 @@ export const pageChange = (payload: PageChange["payload"]): PageChange => ({
 
 interface ChangeNewTree {
   type: ActionTypes.ChangeNewTree;
-  payload: undoable.Undoable<Tree>;
+  payload: Tree;
 }
 
 export const changeNewTree = (
   payload: ChangeNewTree["payload"]
 ): ChangeNewTree => ({
   type: ActionTypes.ChangeNewTree,
+  payload
+});
+
+//
+
+interface UndoRedoNewTree {
+  type: ActionTypes.UndoRedoNewTree;
+  payload: "undo" | "redo";
+}
+
+export const undoRedoNewTree = (
+  payload: UndoRedoNewTree["payload"]
+): UndoRedoNewTree => ({
+  type: ActionTypes.UndoRedoNewTree,
   payload
 });
 
@@ -165,7 +181,7 @@ export const saveNewTree = (payload: SaveNewTree["payload"]): SaveNewTree => ({
 
 interface SaveNewTreeResponse {
   type: ActionTypes.SaveNewTreeResponse;
-  payload: Splyt;
+  payload: splyt.Splyt;
 }
 
 export const saveNewTreeResponse = (
@@ -189,7 +205,7 @@ export const fetchSplyts = (): FetchSplyts => ({
 
 interface FetchSplytsResponse {
   type: ActionTypes.FetchSplytsResponse;
-  payload: Splyt[];
+  payload: splyt.Splyt[];
 }
 
 export const fetchSplytsResponse = (
@@ -215,7 +231,7 @@ export const fetchSplyt = (payload: FetchSplyt["payload"]): FetchSplyt => ({
 
 interface FetchSplytResponse {
   type: ActionTypes.FetchSplytResponse;
-  payload: Splyt;
+  payload: splyt.Splyt;
 }
 
 export const fetchSplytResponse = (
@@ -245,6 +261,7 @@ export type Action =
   | Navigate
   | PageChange
   | ChangeNewTree
+  | UndoRedoNewTree
   | SaveNewTree
   | SaveNewTreeResponse
   | CloneTree
@@ -280,7 +297,30 @@ const reducer = (state: State = initialState, action: Action): State => {
             ...state,
             page: {
               ...state.page,
-              tree: action.payload
+              ...(splyt.isTreeDraft(action.payload)
+                ? {
+                    treeDraft: action.payload
+                  }
+                : {
+                    treeDraft: undefined,
+                    tree: undoable.setCurrent(
+                      (state.page as NewPage).tree,
+                      action.payload
+                    )
+                  })
+            }
+          }
+        : state;
+    case ActionTypes.UndoRedoNewTree:
+      return state.page && routes.isNewRoute(state.page.route)
+        ? {
+            ...state,
+            page: {
+              ...state.page,
+              tree:
+                action.payload === "undo"
+                  ? undoable.undo((state.page as NewPage).tree)
+                  : undoable.redo((state.page as NewPage).tree)
             }
           }
         : state;
