@@ -96,7 +96,7 @@ const createThreeApp = (
 
   /* Renderer */
 
-  const renderer = new WebGLRenderer({ antialias: true });
+  const renderer = new WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.setClearColor(0xffffff, 1);
   renderer.shadowMap.enabled = true;
 

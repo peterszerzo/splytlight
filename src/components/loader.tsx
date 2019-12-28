@@ -12,7 +12,7 @@ const IconContainer = styled.div({
   width: 24,
   height: 24,
   display: "inline-block",
-  color: styles.blue,
+  color: styles.black,
   animation: "spin 2.5s infinite linear"
 });
 

@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
 import { fromEvent, interval } from "rxjs";
-import { throttle, map, startWith } from "rxjs/operators";
+import { debounce, map, startWith } from "rxjs/operators";
 
 import SimpleScreen from "./simple-screen";
 import Header from "./header";
 import Loader from "./loader";
 import Sidebar from "./sidebar";
+import IconButton from "./icon-button";
 import Splyt2dEditor from "./splyt-2d-editor";
 import Splyt3dViewer from "./splyt-3d-viewer";
 import SplytCard from "./splyt-card";
@@ -62,7 +63,7 @@ const VizCoverContent = styled.div({
   }
 });
 
-const VizControls = styled.div({
+export const VizControls = styled.div({
   position: "absolute",
   top: 20,
   right: 20
@@ -92,6 +93,19 @@ const Root: React.SFC<{}> = () => {
   const currentState = useSelector<state.State, state.State>(s => s);
 
   const dispatch = useDispatch();
+
+  const [currentCanvas, setCurrentCanvas] = useState<HTMLCanvasElement | null>(
+    null
+  );
+
+  const handleCanvasDownload = currentCanvas
+    ? () => {
+        const image = currentCanvas
+          .toDataURL("image/png")
+          .replace("image/png", "image/octet-stream");
+        window.location.href = image;
+      }
+    : undefined;
 
   return (
     <Container>
@@ -129,7 +143,16 @@ const Root: React.SFC<{}> = () => {
           }
           return (
             <Main>
-              <Sidebar></Sidebar>
+              <Sidebar>
+                <IconButton title="Create tree" icon="save" primary />
+                <IconButton title="Undo change" icon="rotateCcw" />
+                <IconButton title="Redo change" icon="rotateCw" />
+                <IconButton
+                  title="Download image"
+                  icon="image"
+                  onPress={handleCanvasDownload}
+                />
+              </Sidebar>
               <Viz>
                 <VizCover>
                   <VizCoverContent>
@@ -165,25 +188,34 @@ const Root: React.SFC<{}> = () => {
           const page = currentState.page as state.NewPage;
           return (
             <Main>
-              <Sidebar></Sidebar>
+              <Sidebar>
+                <IconButton
+                  title="Create tree"
+                  icon="save"
+                  primary
+                  onPress={
+                    page.status === "saving"
+                      ? undefined
+                      : () => {
+                          dispatch(
+                            state.saveNewTree({
+                              tree: page.tree,
+                              name: page.name,
+                              isPublic: page.isPublic
+                            })
+                          );
+                        }
+                  }
+                />
+                <IconButton title="Undo change" icon="rotateCcw" />
+                <IconButton title="Redo change" icon="rotateCw" />
+                <IconButton
+                  title="Download image"
+                  icon="image"
+                  onPress={handleCanvasDownload}
+                />
+              </Sidebar>
               <Viz>
-                <VizControls>
-                  <Button
-                    key="save-button"
-                    disabled={page.status === "saving"}
-                    onClick={() => {
-                      dispatch(
-                        state.saveNewTree({
-                          tree: page.tree,
-                          name: page.name,
-                          isPublic: page.isPublic
-                        })
-                      );
-                    }}
-                  >
-                    Save
-                  </Button>
-                </VizControls>
                 <Splyt2dEditor
                   tree={page.tree}
                   size={vizContainerDimensions}
@@ -193,7 +225,13 @@ const Root: React.SFC<{}> = () => {
                 />
               </Viz>
               <Viz>
-                <Splyt3dViewer tree={page.tree} size={vizContainerDimensions} />
+                <Splyt3dViewer
+                  tree={page.tree}
+                  size={vizContainerDimensions}
+                  canvasRef={canvasEl => {
+                    setCurrentCanvas(canvasEl);
+                  }}
+                />
               </Viz>
             </Main>
           );
@@ -210,7 +248,7 @@ const createResizeStream = () =>
       windowWidth: ev.target.innerWidth,
       windowHeight: ev.target.innerHeight
     })),
-    throttle(() => interval(100)),
+    debounce(() => interval(150)),
     startWith({
       windowWidth: window.innerWidth,
       windowHeight: window.innerHeight

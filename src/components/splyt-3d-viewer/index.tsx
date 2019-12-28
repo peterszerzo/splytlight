@@ -10,6 +10,7 @@ const addPts = ([x1, y1]: Pt, [x2, y2]: Pt): Pt => [x1 + x2, y1 + y2];
 
 export interface Props {
   size: { width: number; height: number };
+  canvasRef?: (node: HTMLCanvasElement | null) => void;
   tree: Tree;
 }
 
@@ -48,6 +49,9 @@ const Splyt3dViewer: React.SFC<Props> = props => {
       }
     );
     setThreeApp(threeApp);
+    if (props.canvasRef) {
+      props.canvasRef(((containerEl.current as unknown) as HTMLElement).querySelector("canvas"));
+    }
     return () => {};
   }, [containerEl]);
 
@@ -60,7 +64,13 @@ const Splyt3dViewer: React.SFC<Props> = props => {
       });
   }, [props.tree, drag, threeApp, props.size]);
 
-  return <div {...bind()} ref={containerEl} style={{ width: props.size.width, height: props.size.height }} />;
+  return (
+    <div
+      {...bind()}
+      ref={containerEl}
+      style={{ width: props.size.width, height: props.size.height }}
+    />
+  );
 };
 
 export default Splyt3dViewer;
