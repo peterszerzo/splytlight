@@ -214,8 +214,32 @@ const Root: React.SFC<{}> = () => {
                         }
                   }
                 />
-                <IconButton title="Undo change" icon="rotateCcw" />
-                <IconButton title="Redo change" icon="rotateCw" />
+                <IconButton
+                  title="Undo change"
+                  icon="rotateCcw"
+                  onPress={
+                    undoable.canUndo(page.tree)
+                      ? () => {
+                          dispatch(
+                            state.changeNewTree(undoable.undo(page.tree))
+                          );
+                        }
+                      : undefined
+                  }
+                />
+                <IconButton
+                  title="Redo change"
+                  icon="rotateCw"
+                  onPress={
+                    undoable.canRedo(page.tree)
+                      ? () => {
+                          dispatch(
+                            state.changeNewTree(undoable.redo(page.tree))
+                          );
+                        }
+                      : undefined
+                  }
+                />
                 <IconButton
                   title="Download image"
                   icon="image"
@@ -226,8 +250,12 @@ const Root: React.SFC<{}> = () => {
                 <Splyt2dEditor
                   tree={undoable.current(page.tree)}
                   size={vizContainerDimensions}
-                  changeTree={change => {
-                    dispatch(state.changeNewTree(change));
+                  changeTree={newTree => {
+                    dispatch(
+                      state.changeNewTree(
+                        undoable.setCurrent(page.tree, newTree)
+                      )
+                    );
                   }}
                 />
               </Viz>

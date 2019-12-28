@@ -47,8 +47,6 @@ export interface State {
   page: Page;
 }
 
-export type HandleChange<T> = (change: Partial<T>) => void;
-
 const initialTree: Tree = {
   size: "small",
   status: "added",
@@ -137,7 +135,7 @@ export const pageChange = (payload: PageChange["payload"]): PageChange => ({
 
 interface ChangeNewTree {
   type: ActionTypes.ChangeNewTree;
-  payload: Partial<Tree>;
+  payload: undoable.Undoable<Tree>;
 }
 
 export const changeNewTree = (
@@ -282,10 +280,7 @@ const reducer = (state: State = initialState, action: Action): State => {
             ...state,
             page: {
               ...state.page,
-              tree: undoable.setCurrent((state.page as NewPage).tree, {
-                ...undoable.current((state.page as NewPage).tree),
-                ...action.payload
-              })
+              tree: action.payload
             }
           }
         : state;
