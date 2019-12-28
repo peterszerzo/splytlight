@@ -317,6 +317,7 @@ const reducer = (state: State = initialState, action: Action): State => {
             ...state,
             page: {
               ...state.page,
+              treeDraft: undefined,
               tree:
                 action.payload === "undo"
                   ? undoable.undo((state.page as NewPage).tree)

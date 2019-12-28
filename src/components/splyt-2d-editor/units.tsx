@@ -5,13 +5,13 @@ import { part, getEndPoints, Dir, Tree } from "../../splyt";
 
 const { PI } = Math;
 
-export default function Units({
-  tree,
-  onTreeChange
-}: {
+interface Props {
   tree: Tree | null;
   onTreeChange?: (newTree: Tree) => void;
-}) {
+  zoom?: number;
+}
+
+const Units: React.SFC<Props> = ({ tree, onTreeChange }) => {
   if (!tree) {
     return null;
   }
@@ -125,4 +125,6 @@ export default function Units({
       />
     </g>
   );
-}
+};
+
+export default Units;

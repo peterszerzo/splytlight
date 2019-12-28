@@ -1,3 +1,5 @@
+import equals from "ramda/src/equals";
+
 export interface Undoable<T> {
   _current: T;
   _prevs: Array<T>;
@@ -15,11 +17,14 @@ export const current = <T>(undoable: Undoable<T>): T => undoable._current;
 export const setCurrent = <T>(
   undoable: Undoable<T>,
   newCurrent: T
-): Undoable<T> => ({
-  _current: newCurrent,
-  _prevs: [undoable._current, ...undoable._prevs].slice(0, 30),
-  _nexts: []
-});
+): Undoable<T> =>
+  !equals(newCurrent, current(undoable))
+    ? {
+        _current: newCurrent,
+        _prevs: [undoable._current, ...undoable._prevs].slice(0, 30),
+        _nexts: []
+      }
+    : undoable;
 
 export const canUndo = <T>(undoable: Undoable<T>): boolean =>
   undoable._prevs.length > 0;

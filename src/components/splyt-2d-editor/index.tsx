@@ -3,9 +3,11 @@ import styled from "@emotion/styled";
 
 import { Tree } from "../../splyt";
 import Units from "./units";
+import { useSimpleDrag } from "../hooks";
 
 interface Props {
   tree: Tree;
+  zoom?: number;
   size: {
     width: number;
     height: number;
@@ -25,10 +27,11 @@ const Container = styled.div({
 });
 
 export default ({ tree, size, changeTree }: Props) => {
+  const { dragContainerAttrs, drag } = useSimpleDrag();
   return (
-    <Container>
+    <Container {...dragContainerAttrs}>
       <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>
-        <g transform={`translate(${size.width / 2} ${size.height * 0.1})`}>
+        <g transform={`translate(${size.width / 2 + drag[0]} ${size.height * 0.1 + drag[1]})`}>
           <Units tree={tree} onTreeChange={changeTree} />
         </g>
       </svg>

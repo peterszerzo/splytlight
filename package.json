@@ -5,6 +5,7 @@
   "author": "Peter Szerzo, Scott Leinweber",
   "private": true,
   "devDependencies": {
+    "@types/ramda": "^0.26.39",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "@types/react-redux": "^7.1.5",
@@ -19,6 +20,7 @@
     "date-fns": "^2.8.1",
     "emotion-theming": "^10.0.19",
     "marked": "^0.3.6",
+    "ramda": "^0.26.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.3",

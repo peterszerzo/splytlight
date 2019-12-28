@@ -27,10 +27,7 @@ export interface Size {
 export interface ThreeAppState {
   tree: Tree;
   size: Size;
-  drag: {
-    current: Pt;
-    totalFinalized: Pt;
-  };
+  drag: Pt;
 }
 
 const createThreeApp = (
@@ -96,7 +93,10 @@ const createThreeApp = (
 
   /* Renderer */
 
-  const renderer = new WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  const renderer = new WebGLRenderer({
+    antialias: true,
+    preserveDrawingBuffer: true
+  });
   renderer.setClearColor(0xffffff, 1);
   renderer.shadowMap.enabled = true;
 
@@ -153,8 +153,7 @@ const createThreeApp = (
     if (state.size.width === 0 || state.size.height === 0) {
       return;
     }
-    const cameraAngle =
-      (state.drag.totalFinalized[0] + state.drag.current[0]) / 200;
+    const cameraAngle = state.drag[0] / 200;
     if (prevState.tree !== state.tree || !model) {
       setModel(state.tree);
     }
