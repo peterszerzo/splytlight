@@ -11,6 +11,7 @@ import * as zoom from "../utils/zoom";
 import Loader from "./loader";
 import Sidebar from "./sidebar";
 import IconButton from "./icon-button";
+import MobileScreen from "./mobile-screen";
 import Splyt2dEditor from "./splyt-2d-editor";
 import Splyt3dViewer from "./splyt-3d-viewer";
 import SplytCard from "./splyt-card";
@@ -127,6 +128,10 @@ const Root: React.SFC<{}> = () => {
       }
     : undefined;
 
+  if (currentState.ui.windowWidth && currentState.ui.windowWidth < 600) {
+    return <MobileScreen />;
+  }
+
   return (
     <Container>
       <Header />
@@ -164,7 +169,7 @@ const Root: React.SFC<{}> = () => {
           return (
             <Main>
               <Sidebar>
-                <IconButton title="Create tree" icon="save" primary />
+                <IconButton title="Create tree" icon="save" />
                 <IconButton title="Undo change" icon="rotateCcw" />
                 <IconButton title="Redo change" icon="rotateCw" />
                 <IconButton title="Zoom in" icon="zoomIn" />
@@ -198,6 +203,9 @@ const Root: React.SFC<{}> = () => {
                 <Splyt3dViewer
                   tree={splyt.tree}
                   size={vizContainerDimensions}
+                  canvasRef={canvasEl => {
+                    setCurrentCanvas(canvasEl);
+                  }}
                 />
               </Viz>
             </Main>
@@ -209,7 +217,7 @@ const Root: React.SFC<{}> = () => {
           );
           const page = currentState.page as state.NewPage;
           const zoomLevel = (() => {
-            switch(page.zoom) {
+            switch (page.zoom) {
               case "XL":
                 return 3;
               case "L":

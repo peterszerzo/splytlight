@@ -6,11 +6,10 @@ Build your own [Splyt Light](http://www.splytlight.com/) lamp in one simple inte
 
 ## Run locally
 
-Install dependencies (skip commands right to the | if not using [yarn](https://github.com/yarnpkg/yarn)):
+Install dependencies:
 
-`npm install` | `npm i -g yarn` and `yarn install`
-`npm i -g create-react-app`
+`npm install`
 
 Run development server:
 
-`npm start` | `yarn start`
+`npm start`

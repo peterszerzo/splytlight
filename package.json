@@ -37,7 +37,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "format": "prettier './src/**/*.ts' --write",
-    "deploy": "npm run build && git branch -D gh-pages && git checkout --orphan gh-pages && trash src public && mv build/* . && git add . && git commit -m 'Deploy' && git push origin gh-pages && git checkout master"
+    "deploy": "npm run build && surge build splytlight.surge.sh"
   },
   "browserslist": {
     "production": [

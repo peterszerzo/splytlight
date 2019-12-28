@@ -34,7 +34,7 @@ const Container = styled.button<{ disabled?: boolean; primary?: boolean }>(
               })
         }
       : {
-          color: styles.gray,
+          color: styles.black,
           ...(disabled
             ? {}
             : {
@@ -47,7 +47,7 @@ const Container = styled.button<{ disabled?: boolean; primary?: boolean }>(
                 }
               })
         }),
-    opacity: disabled ? 0.4 : 1
+    opacity: disabled ? 0.3 : 1
   })
 );
 

@@ -27,6 +27,7 @@ const Container = styled.div({
 });
 
 const Splyt2dEditor: React.SFC<Props> = props => {
+  console.log(JSON.stringify(props.tree, null, 0));
   const { dragContainerAttrs, drag } = useSimpleDrag();
   return (
     <Container {...dragContainerAttrs}>
