@@ -6,6 +6,7 @@ import { debounce, map, startWith } from "rxjs/operators";
 
 import SimpleScreen from "./simple-screen";
 import Header from "./header";
+import * as undoable from "../utils/undoable";
 import Loader from "./loader";
 import Sidebar from "./sidebar";
 import IconButton from "./icon-button";
@@ -87,7 +88,13 @@ const Button = styled.button<{ disabled?: boolean }>(({ disabled }) => ({
   }
 }));
 
-const LinkGrid = styled.div({});
+const LinkGrid = styled.div({
+  height: `calc(100vh - ${styles.headerHeight}px)`,
+  overflow: "auto",
+  "&::-webkit-scrollbar": {
+    display: "none"
+  }
+});
 
 const Root: React.SFC<{}> = () => {
   const currentState = useSelector<state.State, state.State>(s => s);
@@ -199,7 +206,7 @@ const Root: React.SFC<{}> = () => {
                       : () => {
                           dispatch(
                             state.saveNewTree({
-                              tree: page.tree,
+                              tree: undoable.current(page.tree),
                               name: page.name,
                               isPublic: page.isPublic
                             })
@@ -217,7 +224,7 @@ const Root: React.SFC<{}> = () => {
               </Sidebar>
               <Viz>
                 <Splyt2dEditor
-                  tree={page.tree}
+                  tree={undoable.current(page.tree)}
                   size={vizContainerDimensions}
                   changeTree={change => {
                     dispatch(state.changeNewTree(change));
@@ -226,7 +233,7 @@ const Root: React.SFC<{}> = () => {
               </Viz>
               <Viz>
                 <Splyt3dViewer
-                  tree={page.tree}
+                  tree={undoable.current(page.tree)}
                   size={vizContainerDimensions}
                   canvasRef={canvasEl => {
                     setCurrentCanvas(canvasEl);

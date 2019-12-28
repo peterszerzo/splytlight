@@ -2,7 +2,6 @@ import React from "react";
 
 import Unit from "./unit";
 import { part, getEndPoints, Dir, Tree } from "../../splyt";
-import { HandleChange } from "../../state";
 
 const { PI } = Math;
 
@@ -11,7 +10,7 @@ export default function Units({
   onTreeChange
 }: {
   tree: Tree | null;
-  onTreeChange?: HandleChange<Tree>;
+  onTreeChange?: (newTree: Tree) => void;
 }) {
   if (!tree) {
     return null;
@@ -33,7 +32,7 @@ export default function Units({
               if (!tree.left) {
                 return;
               }
-              onTreeChange({ left: { ...tree.left, ...change } });
+              onTreeChange({ ...tree, left: { ...tree.left, ...change } });
             })
           }
         />
@@ -50,7 +49,7 @@ export default function Units({
               if (!tree.right) {
                 return;
               }
-              onTreeChange({ right: { ...tree.right, ...change } });
+              onTreeChange({ ...tree, right: { ...tree.right, ...change } });
             })
           }
         />
@@ -61,6 +60,7 @@ export default function Units({
           onTreeChange &&
           (() => {
             onTreeChange({
+              ...tree,
               size: tree.size === "small" ? "large" : "small"
             });
           })
@@ -69,6 +69,7 @@ export default function Units({
           onTreeChange &&
           ((dir: Dir) => {
             onTreeChange({
+              ...tree,
               [dir]: {
                 status:
                   tree[dir] &&
@@ -86,6 +87,7 @@ export default function Units({
           ((dir: Dir) => {
             if (!tree[dir]) {
               return onTreeChange({
+                ...tree,
                 [dir]: {
                   status: "adding",
                   size: "small"
@@ -94,6 +96,7 @@ export default function Units({
             }
             if (["adding", "removing"].indexOf(tree[dir]!.status) === -1) {
               onTreeChange({
+                ...tree,
                 [dir]: { ...tree[dir], status: "removing" }
               });
             }
@@ -107,11 +110,13 @@ export default function Units({
             }
             if (tree[dir]!.status === "adding") {
               return onTreeChange({
+                ...tree,
                 [dir]: null
               });
             }
             if (tree[dir]!.status === "removing") {
               onTreeChange({
+                ...tree,
                 [dir]: { ...tree[dir], status: "added" }
               });
             }

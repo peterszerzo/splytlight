@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { HandleChange } from "../../state";
 import { Tree } from "../../splyt";
 import Units from "./units";
 
@@ -11,7 +10,7 @@ interface Props {
     width: number;
     height: number;
   };
-  changeTree?: HandleChange<Tree>;
+  changeTree?: (newTree: Tree) => void;
 }
 
 const Container = styled.div({
@@ -25,11 +24,7 @@ const Container = styled.div({
   }
 });
 
-export default ({
-  tree,
-  size,
-  changeTree
-}: Props) => {
+export default ({ tree, size, changeTree }: Props) => {
   return (
     <Container>
       <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>

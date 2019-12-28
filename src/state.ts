@@ -6,6 +6,7 @@ import { filter, switchMap, delay, map } from "rxjs/operators";
 
 import { Tree } from "./splyt";
 import * as backend from "./backend";
+import * as undoable from "./utils/undoable";
 import * as routes from "./routes";
 import * as state from "./state";
 import { Splyt } from "./splyt";
@@ -26,7 +27,7 @@ export interface HomePage {
 
 export interface NewPage {
   route: routes.NewRoute;
-  tree: Tree;
+  tree: undoable.Undoable<Tree>;
   name: string;
   isPublic: boolean;
   status: "editingTree" | "editingSettings" | "saving";
@@ -281,10 +282,10 @@ const reducer = (state: State = initialState, action: Action): State => {
             ...state,
             page: {
               ...state.page,
-              tree: {
-                ...(state.page as NewPage).tree,
+              tree: undoable.setCurrent((state.page as NewPage).tree, {
+                ...undoable.current((state.page as NewPage).tree),
                 ...action.payload
-              }
+              })
             }
           }
         : state;
@@ -363,7 +364,7 @@ const initializeEpic: ApplicationEpic = action$ =>
         return of(
           pageChange({
             route,
-            tree: retrieveTree(),
+            tree: undoable.create(retrieveTree()),
             name: "NewSplyt",
             isPublic: false,
             status: "editingTree"
@@ -441,7 +442,7 @@ const saveNewTreeInLocalStorageEpic: ApplicationEpic = (action$, state$) =>
         "splytstate",
         JSON.stringify(
           state$.value.page && routes.isNewRoute(state$.value.page.route)
-            ? (state$.value.page as state.NewPage).tree
+            ? undoable.current((state$.value.page as state.NewPage).tree)
             : {}
         )
       );
