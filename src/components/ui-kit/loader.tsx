@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import * as styles from "../styles";
+import * as styles from "../../styles";
 
 const Container = styled.div({
   padding: 80,

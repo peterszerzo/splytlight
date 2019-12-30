@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 
 import Splyt3dViewer from "./splyt-3d-viewer";
 import { Tree } from "../splyt";
+import * as uiKit from "./ui-kit";
+import * as content from "../content";
 
 const Container = styled.div({
   width: "100%",
@@ -19,10 +21,7 @@ const MobileScreen: React.SFC<{}> = () => (
   <Container>
     <Content>
       <Splyt3dViewer tree={exampleTree} size={{ width: 200, height: 260 }} />
-      <p>
-        Thanks for stopping by! This is the Splyt Light drawing app, supporting
-        desktop only. Swing by again from a laptop, perhaps?
-      </p>
+      <uiKit.Static content={content.mobileBanner} />
     </Content>
   </Container>
 );

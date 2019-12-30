@@ -71,7 +71,6 @@ export default () => {
         <H1>{title}</H1>
       </MainLink>
       <Nav>
-        <Link {...linkAttrs(routes.newRoute)}>New</Link>
         <Link {...linkAttrs(routes.aboutRoute)}>About</Link>
       </Nav>
     </Container>

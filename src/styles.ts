@@ -33,7 +33,6 @@ export const css = `
 @import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro';
 
 * {
-  -webkit-font-smoothing: antialiased;
   font-family: 'Source Sans Pro', sans-serif;
   box-sizing: border-box;
 }

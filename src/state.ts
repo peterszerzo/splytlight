@@ -12,12 +12,29 @@ import * as routes from "./routes";
 import * as state from "./state";
 import * as splyt from "./splyt";
 
-// State
+// ## Main application state
+
+export interface State {
+  ui: UiState;
+  page: Page;
+}
+
+const initialState: State = {
+  ui: {
+    windowHeight: 0,
+    windowWidth: 0
+  },
+  page: null
+};
+
+// ### UI State
 
 export interface UiState {
   windowWidth: number;
   windowHeight: number;
 }
+
+// ### Page state
 
 export type Page = HomePage | NewPage | EditPage | AboutPage | null;
 
@@ -45,44 +62,24 @@ export interface AboutPage {
   route: routes.AboutRoute;
 }
 
-export interface State {
-  ui: UiState;
-  page: Page;
-}
-
-const initialTree: Tree = {
-  size: "small",
-  status: "added",
-  rotation: 0,
-  left: null,
-  right: null
-};
-
-const initialState: State = {
-  ui: {
-    windowHeight: 0,
-    windowWidth: 0
-  },
-  page: null
-};
-
-// Actions
+// ## Actions
 
 enum ActionTypes {
+  // General
   ChangeUiState = "ChangeUiState",
   Initialize = "Initialize",
   Navigate = "Navigate",
   PageChange = "PageChange",
-  // New
+  // New page
   ChangeNewTree = "ChangeNewTree",
   ChangeZoom = "ChangeZoom",
   UndoRedoNewTree = "UndoRedoNewTree",
   SaveNewTree = "SaveNewTree",
   SaveNewTreeResponse = "SaveNewTreeResponse",
-  // Home
+  // Home page
   FetchSplyts = "FetchSplyts",
   FetchSplytsResponse = "FetchSplytsResponse",
-  // Edit
+  // Edit page
   FetchSplyt = "FetchSplyt",
   FetchSplytResponse = "FetchSplytResponse",
   CloneTree = "CloneTree"
@@ -286,7 +283,7 @@ export type Action =
   | FetchSplyt
   | FetchSplytResponse;
 
-// Reducers
+// ## Reducers
 
 const reducer = (state: State = initialState, action: Action): State => {
   switch (action.type) {
@@ -392,7 +389,7 @@ const reducer = (state: State = initialState, action: Action): State => {
   }
 };
 
-// Epics
+// ## Epics
 
 type EpicDependencies = never;
 
@@ -492,7 +489,7 @@ const retrieveTree = (): Tree => {
     }
     return tree;
   } catch (err) {
-    return initialTree;
+    return splyt.initialTree;
   }
 };
 
@@ -558,7 +555,7 @@ const mainEpic: ApplicationEpic = combineEpics(
   saveNewTreeEpic
 );
 
-// Store
+// ## Store
 
 const epicMiddleware = createEpicMiddleware<
   Action,

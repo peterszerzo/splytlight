@@ -20,6 +20,14 @@ export interface Tree {
   right: Tree | null;
 }
 
+export const initialTree: Tree = {
+  size: "small",
+  status: "added",
+  rotation: 0,
+  left: null,
+  right: null
+};
+
 export const isTreeDraft = (tree: Tree | null): boolean => {
   if (!tree) {
     return false;

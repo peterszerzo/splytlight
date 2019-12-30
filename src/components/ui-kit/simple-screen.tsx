@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import * as styles from "../styles";
+
+import * as styles from "../../styles";
 import Static from "./static";
 
 const Container = styled.div({
