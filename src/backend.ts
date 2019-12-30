@@ -2,21 +2,22 @@ import { Splyt } from "./splyt";
 
 const apiBase = process.env.REACT_APP_API_BASE;
 
-const parseSplyt = (raw: Record<string, any>) => ({
-  ...raw,
-  name: raw.name || "Untitled",
-  isPublic: Boolean(raw.isPublic) || false
-});
+const parseSplyt = (raw: Record<string, any>): Splyt =>
+  ({
+    ...raw,
+    name: raw.name || "Untitled",
+    isPublic: Boolean(raw.isPublic) || false
+  } as Splyt);
 
 export const fetchSplyts = (): Promise<Splyt[]> =>
   fetch(`${apiBase}/splyts`)
     .then(res => res.json())
-    .then(res => res.body.Items.map(parseSplyt));
+    .then(res => res.Items.map(parseSplyt));
 
 export const fetchSplyt = (treeId: string): Promise<Splyt> =>
-  fetchSplyts().then(
-    res => res.filter((splyt: Splyt) => splyt.treeId === treeId)[0]
-  );
+  fetch(`${apiBase}/splyts/${treeId}`)
+    .then(res => res.json())
+    .then(res => parseSplyt(res.Item));
 
 export const createSplyt = (splyt: Splyt): Promise<Splyt> =>
   fetch(`${apiBase}/splyts`, {

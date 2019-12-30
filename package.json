@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "Visualization experiments for Splyt Light",
   "author": "Peter Szerzo, Scott Leinweber",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@types/ramda": "^0.26.39",
     "@types/react": "^16.9.17",
