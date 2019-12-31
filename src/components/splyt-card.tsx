@@ -7,23 +7,7 @@ import { useLink } from "./hooks";
 import { Splyt } from "../splyt";
 import * as styles from "../styles";
 import * as routes from "../routes";
-
-const Container = styled.a({
-  width: 302,
-  height: 242,
-  display: "inline-block",
-  verticalAlign: "top",
-  border: `1px solid ${styles.lightGray}`,
-  overflow: "hidden",
-  marginLeft: -1,
-  marginTop: -1,
-  position: "relative",
-  color: "inherit",
-  textDecoration: "none",
-  "&:hover": {
-    filter: "brightness(96%)"
-  }
-});
+import { Container } from "./create-card";
 
 const Title = styled.h2({
   fontSize: "1rem",
@@ -64,7 +48,7 @@ const SplytCard: React.SFC<{
     >
       <Splyt3dViewer
         tree={props.splyt.tree}
-        size={{ width: props.width, height: 240 }}
+        size={{ width: props.width - 10, height: 230 }}
       />
       <Content>
         <Title>{props.splyt.name}</Title>

@@ -26,6 +26,15 @@ export const setCurrent = <T>(
       }
     : undoable;
 
+export const replaceCurrent = <T>(
+  undoable: Undoable<T>,
+  newCurrent: T
+): Undoable<T> => ({
+  _current: newCurrent,
+  _prevs: undoable._prevs,
+  _nexts: undoable._nexts
+});
+
 export const canUndo = <T>(undoable: Undoable<T>): boolean =>
   undoable._prevs.length > 0;
 

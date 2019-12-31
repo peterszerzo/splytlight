@@ -45,10 +45,7 @@ const Lines = (state: Tree) => {
     start: { x: x0, y: y0 }
   } = getPoints(part(state.size), { useOffset: true });
   return (
-    <g
-      stroke={styles.blue}
-      strokeWidth={styles.strokeWeight}
-    >
+    <g stroke={styles.blue} strokeWidth={styles.strokeWeight}>
       <line x1={x0} y1={y0} x2={xm} y2={ym} />
       <line x1={xm} y1={ym} x2={xl} y2={yl} />
       <line x1={xm} y1={ym} x2={xr} y2={yr} />
@@ -129,11 +126,13 @@ function Controls({
           onControlMouseLeave("right");
         }}
       />
-      <ControlCircle
-        point={midPoint}
-        status={"neutral"}
-        onClick={onEditControlClick}
-      />
+      {false && (
+        <ControlCircle
+          point={midPoint}
+          status={"neutral"}
+          onClick={onEditControlClick}
+        />
+      )}
     </g>
   );
 }

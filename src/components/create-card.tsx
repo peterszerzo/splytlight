@@ -5,10 +5,11 @@ import { useLink } from "./hooks";
 import * as styles from "../styles";
 import * as routes from "../routes";
 
-const Container = styled.a({
+export const Container = styled.a({
   width: 302,
   height: 242,
   display: "inline-flex",
+  verticalAlign: "top",
   alignItems: "center",
   justifyContent: "center",
   border: `1px solid ${styles.lightGray}`,
@@ -20,6 +21,10 @@ const Container = styled.a({
   textDecoration: "none",
   "&:hover": {
     filter: "brightness(96%)"
+  },
+  "&:focus": {
+    outline: "none",
+    boxShadow: `inset 0 0 0 4px ${styles.faintBlue}`
   }
 });
 

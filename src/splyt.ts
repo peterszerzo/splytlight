@@ -20,6 +20,46 @@ export interface Tree {
   right: Tree | null;
 }
 
+export const subtreeAt = (path: string, tree: Tree): Tree | null => {
+  if (path.length === 0) {
+    return tree;
+  }
+  const firstPath = path[0];
+  const restPath = path.slice(1);
+  if (firstPath === "l" && tree.left !== null) {
+    return subtreeAt(restPath, tree.left);
+  }
+  if (firstPath === "r" && tree.right !== null) {
+    return subtreeAt(restPath, tree.right);
+  }
+  return null;
+};
+
+export const updateSubtreeAt = (
+  path: string,
+  fn: (tree: Tree) => Tree,
+  tree: Tree
+): Tree => {
+  if (path.length === 0) {
+    return fn(tree);
+  }
+  const firstPath = path[0];
+  const restPath = path.slice(1);
+  if (firstPath === "l" && tree.left !== null) {
+    return {
+      ...tree,
+      left: updateSubtreeAt(restPath, fn, tree.left)
+    };
+  }
+  if (firstPath === "r" && tree.right !== null) {
+    return {
+      ...tree,
+      left: updateSubtreeAt(restPath, fn, tree.right)
+    };
+  }
+  return tree;
+};
+
 export const initialTree: Tree = {
   size: "small",
   status: "added",

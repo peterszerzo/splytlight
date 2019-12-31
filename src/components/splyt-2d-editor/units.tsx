@@ -6,12 +6,19 @@ import { part, getEndPoints, Dir, Tree } from "../../splyt";
 const { PI } = Math;
 
 interface Props {
+  path: string;
   tree: Tree | null;
   onTreeChange?: (newTree: Tree) => void;
   zoom?: number;
+  unitsContext: UnitsContext;
 }
 
-const Units: React.SFC<Props> = ({ tree, onTreeChange }) => {
+export interface UnitsContext {
+  onActivate: (path: string) => void;
+}
+
+const Units: React.SFC<Props> = props => {
+  const { tree, onTreeChange } = props;
   if (!tree) {
     return null;
   }
@@ -25,6 +32,7 @@ const Units: React.SFC<Props> = ({ tree, onTreeChange }) => {
           PI})`}
       >
         <Units
+          path={`${props.path}l`}
           tree={tree.left}
           onTreeChange={
             onTreeChange &&
@@ -35,6 +43,7 @@ const Units: React.SFC<Props> = ({ tree, onTreeChange }) => {
               onTreeChange({ ...tree, left: { ...tree.left, ...change } });
             })
           }
+          unitsContext={props.unitsContext}
         />
       </g>
       <g
@@ -42,6 +51,7 @@ const Units: React.SFC<Props> = ({ tree, onTreeChange }) => {
           PI})`}
       >
         <Units
+          path={`${props.path}r`}
           tree={tree.right}
           onTreeChange={
             onTreeChange &&
@@ -52,19 +62,14 @@ const Units: React.SFC<Props> = ({ tree, onTreeChange }) => {
               onTreeChange({ ...tree, right: { ...tree.right, ...change } });
             })
           }
+          unitsContext={props.unitsContext}
         />
       </g>
       <Unit
         state={tree}
-        onEditControlClick={
-          onTreeChange &&
-          (() => {
-            onTreeChange({
-              ...tree,
-              size: tree.size === "small" ? "large" : "small"
-            });
-          })
-        }
+        onEditControlClick={() => {
+          props.unitsContext.onActivate(props.path);
+        }}
         onControlClick={
           onTreeChange &&
           ((dir: Dir) => {
