@@ -4,8 +4,8 @@ const client = new aws.DynamoDB.DocumentClient();
 
 exports.handler = async event => {
   try {
-    const item = event;
-    const result = await client
+    const item = JSON.parse(event.body);
+    await client
       .put({
         TableName: "Splyts",
         Item: item
@@ -13,16 +13,30 @@ exports.handler = async event => {
       .promise();
 
     return {
+      isBase64Encoded: false,
       statusCode: 200,
-      body: item
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      multiValueHeaders: {},
+      body: JSON.stringify(item, null, 0)
     };
   } catch (err) {
     return {
+      isBase64Encoded: false,
       statusCode: 500,
-      body: JSON.stringify({
-        msg: "Something went wrong",
-        details: err.toString()
-      })
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      },
+      multiValueHeaders: {},
+      body: JSON.stringify(
+        {
+          message: "Something went wrong",
+          err: err
+        },
+        null,
+        0
+      )
     };
   }
 };

@@ -26,6 +26,4 @@ export const createSplyt = (splyt: Splyt): Promise<Splyt> =>
       "Content-Type": "application/json"
     },
     body: JSON.stringify(splyt, null, 0)
-  })
-    .then(res => res.json())
-    .then(res => res.body);
+  }).then(res => res.json());
