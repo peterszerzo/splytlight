@@ -211,7 +211,17 @@ const App: React.SFC<{}> = () => {
                   onPress={handleCanvasDownload}
                 />
               </uiKit.Sidebar>
-              <uiKit.Viz>
+              <uiKit.Viz
+                controls={
+                  <uiKit.Input
+                    type="text"
+                    value={page.name}
+                    onChange={(ev: any) => {
+                      dispatch(state.changeNewTreeName(ev.target.value));
+                    }}
+                  />
+                }
+              >
                 <Splyt2dEditor
                   tree={page.treeDraft || undoable.current(page.tree)}
                   size={vizContainerDimensions}

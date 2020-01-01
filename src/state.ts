@@ -50,7 +50,7 @@ export interface NewPage {
   zoom: zoom.Zoom;
   name: string;
   isPublic: boolean;
-  status: "editingTree" | "editingSettings" | "saving";
+  status: "editingTree" | "saving";
 }
 
 export interface EditPage {
@@ -72,6 +72,7 @@ enum ActionTypes {
   PageChange = "PageChange",
   // New page
   ChangeNewTree = "ChangeNewTree",
+  ChangeNewTreeName = "ChangeNewTreeName",
   ChangeZoom = "ChangeZoom",
   UndoRedoNewTree = "UndoRedoNewTree",
   SaveNewTree = "SaveNewTree",
@@ -142,6 +143,20 @@ interface ChangeZoom {
 
 export const changeZoom = (payload: ChangeZoom["payload"]): ChangeZoom => ({
   type: ActionTypes.ChangeZoom,
+  payload
+});
+
+//
+
+interface ChangeNewTreeName {
+  type: ActionTypes.ChangeNewTreeName;
+  payload: string;
+}
+
+export const changeNewTreeName = (
+  payload: ChangeNewTreeName["payload"]
+): ChangeNewTreeName => ({
+  type: ActionTypes.ChangeNewTreeName,
   payload
 });
 
@@ -272,6 +287,7 @@ export type Action =
   | Initialize
   | Navigate
   | PageChange
+  | ChangeNewTreeName
   | ChangeNewTree
   | ChangeZoom
   | UndoRedoNewTree
@@ -311,6 +327,16 @@ const reducer = (state: State = initialState, action: Action): State => {
             page: {
               ...state.page,
               zoom: action.payload
+            }
+          }
+        : state;
+    case ActionTypes.ChangeNewTreeName:
+      return state.page && routes.isNewRoute(state.page.route)
+        ? {
+            ...state,
+            page: {
+              ...state.page,
+              name: action.payload
             }
           }
         : state;

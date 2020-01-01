@@ -12,14 +12,15 @@ interface Props {
       onPress: () => void;
     };
   };
+  controls?: React.ReactNode;
 }
 
-const VizContainer = styled.div({
+const Container = styled.div({
   position: "relative",
   height: "100%"
 });
 
-const VizCover = styled.div({
+const Cover = styled.div({
   position: "absolute",
   top: 0,
   left: 0,
@@ -32,7 +33,7 @@ const VizCover = styled.div({
   justifyContent: "center"
 });
 
-const VizCoverContent = styled.div({
+const CoverContent = styled.div({
   textAlign: "center",
   width: "fit-content",
   padding: 20,
@@ -45,22 +46,32 @@ const VizCoverContent = styled.div({
   }
 });
 
+const ControlsContainer = styled.div({
+  position: "absolute",
+  zIndex: 1001,
+  top: 14,
+  left: 14
+});
+
 const Viz: React.SFC<Props> = props => {
   const { overlay, children, ...rest } = props;
   return (
-    <VizContainer {...rest}>
+    <Container {...rest}>
       {props.overlay && (
-        <VizCover>
-          <VizCoverContent>
+        <Cover>
+          <CoverContent>
             <p>{props.overlay.body}</p>
             <Button onClick={props.overlay.action.onPress}>
               {props.overlay.action.label}
             </Button>
-          </VizCoverContent>
-        </VizCover>
+          </CoverContent>
+        </Cover>
+      )}
+      {props.controls && (
+        <ControlsContainer>{props.controls}</ControlsContainer>
       )}
       {children}
-    </VizContainer>
+    </Container>
   );
 };
 
