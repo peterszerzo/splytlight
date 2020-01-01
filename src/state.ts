@@ -450,7 +450,7 @@ const initializeEpic: ApplicationEpic = action$ =>
           pageChange({
             route,
             tree: undoable.create(retrieveTree()),
-            name: "NewSplyt",
+            name: "Untitled",
             zoom: "M",
             isPublic: false,
             status: "editingTree"

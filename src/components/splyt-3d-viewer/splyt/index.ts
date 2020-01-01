@@ -24,7 +24,7 @@ const transformSplyt = (
 };
 
 const createSplytTree = (state: Tree | null): Group => {
-  if (!state || state.status === "adding") {
+  if (!state || state.status !== "added") {
     const emptyGroup = new Group();
     const sphereGeometry = new SphereGeometry(12, 16, 16);
     const sphereMaterial = new MeshLambertMaterial({ color: 0xefd439 });
@@ -35,9 +35,19 @@ const createSplytTree = (state: Tree | null): Group => {
   } else {
     const leftGroup = createSplytTree(state.left);
     const splytPart = part(state.size);
-    transformSplyt(leftGroup, splytPart, "left", state.rotation);
+    transformSplyt(
+      leftGroup,
+      splytPart,
+      "left",
+      state.left ? state.left.rotation : 0
+    );
     const rightGroup = createSplytTree(state.right);
-    transformSplyt(rightGroup, splytPart, "right", state.rotation);
+    transformSplyt(
+      rightGroup,
+      splytPart,
+      "right",
+      state.right ? state.right.rotation : 0
+    );
     const group = new Group();
     group.add(leftGroup);
     group.add(rightGroup);

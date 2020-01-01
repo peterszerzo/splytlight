@@ -144,21 +144,25 @@ const Splyt2dEditor: React.SFC<Props> = props => {
           <PopupSection>
             <uiKit.Rotator
               rotation={subtree.rotation}
-              onChange={newRotation => {
-                if (!props.changeTree) {
-                  return;
-                }
-                props.changeTree(
-                  splyt.updateSubtreeAt(
-                    activePath,
-                    tree => ({
-                      ...tree,
-                      rotation: newRotation
-                    }),
-                    props.tree
-                  )
-                );
-              }}
+              onChange={
+                activePath === ""
+                  ? undefined
+                  : newRotation => {
+                      if (!props.changeTree) {
+                        return;
+                      }
+                      props.changeTree(
+                        splyt.updateSubtreeAt(
+                          activePath,
+                          tree => ({
+                            ...tree,
+                            rotation: newRotation
+                          }),
+                          props.tree
+                        )
+                      );
+                    }
+              }
             />
           </PopupSection>
         </PopupContainer>
