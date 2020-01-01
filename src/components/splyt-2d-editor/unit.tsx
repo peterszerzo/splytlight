@@ -3,6 +3,15 @@ import React from "react";
 import { part, getPoints, Tree, Status, Dir } from "../../splyt";
 import * as styles from "../../styles";
 
+interface Props {
+  tree: Tree;
+  isInactive?: boolean;
+  onControlClick?: (dir: Dir) => void;
+  onControlMouseEnter?: (dir: Dir) => void;
+  onControlMouseLeave?: (dir: Dir) => void;
+  onEditControlClick?: () => void;
+}
+
 const fillByControlStatus: Record<string, string> = {
   neutral: styles.brown,
   adding: styles.green,
@@ -10,13 +19,7 @@ const fillByControlStatus: Record<string, string> = {
   added: styles.brown
 };
 
-export default (props: {
-  state: Tree;
-  onControlClick?: (dir: Dir) => void;
-  onControlMouseEnter?: (dir: Dir) => void;
-  onControlMouseLeave?: (dir: Dir) => void;
-  onEditControlClick?: () => void;
-}) => {
+const Unit: React.SFC<Props> = (props) => {
   const controls =
     props.onControlClick &&
     props.onControlMouseEnter &&
@@ -31,21 +34,26 @@ export default (props: {
       : undefined;
   return (
     <g>
-      <Lines {...props.state} />
-      {controls && <Controls state={props.state} {...controls} />}
+      <Lines tree={props.tree} isInactive={props.isInactive} />
+      {controls && <Controls state={props.tree} {...controls} />}
     </g>
   );
 };
 
-const Lines = (state: Tree) => {
+interface LinesProps {
+  tree: Tree;
+  isInactive?: boolean;
+}
+
+const Lines: React.SFC<LinesProps> = props => {
   const {
     left: { x: xl, y: yl },
     right: { x: xr, y: yr },
     mid: { x: xm, y: ym },
     start: { x: x0, y: y0 }
-  } = getPoints(part(state.size), { useOffset: true });
+  } = getPoints(part(props.tree.size), { useOffset: true });
   return (
-    <g stroke={styles.blue} strokeWidth={styles.strokeWeight}>
+    <g stroke={props.isInactive ? styles.lightBlue : styles.blue} strokeWidth={styles.strokeWeight}>
       <line x1={x0} y1={y0} x2={xm} y2={ym} />
       <line x1={xm} y1={ym} x2={xl} y2={yl} />
       <line x1={xm} y1={ym} x2={xr} y2={yr} />
@@ -126,13 +134,13 @@ function Controls({
           onControlMouseLeave("right");
         }}
       />
-      {false && (
         <ControlCircle
           point={midPoint}
           status={"neutral"}
           onClick={onEditControlClick}
         />
-      )}
     </g>
   );
 }
+
+export default Unit;

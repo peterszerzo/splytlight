@@ -3,6 +3,7 @@ export { default as Grid } from "./grid";
 export { default as IconButton } from "./icon-button";
 export { default as Layout } from "./layout";
 export { default as Loader } from "./loader";
+export { default as Rotator } from "./rotator";
 export { default as ScrollContainer } from "./scroll-container";
 export { default as Sidebar } from "./sidebar";
 export { default as SimpleScreen } from "./simple-screen";

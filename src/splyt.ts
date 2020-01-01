@@ -54,7 +54,7 @@ export const updateSubtreeAt = (
   if (firstPath === "r" && tree.right !== null) {
     return {
       ...tree,
-      left: updateSubtreeAt(restPath, fn, tree.right)
+      right: updateSubtreeAt(restPath, fn, tree.right)
     };
   }
   return tree;

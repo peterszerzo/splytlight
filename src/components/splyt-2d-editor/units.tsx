@@ -14,6 +14,7 @@ interface Props {
 }
 
 export interface UnitsContext {
+  activePath: string | null;
   onActivate: (path: string) => void;
 }
 
@@ -66,7 +67,8 @@ const Units: React.SFC<Props> = props => {
         />
       </g>
       <Unit
-        state={tree}
+        tree={tree}
+        isInactive={props.unitsContext.activePath !== null && props.unitsContext.activePath !== props.path}
         onEditControlClick={() => {
           props.unitsContext.onActivate(props.path);
         }}
