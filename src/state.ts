@@ -17,6 +17,7 @@ import * as splyt from "./splyt";
 export interface State {
   ui: UiState;
   page: Page;
+  notifications: Notification[];
 }
 
 const initialState: State = {
@@ -24,8 +25,15 @@ const initialState: State = {
     windowHeight: 0,
     windowWidth: 0
   },
-  page: null
+  page: null,
+  notifications: []
 };
+
+interface Notification {
+  id: string;
+  title: string;
+  body?: string;
+}
 
 // ### UI State
 
@@ -70,6 +78,8 @@ enum ActionTypes {
   Initialize = "Initialize",
   Navigate = "Navigate",
   PageChange = "PageChange",
+  AddNotification = "AddNotification",
+  RemoveNotification = "RemoveNotification",
   // New page
   ChangeNewTree = "ChangeNewTree",
   ChangeNewTreeName = "ChangeNewTreeName",
@@ -131,6 +141,34 @@ interface PageChange {
 
 export const pageChange = (payload: PageChange["payload"]): PageChange => ({
   type: ActionTypes.PageChange,
+  payload
+});
+
+//
+
+interface AddNotification {
+  type: ActionTypes.AddNotification;
+  payload: Notification;
+}
+
+export const addNotification = (
+  payload: AddNotification["payload"]
+): AddNotification => ({
+  type: ActionTypes.AddNotification,
+  payload
+});
+
+//
+
+interface RemoveNotification {
+  type: ActionTypes.RemoveNotification;
+  payload: string;
+}
+
+export const removeNotification = (
+  payload: RemoveNotification["payload"]
+): RemoveNotification => ({
+  type: ActionTypes.RemoveNotification,
   payload
 });
 
@@ -287,6 +325,8 @@ export type Action =
   | Initialize
   | Navigate
   | PageChange
+  | AddNotification
+  | RemoveNotification
   | ChangeNewTreeName
   | ChangeNewTree
   | ChangeZoom
@@ -319,6 +359,18 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         page: action.payload
+      };
+    case ActionTypes.AddNotification:
+      return {
+        ...state,
+        notifications: [action.payload, ...state.notifications]
+      };
+    case ActionTypes.RemoveNotification:
+      return {
+        ...state,
+        notifications: state.notifications.filter(
+          notification => notification.id !== action.payload
+        )
       };
     case ActionTypes.ChangeZoom:
       return state.page && routes.isNewRoute(state.page.route)
@@ -571,6 +623,13 @@ const cloneTreeEpic: ApplicationEpic = action$ =>
     })
   );
 
+const autoClearNotificationEpic: ApplicationEpic = action$ =>
+  action$.pipe(
+    filter(action => action.type === ActionTypes.AddNotification),
+    delay(3000),
+    map(action => removeNotification((action as AddNotification).payload.id))
+  );
+
 const mainEpic: ApplicationEpic = combineEpics(
   initializeEpic,
   navigateEpic,
@@ -578,6 +637,7 @@ const mainEpic: ApplicationEpic = combineEpics(
   saveNewTreeInLocalStorageEpic,
   fetchSplytEpic,
   cloneTreeEpic,
+  autoClearNotificationEpic,
   saveNewTreeEpic
 );
 
