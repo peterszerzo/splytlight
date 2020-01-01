@@ -2,6 +2,10 @@ import React from "react";
 import marked from "marked";
 import styled from "@emotion/styled";
 
+interface Props {
+  content: string;
+}
+
 const Container = styled.div({
   "& a": {
     textDecoration: "none",
@@ -10,6 +14,14 @@ const Container = styled.div({
   }
 });
 
-export default ({ content }: { content: string }) => (
-  <Container dangerouslySetInnerHTML={{ __html: marked(content) }} />
-);
+const Static: React.SFC<Props> = props => {
+  const { content, ...rest } = props;
+  return (
+    <Container
+      {...rest}
+      dangerouslySetInnerHTML={{ __html: marked(content) }}
+    />
+  );
+};
+
+export default Static;

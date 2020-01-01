@@ -84,15 +84,16 @@ const Splyt2dEditor: React.SFC<Props> = props => {
   const subtree =
     activePath !== null ? splyt.subtreeAt(activePath, props.tree) : null;
   useEffect(() => {
-    if (!ref.current) {
+    const node = ref.current;
+    if (!node) {
       return;
     }
-    ref.current.addEventListener("click", handleContainerClick);
+    node.addEventListener("click", handleContainerClick);
     return () => {
-      if (!ref.current) {
+      if (!node) {
         return;
       }
-      ref.current.removeEventListener("click", handleContainerClick);
+      node.removeEventListener("click", handleContainerClick);
     };
   }, [ref]);
   return (

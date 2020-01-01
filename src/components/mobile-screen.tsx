@@ -12,10 +12,15 @@ const Container = styled.div({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: 20
+  padding: 20,
 });
 
-const Content = styled.div({});
+const Content = styled.div({
+  "& > *:not(:first-child)": {
+    position: "relative",
+    top: -60
+  }
+});
 
 const MobileScreen: React.SFC<{}> = () => (
   <Container>
