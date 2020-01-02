@@ -607,6 +607,11 @@ const saveNewTreeEpic: ApplicationEpic = action$ =>
         switchMap(splyt =>
           from([
             saveNewTreeResponse(splyt),
+            addNotification({
+              id: translator.new(),
+              title: "Your Splyt has been saved",
+              body: "Access it later through this unique URL"
+            }),
             navigate(routes.editRoute(splyt.treeId))
           ])
         )
@@ -619,14 +624,21 @@ const cloneTreeEpic: ApplicationEpic = action$ =>
     filter(action => action.type === ActionTypes.CloneTree),
     switchMap(action => {
       saveTree((action as CloneTree).payload);
-      return of(navigate(routes.newRoute));
+      return from([
+        navigate(routes.newRoute),
+        addNotification({
+          id: translator.new(),
+          title: "Clone successful",
+          body: "Edit and save this new Splyt without affecting the original"
+        })
+      ]);
     })
   );
 
 const autoClearNotificationEpic: ApplicationEpic = action$ =>
   action$.pipe(
     filter(action => action.type === ActionTypes.AddNotification),
-    delay(3000),
+    delay(8000),
     map(action => removeNotification((action as AddNotification).payload.id))
   );
 

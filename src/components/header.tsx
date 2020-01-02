@@ -25,7 +25,7 @@ const H1 = styled.h1({
   textTransform: "uppercase",
   width: "100%",
   margin: "auto",
-  fontWeight: 300,
+  fontWeight: 400,
   fontSize: "1rem",
   letterSpacing: ".03rem",
   color: "inherit"

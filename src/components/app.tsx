@@ -41,7 +41,12 @@ const App: React.SFC<{}> = () => {
   }
 
   return (
-    <uiKit.Layout>
+    <uiKit.Layout
+      notifications={currentState.notifications}
+      onNotificationClose={id => {
+        dispatch(state.removeNotification(id));
+      }}
+    >
       <Header />
       {(() => {
         if (!currentState.page) {
@@ -273,8 +278,6 @@ const WrappedApp: React.SFC<{}> = () => {
       state.store.dispatch(state.changeUiState(newUiState));
     });
 
-    state.store.dispatch(state.initialize());
-
     // No need to unsubscribe because the app is never unmounted
     fromEvent(window, "popstate").subscribe(() => {
       const route = routes.toRoute();
@@ -283,6 +286,8 @@ const WrappedApp: React.SFC<{}> = () => {
       }
       state.store.dispatch(state.navigate(route));
     });
+
+    state.store.dispatch(state.initialize());
   }, []);
 
   return (

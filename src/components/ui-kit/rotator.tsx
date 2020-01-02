@@ -42,33 +42,35 @@ const Pin = styled.div<{ isDisabled: boolean }>(({ isDisabled }) => ({
   backgroundColor: isDisabled ? styles.gray : styles.blue
 }));
 
-const Rotator: React.SFC<Props> = props => (
-  <Container isDisabled={!props.onChange}>
-    {range(0, 16).map((val, index) => {
-      const fract = val / 16;
-      const angle = Math.PI * 2 * fract;
-      return (
-        <GridPin
-          onClick={() => {
-            props.onChange && props.onChange(angle);
-          }}
-          style={{
-            top: s * (0.5 - 0.4 * Math.cos(angle)),
-            left: s * (0.5 - 0.4 * Math.sin(angle))
-          }}
-          isDisabled={!props.onChange}
-          key={index}
-        />
-      );
-    })}
-    <Pin
-      isDisabled={!props.onChange}
-      style={{
-        top: s * (0.5 - 0.4 * Math.cos(props.rotation)),
-        left: s * (0.5 - 0.4 * Math.sin(props.rotation))
-      }}
-    />
-  </Container>
-);
+const Rotator: React.SFC<Props> = props => {
+  return (
+    <Container isDisabled={!props.onChange}>
+      {range(0, 16).map((val, index) => {
+        const fract = val / 16;
+        const angle = Math.PI * 2 * fract;
+        return (
+          <GridPin
+            onClick={() => {
+              props.onChange && props.onChange(angle);
+            }}
+            style={{
+              top: s * (0.5 - 0.4 * Math.cos(angle)),
+              left: s * (0.5 - 0.4 * Math.sin(angle))
+            }}
+            isDisabled={!props.onChange}
+            key={index}
+          />
+        );
+      })}
+      <Pin
+        isDisabled={!props.onChange}
+        style={{
+          top: s * (0.5 - 0.4 * Math.cos(props.rotation)),
+          left: s * (0.5 - 0.4 * Math.sin(props.rotation))
+        }}
+      />
+    </Container>
+  );
+};
 
 export default Rotator;
