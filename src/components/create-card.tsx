@@ -6,19 +6,16 @@ import * as styles from "../styles";
 import * as routes from "../routes";
 
 export const Container = styled.a({
-  width: 302,
   height: 242,
-  display: "inline-flex",
+  display: "flex",
   verticalAlign: "top",
   alignItems: "center",
   justifyContent: "center",
-  border: `1px solid ${styles.lightGray}`,
-  marginLeft: -1,
-  marginTop: -1,
   backgroundColor: styles.white,
   position: "relative",
   color: "inherit",
   textDecoration: "none",
+  overflow: "hidden",
   "&:hover": {
     filter: "brightness(96%)"
   },
@@ -57,9 +54,6 @@ const SplytCard: React.SFC<{
   return (
     <Container
       {...linkAttrs(routes.newRoute)}
-      style={{
-        width: props.width
-      }}
       {...rest}
     >
       <Content>{plus}</Content>

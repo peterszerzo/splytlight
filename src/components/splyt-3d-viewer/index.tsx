@@ -8,9 +8,12 @@ export interface Props {
   size: { width: number; height: number };
   canvasRef?: (node: HTMLCanvasElement | null) => void;
   tree: Tree;
+  style?: any;
 }
 
 const Splyt3dViewer: React.SFC<Props> = props => {
+  const { size, canvasRef, tree, ...rest } = props;
+
   const containerEl = useRef(null);
 
   const [threeApp, setThreeApp] = useState<ThreeApp | undefined>(undefined);
@@ -21,35 +24,39 @@ const Splyt3dViewer: React.SFC<Props> = props => {
     if (!containerEl || !containerEl.current) {
       return;
     }
-    const threeApp = createThreeApp(
-      (containerEl.current as unknown) as HTMLElement,
-      {
-        tree: props.tree,
-        size: props.size,
-        drag
+    if (!threeApp) {
+      const threeApp = createThreeApp(
+        (containerEl.current as unknown) as HTMLElement,
+        {
+          tree,
+          size,
+          drag
+        }
+      );
+      setThreeApp(threeApp);
+      if (canvasRef) {
+        canvasRef(
+          ((containerEl.current as unknown) as HTMLElement).querySelector(
+            "canvas"
+          )
+        );
       }
-    );
-    setThreeApp(threeApp);
-    if (props.canvasRef) {
-      props.canvasRef(((containerEl.current as unknown) as HTMLElement).querySelector("canvas"));
-    }
-    return () => {};
-  }, [containerEl]);
-
-  useEffect(() => {
-    threeApp &&
+      return () => {};
+    } else {
       threeApp.update({
-        tree: props.tree,
-        size: props.size,
+        tree,
+        size,
         drag
       });
-  }, [props.tree, drag, threeApp, props.size]);
+    }
+  }, [tree, drag, threeApp, size, containerEl, canvasRef]);
 
   return (
     <div
       {...dragContainerAttrs}
       ref={containerEl}
-      style={{ width: props.size.width, height: props.size.height }}
+      style={{ width: size.width, height: size.height }}
+      {...rest}
     />
   );
 };

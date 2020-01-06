@@ -39,22 +39,20 @@ const SplytCard: React.SFC<{
   const linkAttrs = useLink();
 
   return (
-    <Container
-      {...linkAttrs(routes.editRoute(props.splyt.treeId))}
-      style={{
-        width: props.width
-      }}
-      {...rest}
-    >
+    <Container {...linkAttrs(routes.editRoute(props.splyt.treeId))} {...rest}>
       <Splyt3dViewer
         tree={props.splyt.tree}
         size={{ width: props.width - 10, height: 230 }}
+        style={{ position: "absolute" }}
       />
       <Content>
         <Title>{props.splyt.name}</Title>
         <Note>
           {props.splyt.createdAt
-            ? `Created ${formatDistance(new Date(props.splyt.createdAt), new Date())} ago`
+            ? `Created ${formatDistance(
+                new Date(props.splyt.createdAt),
+                new Date()
+              )} ago`
             : "Created just now"}
         </Note>
       </Content>

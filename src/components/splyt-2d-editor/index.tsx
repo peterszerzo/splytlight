@@ -29,6 +29,7 @@ const Container = styled.div({
 });
 
 const Splyt2dEditor: React.SFC<Props> = props => {
+  const { tree, zoom, size, changeTree } = props;
   const { dragContainerAttrs, drag } = useSimpleDrag();
   const [activePath, setActivePath] = useState<null | string>(null);
   const unitsContext: UnitsContext = {
@@ -38,7 +39,7 @@ const Splyt2dEditor: React.SFC<Props> = props => {
   const ref = useRef<null | HTMLDivElement>(null);
 
   const subtree =
-    activePath !== null ? splyt.subtreeAt(activePath, props.tree) : null;
+    activePath !== null ? splyt.subtreeAt(activePath, tree) : null;
 
   useEffect(() => {
     const handleKeyDown = (ev: any) => {
@@ -48,13 +49,31 @@ const Splyt2dEditor: React.SFC<Props> = props => {
         activePath.length > 0
       ) {
         setActivePath(activePath.slice(0, -1));
+      } else if (ev.key === "ArrowDown" && activePath === null) {
+        setActivePath("");
+      } else if (
+        ev.key === " " &&
+        activePath !== null &&
+        changeTree &&
+        activePath.length > 0
+      ) {
+        changeTree(
+          splyt.updateSubtreeAt(
+            activePath,
+            tree => ({
+              ...tree,
+              rotation: tree.rotation + (2 * Math.PI) / 16
+            }),
+            tree
+          )
+        );
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activePath]);
+  }, [activePath, setActivePath, changeTree, tree]);
 
   useEffect(() => {
     const node = ref.current;
@@ -78,18 +97,18 @@ const Splyt2dEditor: React.SFC<Props> = props => {
     <Container {...dragContainerAttrs} ref={ref}>
       <svg
         id="splyt-editor"
-        viewBox={`0 0 ${props.size.width} ${props.size.height}`}
+        viewBox={`0 0 ${size.width} ${size.height}`}
       >
         <g
-          transform={`translate(${props.size.width / 2 + drag[0]} ${props.size
+          transform={`translate(${size.width / 2 + drag[0]} ${size
             .height *
             0.1 +
-            drag[1]}) scale(${props.zoom || 1})`}
+            drag[1]}) scale(${zoom || 1})`}
         >
           <Units
             path=""
-            tree={props.tree}
-            onTreeChange={props.changeTree}
+            tree={tree}
+            onTreeChange={changeTree}
             unitsContext={unitsContext}
           />
         </g>
@@ -98,17 +117,17 @@ const Splyt2dEditor: React.SFC<Props> = props => {
         <Popup
           size={subtree.size}
           onSizeChange={newSize => {
-            if (!props.changeTree) {
+            if (!changeTree) {
               return;
             }
-            props.changeTree(
+            changeTree(
               splyt.updateSubtreeAt(
                 activePath,
                 tree => ({
                   ...tree,
                   size: newSize
                 }),
-                props.tree
+                tree
               )
             );
           }}
@@ -117,17 +136,17 @@ const Splyt2dEditor: React.SFC<Props> = props => {
             activePath === ""
               ? undefined
               : newRotation => {
-                  if (!props.changeTree) {
+                  if (!changeTree) {
                     return;
                   }
-                  props.changeTree(
+                  changeTree(
                     splyt.updateSubtreeAt(
                       activePath,
                       tree => ({
                         ...tree,
                         rotation: newRotation
                       }),
-                      props.tree
+                      tree
                     )
                   );
                 }

@@ -36,6 +36,7 @@ const Container = styled.button<{ disabled?: boolean; primary?: boolean }>(
         }
       : {
           color: styles.black,
+          backgroundColor: styles.white,
           ...(disabled
             ? {}
             : {
