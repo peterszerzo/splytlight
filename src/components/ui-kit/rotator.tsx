@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import range from "ramda/src/range";
 
+import IconButton from "./icon-button";
 import * as styles from "../../styles";
 
 interface Props {
@@ -14,6 +15,9 @@ const s = 120;
 const Container = styled.div<{ isDisabled: boolean }>(({ isDisabled }) => ({
   width: s,
   height: s,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   backgroundColor: "#F4F4F4",
   borderRadius: "50%",
   opacity: isDisabled ? 0.6 : 1,
@@ -43,6 +47,8 @@ const Pin = styled.div<{ isDisabled: boolean }>(({ isDisabled }) => ({
 }));
 
 const Rotator: React.SFC<Props> = props => {
+  const rotationFloor =
+    Math.round(props.rotation / ((2 * Math.PI) / 16)) * ((2 * Math.PI) / 16);
   return (
     <Container isDisabled={!props.onChange}>
       {range(0, 16).map((val, index) => {
@@ -65,9 +71,21 @@ const Rotator: React.SFC<Props> = props => {
       <Pin
         isDisabled={!props.onChange}
         style={{
-          top: s * (0.5 - 0.4 * Math.cos(props.rotation)),
-          left: s * (0.5 - 0.4 * Math.sin(props.rotation))
+          top: s * (0.5 - 0.4 * Math.cos(rotationFloor)),
+          left: s * (0.5 - 0.4 * Math.sin(rotationFloor))
         }}
+      />
+      <IconButton
+        icon="rotateCw"
+        primary
+        onPress={
+          props.onChange &&
+          (() => {
+            props.onChange &&
+              props.onChange(props.rotation - (2 * Math.PI) / 16);
+          })
+        }
+        title="Turn"
       />
     </Container>
   );
