@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { part, getPoints, Tree, Status, Dir } from "../../splyt";
 import * as styles from "../../styles";
@@ -19,7 +19,7 @@ const fillByControlStatus: Record<string, string> = {
   added: styles.brown
 };
 
-const Unit: React.SFC<Props> = (props) => {
+const Unit: React.SFC<Props> = props => {
   const controls =
     props.onControlClick &&
     props.onControlMouseEnter &&
@@ -34,7 +34,7 @@ const Unit: React.SFC<Props> = (props) => {
       : undefined;
   return (
     <g>
-      <Lines tree={props.tree} isInactive={props.isInactive} />
+      <Lines tree={props.tree} isInactive={props.isInactive} onClick={props.onEditControlClick} />
       {controls && <Controls state={props.tree} {...controls} />}
     </g>
   );
@@ -42,6 +42,7 @@ const Unit: React.SFC<Props> = (props) => {
 
 interface LinesProps {
   tree: Tree;
+  onClick?: () => void;
   isInactive?: boolean;
 }
 
@@ -52,11 +53,34 @@ const Lines: React.SFC<LinesProps> = props => {
     mid: { x: xm, y: ym },
     start: { x: x0, y: y0 }
   } = getPoints(part(props.tree.size), { useOffset: true });
+  const [ hovered, setHovered ] = useState<boolean>(false);
   return (
-    <g stroke={props.isInactive ? styles.lightBlue : styles.blue} strokeWidth={styles.strokeWeight}>
-      <line x1={x0} y1={y0} x2={xm} y2={ym} />
-      <line x1={xm} y1={ym} x2={xl} y2={yl} />
-      <line x1={xm} y1={ym} x2={xr} y2={yr} />
+    <g
+      style={{
+        cursor: "pointer",
+        opacity: props.isInactive ? 0.6 : 1
+      }}
+      onMouseEnter={() => {
+        setHovered(true);
+      }}
+      onMouseLeave={() => {
+        setHovered(false);
+      }}
+      onClick={() => {
+        props.onClick && props.onClick();
+      }}
+      stroke={hovered ? styles.lighterBlue : styles.blue}
+      strokeWidth={styles.strokeWeight}
+    >
+      <g
+        stroke={hovered ? styles.lighterBlue : styles.blue}
+        strokeWidth={styles.strokeWeight}
+      >
+        <line x1={x0} y1={y0} x2={xm} y2={ym} />
+        <line x1={xm} y1={ym} x2={xl} y2={yl} />
+        <line x1={xm} y1={ym} x2={xr} y2={yr} />
+      </g>
+      <circle cx={xm} cy={ym} r="10" stroke="none" fill="rgba(255, 255, 255, 0.001)" />
     </g>
   );
 };
@@ -134,11 +158,12 @@ function Controls({
           onControlMouseLeave("right");
         }}
       />
-        <ControlCircle
-          point={midPoint}
-          status={"neutral"}
-          onClick={onEditControlClick}
-        />
+          {false && <ControlCircle
+        point={midPoint}
+        status={"neutral"}
+        onClick={onEditControlClick}
+      />
+              }
     </g>
   );
 }

@@ -43,7 +43,9 @@ const Splyt2dEditor: React.SFC<Props> = props => {
 
   useEffect(() => {
     const handleKeyDown = (ev: any) => {
-      if (
+      if (ev.key === "Escape") {
+        setActivePath(null);
+      } else if (
         ev.key === "ArrowUp" &&
         activePath !== null &&
         activePath.length > 0

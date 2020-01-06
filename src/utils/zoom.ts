@@ -35,3 +35,18 @@ export const zoomIn = (zoom: Zoom): Zoom | undefined => {
     return undefined;
   }
 };
+
+export const zoomLevel = (zoom: Zoom): number => {
+  switch (zoom) {
+    case "XL":
+      return 3;
+    case "L":
+      return 2;
+    case "M":
+      return 1;
+    case "S":
+      return 0.6666;
+    case "XS":
+      return 0.3333;
+  }
+};
