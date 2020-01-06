@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import * as routes from "../routes";
 import { title } from "../content";
 import * as styles from "../styles";
-import Icon from "./icon";
+import Logo from "./logo";
 import { useLink } from "./hooks";
 
 const Container = styled.header({
@@ -66,7 +66,7 @@ export default () => {
     <Container>
       <MainLink {...linkAttrs(routes.homeRoute)}>
         <LogoContainer>
-          <Icon id="logo" />
+          <Logo />
         </LogoContainer>
         <H1>{title}</H1>
       </MainLink>

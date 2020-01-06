@@ -20,22 +20,29 @@ const fillByControlStatus: Record<string, string> = {
 };
 
 const Unit: React.SFC<Props> = props => {
-  const controls =
-    props.onControlClick &&
-    props.onControlMouseEnter &&
-    props.onControlMouseLeave &&
-    props.onEditControlClick
-      ? {
-          onControlClick: props.onControlClick,
-          onControlMouseEnter: props.onControlMouseEnter,
-          onControlMouseLeave: props.onControlMouseLeave,
-          onEditControlClick: props.onEditControlClick
-        }
-      : undefined;
+  const showControls =
+    props.onControlClick ||
+    props.onControlMouseEnter ||
+    props.onControlMouseLeave ||
+    props.onEditControlClick;
   return (
     <g>
-      <Lines tree={props.tree} isInactive={props.isInactive} onClick={props.onEditControlClick} />
-      {controls && <Controls state={props.tree} {...controls} />}
+      <Lines
+        tree={props.tree}
+        isInactive={props.isInactive}
+        onClick={props.onEditControlClick}
+      />
+      {showControls && (
+        <Controls
+          state={props.tree}
+          {...{
+            onControlClick: props.onControlClick,
+            onControlMouseEnter: props.onControlMouseEnter,
+            onControlMouseLeave: props.onControlMouseLeave,
+            onEditControlClick: props.onEditControlClick
+          }}
+        />
+      )}
     </g>
   );
 };
@@ -53,7 +60,7 @@ const Lines: React.SFC<LinesProps> = props => {
     mid: { x: xm, y: ym },
     start: { x: x0, y: y0 }
   } = getPoints(part(props.tree.size), { useOffset: true });
-  const [ hovered, setHovered ] = useState<boolean>(false);
+  const [hovered, setHovered] = useState<boolean>(false);
   return (
     <g
       style={{
@@ -80,7 +87,13 @@ const Lines: React.SFC<LinesProps> = props => {
         <line x1={xm} y1={ym} x2={xl} y2={yl} />
         <line x1={xm} y1={ym} x2={xr} y2={yr} />
       </g>
-      <circle cx={xm} cy={ym} r="10" stroke="none" fill="rgba(255, 255, 255, 0.001)" />
+      <circle
+        cx={xm}
+        cy={ym}
+        r="10"
+        stroke="none"
+        fill="rgba(255, 255, 255, 0.001)"
+      />
     </g>
   );
 };
@@ -121,12 +134,12 @@ function Controls({
   onEditControlClick
 }: {
   state: Tree;
-  onControlClick: (dir: Dir) => void;
-  onControlMouseEnter: (dir: Dir) => void;
-  onControlMouseLeave: (dir: Dir) => void;
-  onEditControlClick: () => void;
+  onControlClick?: (dir: Dir) => void;
+  onControlMouseEnter?: (dir: Dir) => void;
+  onControlMouseLeave?: (dir: Dir) => void;
+  onEditControlClick?: () => void;
 }) {
-  const { left: leftPoint, right: rightPoint, mid: midPoint } = getPoints(
+  const { left: leftPoint, right: rightPoint } = getPoints(
     part(state.size),
     { useOffset: false }
   );
@@ -136,34 +149,28 @@ function Controls({
         point={leftPoint}
         status={state.left ? state.left.status : "neutral"}
         onClick={() => {
-          onControlClick("left");
+          onControlClick && onControlClick("left");
         }}
         onMouseOver={() => {
-          onControlMouseEnter("left");
+          onControlMouseEnter && onControlMouseEnter("left");
         }}
         onMouseOut={() => {
-          onControlMouseLeave("left");
+          onControlMouseLeave && onControlMouseLeave("left");
         }}
       />
       <ControlCircle
         point={rightPoint}
         status={state.right ? state.right.status : "neutral"}
         onClick={() => {
-          onControlClick("right");
+          onControlClick && onControlClick("right");
         }}
         onMouseOver={() => {
-          onControlMouseEnter("right");
+          onControlMouseEnter && onControlMouseEnter("right");
         }}
         onMouseOut={() => {
-          onControlMouseLeave("right");
+          onControlMouseLeave && onControlMouseLeave("right");
         }}
       />
-          {false && <ControlCircle
-        point={midPoint}
-        status={"neutral"}
-        onClick={onEditControlClick}
-      />
-              }
     </g>
   );
 }

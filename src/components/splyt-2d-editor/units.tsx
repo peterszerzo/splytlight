@@ -68,7 +68,10 @@ const Units: React.SFC<Props> = props => {
       </g>
       <Unit
         tree={tree}
-        isInactive={props.unitsContext.activePath !== null && props.unitsContext.activePath !== props.path}
+        isInactive={
+          props.unitsContext.activePath !== null &&
+          props.unitsContext.activePath !== props.path
+        }
         onEditControlClick={() => {
           props.unitsContext.onActivate(props.path);
         }}

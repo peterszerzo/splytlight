@@ -20,6 +20,8 @@ interface Props {
 
 const Container = styled.div({
   margin: "auto",
+  width: "100%",
+  height: "100%",
   position: "relative",
   "& circle": {
     opacity: 0.1,

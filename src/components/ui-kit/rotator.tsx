@@ -10,7 +10,7 @@ interface Props {
   onChange?: (newRotation: number) => void;
 }
 
-const s = 120;
+const s = 100;
 
 const Container = styled.div<{ isDisabled: boolean }>(({ isDisabled }) => ({
   width: s,
