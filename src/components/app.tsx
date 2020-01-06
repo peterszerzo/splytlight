@@ -30,8 +30,8 @@ const HomePage: React.SFC<{ page: state.HomePage }> = props => {
   return (
     <uiKit.ScrollContainer>
       <CreateCard width={width} />
-      {splyts.map((splyt: splyt.Splyt, index: number) => (
-        <SplytCard key={index} splyt={splyt} width={width} />
+      {splyts.map((currentSplyt: splyt.Splyt, index: number) => (
+        <SplytCard key={index} splyt={currentSplyt} width={width} />
       ))}
     </uiKit.ScrollContainer>
   );
@@ -85,7 +85,12 @@ const EditPage: React.SFC<{ page: state.EditPage }> = props => {
           }
         }}
       >
-        <Splyt2dEditor tree={splyt.tree} size={vizContainerDimensions} />
+        <Splyt2dEditor
+          tree={splyt.tree}
+          size={vizContainerDimensions}
+          activePath={null}
+          setActivePath={() => {}}
+        />
       </uiKit.Viz>
       <uiKit.Viz>
         <Splyt3dViewer
@@ -94,6 +99,7 @@ const EditPage: React.SFC<{ page: state.EditPage }> = props => {
           canvasRef={canvasEl => {
             setCurrentCanvas(canvasEl);
           }}
+          activePath={null}
         />
       </uiKit.Viz>
     </uiKit.Grid>
@@ -102,6 +108,8 @@ const EditPage: React.SFC<{ page: state.EditPage }> = props => {
 
 const NewPage: React.SFC<{ page: state.NewPage }> = props => {
   const currentState = useSelector<state.State, state.State>(s => s);
+
+  const [activePath, setActivePath] = useState<null | string>(null);
 
   const dispatch = useDispatch();
   const [currentCanvas, setCurrentCanvas] = useState<HTMLCanvasElement | null>(
@@ -118,7 +126,7 @@ const NewPage: React.SFC<{ page: state.NewPage }> = props => {
     : undefined;
   const vizContainerDimensions = styles.getContainerDimensions(currentState.ui);
   const page = currentState.page as state.NewPage;
-  const zoomLevel = zoom.zoomLevel(page.zoom)  
+  const zoomLevel = zoom.zoomLevel(page.zoom);
   return (
     <uiKit.Grid>
       <uiKit.Sidebar>
@@ -212,6 +220,8 @@ const NewPage: React.SFC<{ page: state.NewPage }> = props => {
           changeTree={newTree => {
             dispatch(state.changeNewTree(newTree));
           }}
+          activePath={activePath}
+          setActivePath={setActivePath}
         />
       </uiKit.Viz>
       <uiKit.Viz>
@@ -221,6 +231,7 @@ const NewPage: React.SFC<{ page: state.NewPage }> = props => {
           canvasRef={canvasEl => {
             setCurrentCanvas(canvasEl);
           }}
+          activePath={activePath}
         />
       </uiKit.Viz>
     </uiKit.Grid>

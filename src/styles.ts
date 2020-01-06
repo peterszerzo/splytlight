@@ -1,6 +1,7 @@
 export const lighterBlue = "#6A8EC0";
 export const lightBlue = "#9CB4D5";
 export const blue = "#4A76B2";
+export const darkerBlue = "#3D6192";
 export const faintBlue = "#CDD9EA";
 export const brown = "#201A16";
 export const white = "#FFFFFF";

@@ -12,7 +12,7 @@ const Container = styled.div({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: 20,
+  padding: 20
 });
 
 const Content = styled.div({
@@ -25,7 +25,11 @@ const Content = styled.div({
 const MobileScreen: React.SFC<{}> = () => (
   <Container>
     <Content>
-      <Splyt3dViewer tree={exampleTree} size={{ width: 200, height: 260 }} />
+      <Splyt3dViewer
+        tree={exampleTree}
+        size={{ width: 200, height: 260 }}
+        activePath={null}
+      />
       <uiKit.Static content={content.mobileBanner} />
     </Content>
   </Container>

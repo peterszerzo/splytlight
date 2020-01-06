@@ -26,6 +26,7 @@ export interface Size {
 
 export interface ThreeAppState {
   tree: Tree;
+  activePath: string | null;
   size: Size;
   drag: Pt;
 }
@@ -55,7 +56,7 @@ const createThreeApp = (
 
   /* Lights */
 
-  const lights = (function() {
+  const lights = (() => {
     const light1 = new DirectionalLight(styles.white, 0.2);
     light1.position.set(10, 10, 10);
 
@@ -137,25 +138,29 @@ const createThreeApp = (
   let model: Group | undefined;
   let modelBounds: Box3 | undefined;
 
-  function setModel(tree: Tree) {
+  const setModel= (tree: Tree, options: {
+    activePath: string | null
+  }) => {
     if (model) {
       scene.remove(model);
     }
-    model = create(tree);
+    model = create(tree, options);
     scene.add(model);
     modelBounds = new Box3().setFromObject(model);
     return model;
   }
 
-  function update(newState: ThreeAppState) {
+  const update = (newState: ThreeAppState) => {
     let prevState = state;
     state = newState;
     if (state.size.width === 0 || state.size.height === 0) {
       return;
     }
     const cameraAngle = state.drag[0] / 200;
-    if (prevState.tree !== state.tree || !model) {
-      setModel(state.tree);
+    if (prevState.tree !== state.tree || prevState.activePath !== state.activePath || !model) {
+      setModel(state.tree, {
+        activePath: state.activePath
+      });
     }
     if (modelBounds) {
       const { min, max } = modelBounds;

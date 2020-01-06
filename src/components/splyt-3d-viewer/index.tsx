@@ -9,10 +9,11 @@ export interface Props {
   canvasRef?: (node: HTMLCanvasElement | null) => void;
   tree: Tree;
   style?: any;
+  activePath: string | null;
 }
 
 const Splyt3dViewer: React.SFC<Props> = props => {
-  const { size, canvasRef, tree, ...rest } = props;
+  const { size, canvasRef, tree, activePath, ...rest } = props;
 
   const containerEl = useRef(null);
 
@@ -29,6 +30,7 @@ const Splyt3dViewer: React.SFC<Props> = props => {
         (containerEl.current as unknown) as HTMLElement,
         {
           tree,
+          activePath,
           size,
           drag
         }
@@ -45,11 +47,12 @@ const Splyt3dViewer: React.SFC<Props> = props => {
     } else {
       threeApp.update({
         tree,
+        activePath,
         size,
         drag
       });
     }
-  }, [tree, drag, threeApp, size, containerEl, canvasRef]);
+  }, [tree, activePath, drag, threeApp, size, containerEl, canvasRef]);
 
   return (
     <div

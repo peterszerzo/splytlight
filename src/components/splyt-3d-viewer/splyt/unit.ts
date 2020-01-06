@@ -28,17 +28,28 @@ const createArm = (
   return obj;
 };
 
-const o = 1;
+const offset = 1;
 
 const material = new MeshLambertMaterial({
   color: 0x4a76b2
 });
 
-export default function createSplytUnit(size: SplytGeometry) {
+const highlightedMaterial = new MeshLambertMaterial({
+  color: 0x365682
+});
+
+export default function createSplytUnit(
+  size: SplytGeometry,
+  {
+    isHighlighted
+  }: {
+    isHighlighted?: boolean;
+  }
+) {
   const { baseHeight, radius, leftArm, rightArm } = size;
 
-  const baseObj = createCylinder(baseHeight - o, radius);
-  baseObj.translate(0, baseHeight / 2 + o, 0);
+  const baseObj = createCylinder(baseHeight - offset, radius);
+  baseObj.translate(0, baseHeight / 2 + offset, 0);
 
   const leftArmObj = createArm(leftArm, baseHeight, radius);
   const rightArmObj = createArm(rightArm, baseHeight, radius);
@@ -48,5 +59,8 @@ export default function createSplytUnit(size: SplytGeometry) {
     geometryAccumulator.merge(object)
   );
 
-  return new Mesh(geometryAccumulator, material);
+  return new Mesh(
+    geometryAccumulator,
+    isHighlighted ? highlightedMaterial : material
+  );
 }

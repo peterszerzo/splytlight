@@ -73,7 +73,7 @@ const Lines: React.SFC<LinesProps> = props => {
       strokeWidth={styles.strokeWeight}
     >
       <g
-        stroke={hovered ? styles.lighterBlue : styles.blue}
+        stroke={hovered ? styles.darkerBlue : styles.blue}
         strokeWidth={styles.strokeWeight}
       >
         <line x1={x0} y1={y0} x2={xm} y2={ym} />

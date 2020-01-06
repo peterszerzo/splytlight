@@ -44,6 +44,7 @@ const SplytCard: React.SFC<{
         tree={props.splyt.tree}
         size={{ width: props.width - 10, height: 230 }}
         style={{ position: "absolute" }}
+        activePath={null}
       />
       <Content>
         <Title>{props.splyt.name}</Title>

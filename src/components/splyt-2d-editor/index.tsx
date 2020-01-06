@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import * as splyt from "../../splyt";
@@ -14,6 +14,8 @@ interface Props {
     height: number;
   };
   changeTree?: (newTree: splyt.Tree) => void;
+  activePath: string | null;
+  setActivePath: (newActivePath: string | null) => void;
 }
 
 const Container = styled.div({
@@ -29,9 +31,8 @@ const Container = styled.div({
 });
 
 const Splyt2dEditor: React.SFC<Props> = props => {
-  const { tree, zoom, size, changeTree } = props;
+  const { tree, zoom, size, changeTree, activePath, setActivePath } = props;
   const { dragContainerAttrs, drag } = useSimpleDrag();
-  const [activePath, setActivePath] = useState<null | string>(null);
   const unitsContext: UnitsContext = {
     activePath,
     onActivate: setActivePath
@@ -104,7 +105,7 @@ const Splyt2dEditor: React.SFC<Props> = props => {
       }
       node.removeEventListener("click", handleContainerClick);
     };
-  }, [ref]);
+  }, [ref, setActivePath]);
   return (
     <Container {...dragContainerAttrs} ref={ref}>
       <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>

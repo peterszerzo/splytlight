@@ -23,7 +23,13 @@ const transformSplyt = (
   );
 };
 
-const createSplytTree = (state: Tree | null): Group => {
+const createSplytTree = (
+  state: Tree | null,
+  context: {
+    currentPath?: string;
+    activePath: string | null;
+  }
+): Group => {
   if (!state || state.status !== "added") {
     const emptyGroup = new Group();
     const sphereGeometry = new SphereGeometry(12, 16, 16);
@@ -33,7 +39,10 @@ const createSplytTree = (state: Tree | null): Group => {
     emptyGroup.add(sphereMesh);
     return emptyGroup;
   } else {
-    const leftGroup = createSplytTree(state.left);
+    const leftGroup = createSplytTree(state.left, {
+      ...context,
+      currentPath: `${context.currentPath || ""}l`
+    });
     const splytPart = part(state.size);
     transformSplyt(
       leftGroup,
@@ -41,7 +50,10 @@ const createSplytTree = (state: Tree | null): Group => {
       "left",
       state.left ? state.left.rotation : 0
     );
-    const rightGroup = createSplytTree(state.right);
+    const rightGroup = createSplytTree(state.right, {
+      ...context,
+      currentPath: `${context.currentPath || ""}r`
+    });
     transformSplyt(
       rightGroup,
       splytPart,
@@ -51,7 +63,13 @@ const createSplytTree = (state: Tree | null): Group => {
     const group = new Group();
     group.add(leftGroup);
     group.add(rightGroup);
-    group.add(createSplytUnit(splytPart));
+    group.add(
+      createSplytUnit(splytPart, {
+        isHighlighted:
+          context.activePath !== null &&
+          context.activePath === (context.currentPath || "")
+      })
+    );
     return group;
   }
 };
