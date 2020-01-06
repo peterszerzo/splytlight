@@ -35,6 +35,45 @@ export const subtreeAt = (path: string, tree: Tree): Tree | null => {
   return null;
 };
 
+export const moveDown = (path: string, tree: Tree): string => {
+  if (path === "") {
+    return tree.left ? "l" : tree.right ? "r" : "";
+  }
+  const firstPath = path[0];
+  const restPath = path.slice(1);
+  if ((firstPath === "r" && !tree.right) || (firstPath === "l" && !tree.left)) {
+    return firstPath;
+  }
+  return `${firstPath}${moveDown(
+    restPath,
+    (firstPath === "r" ? tree.right : tree.left) as Tree
+  )}`;
+};
+
+export const moveSide = (path: string, tree: Tree): string => {
+  if (path === "") {
+    return "";
+  }
+  const firstPath = path[0];
+  const restPath = path.slice(1);
+  if (restPath.length === 0) {
+    if (firstPath === "l" && tree.right) {
+      return "r";
+    } else if (firstPath === "r" && tree.left) {
+      return "l";
+    } else {
+      return firstPath;
+    }
+  }
+  if ((firstPath === "r" && !tree.right) || (firstPath === "l" && !tree.left)) {
+    return firstPath;
+  }
+  return `${firstPath}${moveSide(
+    restPath,
+    (firstPath === "r" ? tree.right : tree.left) as Tree
+  )}`;
+};
+
 export const updateSubtreeAt = (
   path: string,
   fn: (tree: Tree) => Tree,

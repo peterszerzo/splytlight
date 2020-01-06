@@ -49,8 +49,18 @@ const Splyt2dEditor: React.SFC<Props> = props => {
         activePath.length > 0
       ) {
         setActivePath(activePath.slice(0, -1));
-      } else if (ev.key === "ArrowDown" && activePath === null) {
-        setActivePath("");
+      } else if (ev.key === "ArrowDown") {
+        if (activePath === null) {
+          setActivePath("");
+        } else {
+          setActivePath(splyt.moveDown(activePath, tree));
+        }
+      } else if (ev.key === "ArrowLeft" || ev.key === "ArrowRight") {
+        if (activePath === null) {
+          setActivePath("");
+        } else {
+          setActivePath(splyt.moveSide(activePath, tree));
+        }
       } else if (
         ev.key === " " &&
         activePath !== null &&
@@ -95,13 +105,9 @@ const Splyt2dEditor: React.SFC<Props> = props => {
   }, [ref]);
   return (
     <Container {...dragContainerAttrs} ref={ref}>
-      <svg
-        id="splyt-editor"
-        viewBox={`0 0 ${size.width} ${size.height}`}
-      >
+      <svg id="splyt-editor" viewBox={`0 0 ${size.width} ${size.height}`}>
         <g
-          transform={`translate(${size.width / 2 + drag[0]} ${size
-            .height *
+          transform={`translate(${size.width / 2 + drag[0]} ${size.height *
             0.1 +
             drag[1]}) scale(${zoom || 1})`}
         >
