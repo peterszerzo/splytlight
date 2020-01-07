@@ -1,45 +1,33 @@
 import React, { useState } from "react";
 
-import { part, getPoints, Tree, Status, Dir } from "../../splyt";
+import { part, getPoints, Tree, Dir } from "../../splyt";
 import * as styles from "../../styles";
+
+type Theme = "primary" | "danger";
 
 interface Props {
   tree: Tree;
   isInactive?: boolean;
   onControlClick?: (dir: Dir) => void;
-  onControlMouseEnter?: (dir: Dir) => void;
-  onControlMouseLeave?: (dir: Dir) => void;
-  onEditControlClick?: () => void;
+  controlTheme: (dir: Dir) => Theme;
+  onActivate?: () => void;
 }
 
-const fillByControlStatus: Record<string, string> = {
-  neutral: styles.brown,
-  adding: styles.green,
-  removing: styles.red,
-  added: styles.brown
-};
-
 const Unit: React.SFC<Props> = props => {
-  const showControls =
-    props.onControlClick ||
-    props.onControlMouseEnter ||
-    props.onControlMouseLeave ||
-    props.onEditControlClick;
+  const showControls = props.onControlClick || props.onActivate;
   return (
     <g>
       <Lines
         tree={props.tree}
         isInactive={props.isInactive}
-        onClick={props.onEditControlClick}
+        onClick={props.onActivate}
       />
       {showControls && (
         <Controls
+          controlTheme={props.controlTheme}
           state={props.tree}
           {...{
-            onControlClick: props.onControlClick,
-            onControlMouseEnter: props.onControlMouseEnter,
-            onControlMouseLeave: props.onControlMouseLeave,
-            onEditControlClick: props.onEditControlClick
+            onControlClick: props.onControlClick
           }}
         />
       )}
@@ -98,81 +86,68 @@ const Lines: React.SFC<LinesProps> = props => {
   );
 };
 
-function ControlCircle({
+const ControlCircle = ({
   point,
-  status,
+  theme,
   onClick,
   onMouseOver,
   onMouseOut
 }: {
-  status: Status | "neutral";
+  theme: "primary" | "danger";
   point: { x: number; y: number };
   onClick: () => void;
   onMouseOver?: () => void;
   onMouseOut?: () => void;
-}) {
+}) => {
   return (
     <g
       transform={`translate(${point.x} ${point.y})`}
-      fill={fillByControlStatus[status]}
       strokeLinecap={"round"}
       strokeLinejoin={"round"}
       onClick={onClick}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      <circle cx={0} cy={0} r={styles.controlCircleRadius} />
+      <circle
+        className={`control-circle control-circle--${theme}`}
+        cx={0}
+        cy={0}
+        r={styles.controlCircleRadius}
+      />
     </g>
   );
-}
+};
 
-function Controls({
+const Controls = ({
   state,
-  onControlClick,
-  onControlMouseEnter,
-  onControlMouseLeave,
-  onEditControlClick
+  controlTheme,
+  onControlClick
 }: {
   state: Tree;
+  controlTheme: (dir: Dir) => Theme;
   onControlClick?: (dir: Dir) => void;
-  onControlMouseEnter?: (dir: Dir) => void;
-  onControlMouseLeave?: (dir: Dir) => void;
-  onEditControlClick?: () => void;
-}) {
-  const { left: leftPoint, right: rightPoint } = getPoints(
-    part(state.size),
-    { useOffset: false }
-  );
+}) => {
+  const { left: leftPoint, right: rightPoint } = getPoints(part(state.size), {
+    useOffset: false
+  });
   return (
     <g stroke="none">
       <ControlCircle
         point={leftPoint}
-        status={state.left ? state.left.status : "neutral"}
+        theme={controlTheme("left")}
         onClick={() => {
           onControlClick && onControlClick("left");
-        }}
-        onMouseOver={() => {
-          onControlMouseEnter && onControlMouseEnter("left");
-        }}
-        onMouseOut={() => {
-          onControlMouseLeave && onControlMouseLeave("left");
         }}
       />
       <ControlCircle
         point={rightPoint}
-        status={state.right ? state.right.status : "neutral"}
+        theme={controlTheme("right")}
         onClick={() => {
           onControlClick && onControlClick("right");
-        }}
-        onMouseOver={() => {
-          onControlMouseEnter && onControlMouseEnter("right");
-        }}
-        onMouseOut={() => {
-          onControlMouseLeave && onControlMouseLeave("right");
         }}
       />
     </g>
   );
-}
+};
 
 export default Unit;

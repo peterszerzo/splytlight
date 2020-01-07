@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import * as splyt from "../../splyt";
+import * as styles from "../../styles";
 import Popup from "./popup";
 import Units, { UnitsContext } from "./units";
 import { useSimpleDrag } from "../hooks";
@@ -23,12 +24,18 @@ const Container = styled.div({
   width: "100%",
   height: "100%",
   position: "relative",
-  "& circle": {
-    opacity: 0.1,
+  "& .control-circle": {
+    opacity: 0.2,
+    fill: styles.gray,
     cursor: "pointer"
   },
-  "& circle:hover": {
-    opacity: 0.6
+  "& .control-circle--primary:hover": {
+    opacity: 1,
+    fill: styles.green
+  },
+  "& .control-circle--danger:hover": {
+    opacity: 1,
+    fill: styles.red
   }
 });
 

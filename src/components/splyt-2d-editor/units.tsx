@@ -72,64 +72,28 @@ const Units: React.SFC<Props> = props => {
           props.unitsContext.activePath !== null &&
           props.unitsContext.activePath !== props.path
         }
-        onEditControlClick={() => {
+        onActivate={() => {
           props.unitsContext.onActivate(props.path);
+        }}
+        controlTheme={dir => {
+          if (dir === "left") {
+            return tree.left ? "danger" : "primary";
+          }
+          return tree.right ? "danger" : "primary";
         }}
         onControlClick={
           onTreeChange &&
           ((dir: Dir) => {
             onTreeChange({
               ...tree,
-              [dir]: {
-                status:
-                  tree[dir] &&
-                  ["added", "removing"].indexOf(tree[dir]!.status) > -1
-                    ? "adding"
-                    : "removing",
-                rotation: 2 * Math.PI * Math.random(),
-                size: "small"
-              }
+              [dir]: tree[dir]
+                ? undefined
+                : {
+                    status: "added",
+                    rotation: 2 * Math.PI * Math.random(),
+                    size: "small"
+                  }
             });
-          })
-        }
-        onControlMouseEnter={
-          onTreeChange &&
-          ((dir: Dir) => {
-            if (!tree[dir]) {
-              return onTreeChange({
-                ...tree,
-                [dir]: {
-                  status: "adding",
-                  size: "small"
-                }
-              });
-            }
-            if (["adding", "removing"].indexOf(tree[dir]!.status) === -1) {
-              onTreeChange({
-                ...tree,
-                [dir]: { ...tree[dir], status: "removing" }
-              });
-            }
-          })
-        }
-        onControlMouseLeave={
-          onTreeChange &&
-          ((dir: Dir) => {
-            if (!tree[dir]) {
-              return;
-            }
-            if (tree[dir]!.status === "adding") {
-              return onTreeChange({
-                ...tree,
-                [dir]: null
-              });
-            }
-            if (tree[dir]!.status === "removing") {
-              onTreeChange({
-                ...tree,
-                [dir]: { ...tree[dir], status: "added" }
-              });
-            }
           })
         }
       />
