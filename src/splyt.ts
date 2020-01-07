@@ -1,16 +1,29 @@
 import * as styles from "./styles";
+import * as t from "io-ts";
 
-export type Status = "added" | "adding" | "removing";
+// Status
 
-export type Dir = "left" | "right";
+export const StatusCodec = t.union([
+  t.literal("added"),
+  t.literal("adding"),
+  t.literal("removing")
+]);
 
-export interface Splyt {
-  treeId: string;
-  name: string;
-  isPublic: boolean;
-  tree: Tree;
-  createdAt?: string;
-}
+export type Status = t.TypeOf<typeof StatusCodec>;
+
+// Dir
+
+export const DirCodec = t.union([t.literal("left"), t.literal("right")]);
+
+export type Dir = t.TypeOf<typeof DirCodec>;
+
+// Size
+
+export const SizeCodec = t.union([t.literal("small"), t.literal("large")]);
+
+export type Size = t.TypeOf<typeof SizeCodec>;
+
+// Tree
 
 export interface Tree {
   size: Size;
@@ -19,6 +32,30 @@ export interface Tree {
   left: Tree | null;
   right: Tree | null;
 }
+
+export const TreeCodec: t.Type<Tree> = t.recursion("Tree", () =>
+  t.type({
+    size: SizeCodec,
+    status: StatusCodec,
+    rotation: t.number,
+    left: t.union([TreeCodec, t.null]),
+    right: t.union([TreeCodec, t.null])
+  })
+);
+
+// Splyt
+
+export const SplytCodec = t.type({
+  treeId: t.string,
+  name: t.string,
+  isPublic: t.boolean,
+  tree: TreeCodec,
+  createdAt: t.union([t.undefined, t.string])
+});
+
+export type Splyt = t.TypeOf<typeof SplytCodec>;
+
+// Tree utilities
 
 export const subtreeAt = (path: string, tree: Tree): Tree | null => {
   if (path.length === 0) {
@@ -129,8 +166,6 @@ export interface Geometry {
     angle: number;
   };
 }
-
-export type Size = "small" | "large";
 
 export const small: Geometry = {
   baseHeight: 30,

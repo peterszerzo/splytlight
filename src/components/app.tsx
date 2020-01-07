@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import { fromEvent, interval } from "rxjs";
 import { debounce, map, startWith } from "rxjs/operators";
+import { fold } from "fp-ts/lib/Either";
 
 import Header from "./header";
 import * as undoable from "../utils/undoable";
@@ -57,53 +58,56 @@ const EditPage: React.SFC<{ page: state.EditPage }> = props => {
 
   const vizContainerDimensions = styles.getContainerDimensions(currentState.ui);
   const { splyt } = props.page;
-  if (!splyt) {
+  if (splyt === null) {
     return <uiKit.Loader />;
   }
-  return (
-    <uiKit.Grid>
-      <uiKit.Sidebar>
-        <uiKit.IconButton title="Create tree" icon="save" />
-        <uiKit.IconButton title="Undo change" icon="rotateCcw" />
-        <uiKit.IconButton title="Redo change" icon="rotateCw" />
-        <uiKit.IconButton title="Zoom in" icon="zoomIn" />
-        <uiKit.IconButton title="Zoom out" icon="zoomOut" />
-        <uiKit.IconButton
-          title="Download image"
-          icon="image"
-          onPress={handleCanvasDownload}
-        />
-      </uiKit.Sidebar>
-      <uiKit.Viz
-        overlay={{
-          body: "This tree has been finalized and cannot be edited",
-          action: {
-            label: "Clone and modify",
-            onPress: () => {
-              dispatch(state.cloneTree(splyt.tree));
+  return fold(
+    (error: string) => <uiKit.SimpleScreen content={error} />,
+    (splyt: splyt.Splyt) => (
+      <uiKit.Grid>
+        <uiKit.Sidebar>
+          <uiKit.IconButton title="Create tree" icon="save" />
+          <uiKit.IconButton title="Undo change" icon="rotateCcw" />
+          <uiKit.IconButton title="Redo change" icon="rotateCw" />
+          <uiKit.IconButton title="Zoom in" icon="zoomIn" />
+          <uiKit.IconButton title="Zoom out" icon="zoomOut" />
+          <uiKit.IconButton
+            title="Download image"
+            icon="image"
+            onPress={handleCanvasDownload}
+          />
+        </uiKit.Sidebar>
+        <uiKit.Viz
+          overlay={{
+            body: "This tree has been finalized and cannot be edited",
+            action: {
+              label: "Clone and modify",
+              onPress: () => {
+                dispatch(state.cloneTree(splyt.tree));
+              }
             }
-          }
-        }}
-      >
-        <Splyt2dEditor
-          tree={splyt.tree}
-          size={vizContainerDimensions}
-          activePath={null}
-          setActivePath={() => {}}
-        />
-      </uiKit.Viz>
-      <uiKit.Viz>
-        <Splyt3dViewer
-          tree={splyt.tree}
-          size={vizContainerDimensions}
-          canvasRef={canvasEl => {
-            setCurrentCanvas(canvasEl);
           }}
-          activePath={null}
-        />
-      </uiKit.Viz>
-    </uiKit.Grid>
-  );
+        >
+          <Splyt2dEditor
+            tree={splyt.tree}
+            size={vizContainerDimensions}
+            activePath={null}
+            setActivePath={() => {}}
+          />
+        </uiKit.Viz>
+        <uiKit.Viz>
+          <Splyt3dViewer
+            tree={splyt.tree}
+            size={vizContainerDimensions}
+            canvasRef={canvasEl => {
+              setCurrentCanvas(canvasEl);
+            }}
+            activePath={null}
+          />
+        </uiKit.Viz>
+      </uiKit.Grid>
+    )
+  )(splyt);
 };
 
 const NewPage: React.SFC<{ page: state.NewPage }> = props => {

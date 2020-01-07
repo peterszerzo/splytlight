@@ -87,11 +87,13 @@ const Units: React.SFC<Props> = props => {
             onTreeChange({
               ...tree,
               [dir]: tree[dir]
-                ? undefined
+                ? null
                 : {
                     status: "added",
                     rotation: 2 * Math.PI * Math.random(),
-                    size: "small"
+                    size: "small",
+                    left: null,
+                    right: null
                   }
             });
           })

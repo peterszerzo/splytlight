@@ -3,6 +3,8 @@ import shortUuid from "short-uuid";
 import { createEpicMiddleware, combineEpics, Epic } from "redux-observable";
 import { of, from, empty, Observable } from "rxjs";
 import { filter, switchMap, delay, map } from "rxjs/operators";
+import { Either, fold } from "fp-ts/lib/Either";
+import * as t from "io-ts";
 
 import { Tree } from "./splyt";
 import * as backend from "./backend";
@@ -63,7 +65,7 @@ export interface NewPage {
 
 export interface EditPage {
   route: routes.EditRoute;
-  splyt: splyt.Splyt | null;
+  splyt: Either<string, splyt.Splyt> | null;
 }
 
 export interface AboutPage {
@@ -296,7 +298,7 @@ export const fetchSplyt = (payload: FetchSplyt["payload"]): FetchSplyt => ({
 
 interface FetchSplytResponse {
   type: ActionTypes.FetchSplytResponse;
-  payload: splyt.Splyt;
+  payload: Either<string, splyt.Splyt>;
 }
 
 export const fetchSplytResponse = (
@@ -561,11 +563,12 @@ const saveTree = (tree: Tree) => {
 
 const retrieveTree = (): Tree => {
   try {
-    const tree = JSON.parse(localStorage.getItem("splytstate") || "1");
-    if (!tree || !tree.size) {
-      throw new Error("Not a tree!");
-    }
-    return tree;
+    const rawTree = JSON.parse(localStorage.getItem("splytstate") || "1");
+    const decodedTree = splyt.TreeCodec.decode(rawTree);
+    return fold<t.Errors, splyt.Tree, splyt.Tree>(
+      () => splyt.initialTree,
+      val => val
+    )(decodedTree);
   } catch (err) {
     return splyt.initialTree;
   }
