@@ -14,7 +14,6 @@ interface Props {
 }
 
 const Unit: React.SFC<Props> = props => {
-  const showControls = props.onControlClick || props.onActivate;
   return (
     <g>
       <Lines
@@ -22,7 +21,7 @@ const Unit: React.SFC<Props> = props => {
         isInactive={props.isInactive}
         onClick={props.onActivate}
       />
-      {showControls && (
+      {props.onControlClick && (
         <Controls
           controlTheme={props.controlTheme}
           state={props.tree}
