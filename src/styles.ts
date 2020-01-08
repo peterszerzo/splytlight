@@ -26,10 +26,16 @@ export const getContainerDimensions = ({
 }: {
   windowWidth: number;
   windowHeight: number;
-}) => ({
-  width: (windowWidth - sidebarWidth) / 2,
-  height: windowHeight - headerHeight
-});
+}) =>
+  windowWidth < 600
+    ? {
+        width: windowWidth - sidebarWidth,
+        height: (windowHeight - headerHeight) / 2
+      }
+    : {
+        width: (windowWidth - sidebarWidth) / 2,
+        height: windowHeight - headerHeight
+      };
 
 export const css = `
 `;

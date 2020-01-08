@@ -163,6 +163,7 @@ const createThreeApp = (
       });
     }
     if (modelBounds) {
+      console.log(modelBounds);
       const { min, max } = modelBounds;
       resize(
         state.size,

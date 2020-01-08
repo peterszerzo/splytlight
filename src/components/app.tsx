@@ -8,7 +8,6 @@ import Header from "./header";
 import * as undoable from "../utils/undoable";
 import * as zoom from "../utils/zoom";
 import * as uiKit from "./ui-kit";
-import MobileScreen from "./mobile-screen";
 import Splyt2dEditor from "./splyt-2d-editor";
 import Splyt3dViewer from "./splyt-3d-viewer";
 import SplytCard from "./splyt-card";
@@ -246,10 +245,6 @@ const App: React.SFC<{}> = () => {
   const currentState = useSelector<state.State, state.State>(s => s);
 
   const dispatch = useDispatch();
-
-  if (currentState.ui.windowWidth && currentState.ui.windowWidth < 600) {
-    return <MobileScreen />;
-  }
 
   return (
     <uiKit.Layout
