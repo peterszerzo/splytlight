@@ -73,6 +73,7 @@ const EditPage: React.SFC<{ page: state.EditPage }> = props => {
           <uiKit.IconButton
             title="Download image"
             icon="image"
+            desktopOnly
             onPress={handleCanvasDownload}
           />
         </uiKit.Sidebar>
@@ -202,6 +203,7 @@ const NewPage: React.SFC<{ page: state.NewPage }> = props => {
         <uiKit.IconButton
           title="Download image"
           icon="image"
+          desktopOnly
           onPress={handleCanvasDownload}
         />
       </uiKit.Sidebar>

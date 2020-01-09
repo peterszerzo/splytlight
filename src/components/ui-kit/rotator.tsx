@@ -21,6 +21,7 @@ const Container = styled.div<{ isDisabled: boolean }>(({ isDisabled }) => ({
   backgroundColor: "#F4F4F4",
   borderRadius: "50%",
   opacity: isDisabled ? 0.6 : 1,
+  touchAction: "manipulation",
   position: "relative"
 }));
 

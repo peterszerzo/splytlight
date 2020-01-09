@@ -107,7 +107,7 @@ const createThreeApp = (
 
   /* Update */
 
-  function resize(
+  const resize = (
     {
       width,
       height
@@ -115,32 +115,40 @@ const createThreeApp = (
       width: number;
       height: number;
     },
-    {
-      x,
-      y
-    }: {
-      x: number;
-      y: number;
-    },
-    cameraAngle: number
-  ) {
+    bounds: Box3,
+    [ cameraAngleXY, cameraAngleZ ]: [ number, number ]
+  ) => {
     renderer.setSize(width, height);
+    const maxAspect = width > height ? width / height : height / width;
     camera.aspect = width / height;
-    camera.position.set(
-      (x + y) * 1.2 * Math.sin(cameraAngle),
-      (x + y) * 0.8,
-      (x + y) * 1.2 * Math.cos(cameraAngle)
-    );
-    camera.lookAt(new Vector3(0, (x + y) * 0.45), 0);
+    const center = bounds.min
+      .clone()
+      .add(bounds.max)
+      .multiplyScalar(0.5);
+    const size = bounds.min.distanceTo(bounds.max);
+    const cameraPosition = center
+      .clone()
+      .add(
+        new Vector3(
+          size * maxAspect * Math.cos(cameraAngleZ) * Math.sin(cameraAngleXY),
+          -size * maxAspect * Math.sin(cameraAngleZ),
+          size * maxAspect * Math.cos(cameraAngleZ) * Math.cos(cameraAngleXY)
+        )
+      );
+    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+    camera.lookAt(center);
     camera.updateProjectionMatrix();
-  }
+  };
 
   let model: Group | undefined;
   let modelBounds: Box3 | undefined;
 
-  const setModel= (tree: Tree, options: {
-    activePath: string | null
-  }) => {
+  const setModel = (
+    tree: Tree,
+    options: {
+      activePath: string | null;
+    }
+  ) => {
     if (model) {
       scene.remove(model);
     }
@@ -148,7 +156,7 @@ const createThreeApp = (
     scene.add(model);
     modelBounds = new Box3().setFromObject(model);
     return model;
-  }
+  };
 
   const update = (newState: ThreeAppState) => {
     let prevState = state;
@@ -156,26 +164,21 @@ const createThreeApp = (
     if (state.size.width === 0 || state.size.height === 0) {
       return;
     }
-    const cameraAngle = state.drag[0] / 200;
-    if (prevState.tree !== state.tree || prevState.activePath !== state.activePath || !model) {
+    const cameraAngle: [number, number] = [ state.drag[0] / 200, state.drag[1] / 200 ];
+    if (
+      prevState.tree !== state.tree ||
+      prevState.activePath !== state.activePath ||
+      !model
+    ) {
       setModel(state.tree, {
         activePath: state.activePath
       });
     }
     if (modelBounds) {
-      console.log(modelBounds);
-      const { min, max } = modelBounds;
-      resize(
-        state.size,
-        {
-          x: Math.abs(min.x - max.x),
-          y: Math.abs(min.y - max.y)
-        },
-        cameraAngle
-      );
+      resize(state.size, modelBounds, cameraAngle);
     }
     render();
-  }
+  };
 
   render();
   update(initialState);

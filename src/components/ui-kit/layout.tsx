@@ -31,7 +31,8 @@ const Notification = styled.div({
   borderRadius: 6,
   backgroundColor: styles.black,
   color: styles.white,
-  minWidth: 240,
+  minWidth: 160,
+  maxWidth: 240,
   boxShadow: "0 1px 6px 0 rgba(0, 0, 0, 0.6)"
 });
 

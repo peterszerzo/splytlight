@@ -17,6 +17,7 @@ interface Props {
 
 const Container = styled.div({
   position: "relative",
+  userSelect: "none",
   height: "100%",
   overflow: "hidden",
 });

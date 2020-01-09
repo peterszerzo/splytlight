@@ -5,59 +5,72 @@ import * as styles from "../../styles";
 
 export interface Props {
   icon: "save" | "image" | "rotateCw" | "rotateCcw" | "zoomIn" | "zoomOut";
+  desktopOnly?: boolean;
   onPress?: () => void;
   primary?: boolean;
   title: string;
 }
 
-const Container = styled.button<{ disabled?: boolean; primary?: boolean }>(
-  ({ disabled, primary }) => ({
-    display: "inline-block",
-    width: 36,
-    height: 36,
-    padding: 8,
-    border: 0,
-    borderRadius: "50%",
-    ...(primary
-      ? {
-          backgroundColor: styles.blue,
-          color: styles.white,
-          ...(disabled
-            ? {}
-            : {
-                ":hover": {
-                  backgroundColor: styles.lighterBlue
-                },
-                ":focus": {
-                  outline: "none",
-                  boxShadow: `0 0 0 3px ${styles.faintBlue}`
-                }
-              })
+const Container = styled.button<{
+  desktopOnly?: boolean;
+  disabled?: boolean;
+  primary?: boolean;
+}>(({ desktopOnly, disabled, primary }) => ({
+  width: 36,
+  height: 36,
+  padding: 8,
+  border: 0,
+  borderRadius: "50%",
+  ...(desktopOnly
+    ? {
+        display: "none",
+        "@media (min-width: 600px)": {
+          display: "inline-block"
         }
-      : {
-          color: styles.black,
-          backgroundColor: styles.white,
-          ...(disabled
-            ? {}
-            : {
-                ":hover": {
-                  backgroundColor: styles.faintGray
-                },
-                ":focus": {
-                  outline: "none",
-                  boxShadow: `0 0 0 3px ${styles.faintGray}`
-                }
-              })
-        }),
-    opacity: disabled ? 0.3 : 1
-  })
-);
+      }
+    : {
+        display: "inline-block"
+      }),
+  ...(primary
+    ? {
+        backgroundColor: styles.blue,
+        color: styles.white,
+        ...(disabled
+          ? {}
+          : {
+              ":hover": {
+                backgroundColor: styles.lighterBlue
+              },
+              ":focus": {
+                outline: "none",
+                boxShadow: `0 0 0 3px ${styles.faintBlue}`
+              }
+            })
+      }
+    : {
+        color: styles.black,
+        backgroundColor: styles.white,
+        ...(disabled
+          ? {}
+          : {
+              ":hover": {
+                backgroundColor: styles.faintGray
+              },
+              ":focus": {
+                outline: "none",
+                boxShadow: `0 0 0 3px ${styles.faintGray}`
+              }
+            })
+      }),
+  opacity: disabled ? 0.3 : 1
+}));
 
 const IconButton: React.SFC<Props> = props => (
   <Container
     title={props.title}
     primary={props.primary}
     disabled={!props.onPress}
+    desktopOnly={props.desktopOnly}
     onClick={props.onPress}
   >
     {(() => {
