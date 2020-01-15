@@ -5,6 +5,7 @@ import * as styles from "../../styles";
 import { useSimpleDrag } from "../hooks";
 import { Tree } from "../../splyt";
 import create from "./splyt";
+import * as utils from "./utils";
 
 export interface Props {
   size: { width: number; height: number };
@@ -15,31 +16,23 @@ export interface Props {
 }
 
 interface Bounds {
-  min: {
-    x: number;
-    y: number;
-    z: number;
-  };
-  max: {
-    x: number;
-    y: number;
-    z: number;
-  };
+  minX: number;
+  minY: number;
+  minZ: number;
+  maxX: number;
+  maxY: number;
+  maxZ: number;
 }
 
 const groupToBounds = (group: three.Group): Bounds => {
   const bounds = new three.Box3().setFromObject(group);
   return {
-    min: {
-      x: bounds.min.x,
-      y: bounds.min.y,
-      z: bounds.min.z
-    },
-    max: {
-      x: bounds.max.x,
-      y: bounds.max.y,
-      z: bounds.max.z
-    }
+    minX: bounds.min.x,
+    minY: bounds.min.y,
+    minZ: bounds.min.z,
+    maxX: bounds.max.x,
+    maxY: bounds.max.y,
+    maxZ: bounds.max.z
   };
 };
 
@@ -51,6 +44,8 @@ const Splyt3dViewer: React.SFC<Props> = props => {
   const { dragContainerAttrs, drag } = useSimpleDrag();
 
   const [scene] = useState<three.Scene>(createScene());
+
+  const [appended, setAppended] = useState(false);
 
   const [camera] = useState<three.PerspectiveCamera>(
     (() => {
@@ -66,53 +61,78 @@ const Splyt3dViewer: React.SFC<Props> = props => {
     })()
   );
 
-  const [renderer] = useState<three.Renderer>(
-    (() => {
-      const r = new three.WebGLRenderer({
-        antialias: true,
-        preserveDrawingBuffer: true
-      });
-
-      r.setClearColor(0xffffff, 1);
-      r.shadowMap.enabled = true;
-      return r;
-    })()
+  const [renderer, setRenderer] = useState<three.Renderer | undefined>(
+    undefined
   );
 
-  const [objWithBounds, setObjWithBounds] = useState<[three.Group, Bounds] | undefined>(undefined);
+  useEffect(() => {
+    const r = new three.WebGLRenderer({
+      antialias: true,
+      preserveDrawingBuffer: true
+    });
+
+    r.setClearColor(0xffffff, 1);
+    r.shadowMap.enabled = true;
+
+    const el = (r.domElement as any)
+
+    el.style.opacity = 0;
+    el.style.transition = "opacity 0.3s ease-in-out";
+
+    setRenderer(r);
+  }, []);
+
+  const [obj, setObj] = useState<three.Group | undefined>(undefined);
+
+  const [bounds, setBounds] = useState<Bounds | undefined>(undefined);
 
   useEffect(() => {
-    if (objWithBounds) {
-      scene.remove(objWithBounds[0]);
+    if (obj) {
+      scene.remove(obj);
     }
     const group = create(props.tree, {
       activePath: props.activePath
     });
     scene.add(group);
-    setObjWithBounds([group, groupToBounds(group)]);
+    setObj(group);
   }, [props.tree, props.activePath]);
 
   useEffect(() => {
+    if (!obj) {
+      return;
+    }
+    const newBounds = groupToBounds(obj);
+    if (!bounds) {
+      setBounds(newBounds);
+      return;
+    }
+    const tween = utils.tweenOnce({
+      start: bounds,
+      end: newBounds,
+      onChange: currentBounds => {
+        setBounds(currentBounds);
+      }
+    });
+    return () => {
+      tween.stop();
+    };
+  }, [obj]);
+
+  useEffect(() => {
+    if (!renderer || !camera || !size) {
+      return;
+    }
     renderer.setSize(size.width, size.height);
     const maxAspect =
       size.width > size.height
         ? size.width / size.height
         : size.height / size.width;
     camera.aspect = size.width / size.height;
-    if (!objWithBounds) {
+    if (!bounds) {
       return;
     }
-    const bounds = objWithBounds[1];
-    const boundsMin = new three.Vector3(
-      bounds.min.x,
-      bounds.min.y,
-      bounds.min.z
-    );
-    const boundsMax = new three.Vector3(
-      bounds.max.x,
-      bounds.max.y,
-      bounds.max.z
-    );
+    const boundsMin = new three.Vector3(bounds.minX, bounds.minY, bounds.minZ);
+    const boundsMax = new three.Vector3(bounds.maxX, bounds.maxY, bounds.maxZ);
     const center = boundsMin
       .clone()
       .add(boundsMax)
@@ -140,17 +160,15 @@ const Splyt3dViewer: React.SFC<Props> = props => {
     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
     camera.lookAt(center);
     camera.updateProjectionMatrix();
-  }, [size, objWithBounds, drag]);
-
-  const [appended, setAppended] = useState(false);
+    renderer.render(scene, camera);
+  }, [size, bounds, drag, camera, renderer, scene]);
 
   useEffect(() => {
-    if (!containerEl) {
+    if (!containerEl || !renderer) {
       return;
     }
     const container = (containerEl.current as unknown) as HTMLElement;
     if (container && !appended) {
-      console.log("appending");
       container.appendChild(renderer.domElement);
       if (canvasRef) {
         canvasRef(renderer.domElement);
@@ -160,11 +178,10 @@ const Splyt3dViewer: React.SFC<Props> = props => {
   }, [containerEl, canvasRef, appended, renderer]);
 
   useEffect(() => {
-    if (!scene || !camera || !renderer) {
-      return;
+    if (appended && renderer) {
+      (renderer.domElement as any).style.opacity = 1;
     }
-    renderer.render(scene, camera);
-  }, [objWithBounds, drag, renderer, size, scene, camera]);
+  }, [appended, renderer]);
 
   return (
     <div

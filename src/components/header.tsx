@@ -22,7 +22,6 @@ const Container = styled.header({
 const H1 = styled.h1({
   paddingLeft: 8,
   textAlign: "left",
-  textTransform: "uppercase",
   width: "100%",
   margin: "auto",
   fontWeight: 400,
@@ -38,6 +37,7 @@ const LogoContainer = styled.div({
 
 const Link = styled.a<{ isActive?: boolean | null }>(({ isActive }) => ({
   textDecoration: "none",
+  fontSize: "1rem",
   borderBottom: "1px solid currentColor",
   color: "inherit",
   ...(isActive ? { fontWeight: 700 } : {})

@@ -10,15 +10,15 @@ import * as routes from "../routes";
 import { Container } from "./create-card";
 
 const Title = styled.h2({
-  fontSize: "1rem",
+  fontSize: "1.125rem",
   letterSpacing: "0.03rem",
   fontWeight: 400,
-  textTransform: "uppercase",
   margin: 0
 });
 
 const Note = styled.p({
   margin: 0,
+  fontSize: "0.75rem",
   color: styles.gray
 });
 
