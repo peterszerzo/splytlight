@@ -1,4 +1,5 @@
 export { default as Button } from "./button";
+export { default as CreateCard } from "./create-card";
 export { default as Grid } from "./grid";
 export { default as IconButton } from "./icon-button";
 export { default as Input } from "./input";

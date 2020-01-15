@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { useLink } from "./hooks";
-import * as styles from "../styles";
-import * as routes from "../routes";
+import { useLink } from "../hooks";
+import * as styles from "../../styles";
+import * as routes from "../../routes";
 
 export const Container = styled.a({
   height: 242,

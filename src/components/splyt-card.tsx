@@ -7,7 +7,7 @@ import { useLink } from "./hooks";
 import { Splyt } from "../splyt";
 import * as styles from "../styles";
 import * as routes from "../routes";
-import { Container } from "./create-card";
+import { Container } from "./ui-kit/create-card";
 
 const Title = styled.h2({
   fontSize: "1.125rem",

@@ -11,12 +11,13 @@ import * as uiKit from "./ui-kit";
 import Splyt2dEditor from "./splyt-2d-editor";
 import Splyt3dViewer from "./splyt-3d-viewer";
 import SplytCard from "./splyt-card";
-import CreateCard from "./create-card";
 import * as styles from "../styles";
 import * as state from "../state";
 import * as content from "../content";
 import * as splyt from "../splyt";
 import * as routes from "../routes";
+
+// Pages
 
 const HomePage: React.SFC<{ page: state.HomePage }> = props => {
   const currentState = useSelector<state.State, state.State>(s => s);
@@ -29,7 +30,7 @@ const HomePage: React.SFC<{ page: state.HomePage }> = props => {
     currentState.ui.windowWidth / Math.floor(currentState.ui.windowWidth / 320);
   return (
     <uiKit.ScrollContainer>
-      <CreateCard width={width} />
+      <uiKit.CreateCard width={width} />
       {splyts.map((currentSplyt: splyt.Splyt, index: number) => (
         <SplytCard key={index} splyt={currentSplyt} width={width} />
       ))}
@@ -243,7 +244,9 @@ const NewPage: React.SFC<{ page: state.NewPage }> = props => {
   );
 };
 
-const App: React.SFC<{}> = () => {
+// Application view
+
+const View: React.SFC<{}> = () => {
   const currentState = useSelector<state.State, state.State>(s => s);
 
   const dispatch = useDispatch();
@@ -291,7 +294,9 @@ const createResizeStream = () =>
     })
   );
 
-const WrappedApp: React.SFC<{}> = () => {
+// Application view container
+
+const App: React.SFC<{}> = () => {
   useEffect(() => {
     const styleTag: HTMLElement = document.createElement("style");
     styleTag.innerText = styles.css;
@@ -316,9 +321,9 @@ const WrappedApp: React.SFC<{}> = () => {
 
   return (
     <Provider store={state.store}>
-      <App />
+      <View />
     </Provider>
   );
 };
 
-export default WrappedApp;
+export default App;

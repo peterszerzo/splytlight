@@ -4,7 +4,7 @@ import * as three from "three";
 import * as styles from "../../styles";
 import { useSimpleDrag } from "../hooks";
 import { Tree } from "../../splyt";
-import create from "./splyt";
+import createMesh from "./mesh";
 import * as utils from "./utils";
 
 export interface Props {
@@ -90,7 +90,7 @@ const Splyt3dViewer: React.SFC<Props> = props => {
     if (obj) {
       scene.remove(obj);
     }
-    const group = create(props.tree, {
+    const group = createMesh(props.tree, {
       activePath: props.activePath
     });
     scene.add(group);
